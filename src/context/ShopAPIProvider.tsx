@@ -5,8 +5,8 @@ import axios from 'axios';
 const ShopAPIContext = createContext();
 
 export const ShopAPIProvider = ({ children }) => {
-    // const api_address = `https://yn-corp.xyz/api/shop`;
-    const api_address = `http://${process.env.REACT_APP_API_CONTACT_POINTS}:${process.env.REACT_APP_API_PORT}/api/shop`;
+    const api_address = `https://yn-corp.xyz/api/shop`;
+    // const api_address = `http://${process.env.REACT_APP_API_CONTACT_POINTS}:${process.env.REACT_APP_API_PORT}/api/shop`;
     const config = {withCredentials: true, headers: {'Content-Type':'application/json', 'Accept':'application/json'}};
 
     const fetchBasket = async () => { // Fonction pour récupérer le panier

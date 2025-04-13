@@ -7,13 +7,21 @@ import ShopAPIContext from "./context/ShopAPIProvider";
 /* Custom component imports */
 import Bandeau from "./components/Bandeau";
 import Section from "./components/Section";
+import Footer from "./components/Footer";
 import Logo from "./components/Splashpage";
 import Item from "./components/Item";
 import Basket from "./components/Basket";
 import Payment from "./components/Payment";
+import About from "./components/About";
+
 
 /* Style imports */
 import "./style/styles.css";
+import "./style/app.css";
+import "./style/home.css";
+import "./style/basket.css";
+import "./style/payment.css";
+import "./style/about.css";
 
 function useBasket() {
     const { fetchBasket, postBasket } = useContext(ShopAPIContext);
@@ -76,11 +84,17 @@ function App() {
         setState("BASKET");
     };
 
+    function aboutState() {
+        setButtonDisplay("RETOUR");
+        setSection({name: "Qu'est ce que la YNC ?", image: "assets/home_icon.svg"})
+        setState("ABOUT");
+    };
+
     // onClick top right button
     const updateState = () => {
         if (state === "HOME" || state === "PAYMENT") {
             basketState();
-        } else if (state === "BASKET") {
+        } else if (state === "BASKET" || state === "ABOUT") {
             homeState();
         }
     }
@@ -93,6 +107,10 @@ function App() {
             {(state === "HOME") && <Item id="quelconque" add={addBasket} goto={basketState}/>}
             {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} next={paymentState}/>}
             {(state === "PAYMENT") && <Payment basket={basket}/>}
+
+            {(state === "ABOUT") && <About />}
+
+            <Footer onClick={aboutState} />
         </div>
     );
 

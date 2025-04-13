@@ -1,0 +1,66 @@
+/* body */
+.about {
+    display: flex;
+    flex-direction: column;
+    width: 1800px;
+    /* height: 650px; */
+    flex: 1;
+    margin-top: 15px;
+    padding: 20px 50px;
+    border-top: 1px solid black;
+    justify-content: center;
+}
+
+/* Content */
+.content-left, .content-right {
+    display: flex;
+    flex-direction: row;
+    width: 1800px;
+    margin: 15px 0;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.content-right {
+    flex-direction: row-reverse;
+    text-align: right;
+}
+  
+/* Content Image */
+.content-left img, .content-right img {
+    width: 140px;
+    height: 130px;
+    flex-shrink: 0;
+    margin : 5px 25px;
+}
+  
+/* Content Title */
+.title {
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+  
+/* Content Title  */
+p {
+    width: 825px;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+}
+  
+/* Button */
+.questions-button {
+    display: block;
+    background-color: #c000ff;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    width: 360px;
+    margin-top: 50px;
+    margin-left: calc(50% - 180px);;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}

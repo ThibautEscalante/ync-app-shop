@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState, useCallback } from "react";
-import APIContext from "../context/ShopAPIProvider";
+import ShopAPIContext from "../context/ShopAPIProvider";
 
 /* @desc: This component is used to display all informations about an item in store specifically for the basket page.
  * @param id: the item identifier, used to retrieve item's data
@@ -7,7 +7,7 @@ import APIContext from "../context/ShopAPIProvider";
  * @return: Row item component for the basket page
  */
 function BasketItem({ basket, id, compact, add, rm }) {
-    const { fetchItem } = useContext(APIContext);
+    const { fetchItem } = useContext(ShopAPIContext);
 
     const [item, setItem] = useState(null);
     useEffect(() => { // Retrieve item's data
@@ -17,27 +17,40 @@ function BasketItem({ basket, id, compact, add, rm }) {
     }, [basket]);
 
     return (
-        <div className="basket-row">
-            <h3>{(!item) ? "?" : item.display_name}</h3>
+        <div className="article">
+            
             {!compact && <>
-                <img className="basket-image" src={(!item) ? "" : item.image}/>
-                <p>{(!item) ? "?" : item.basket_description}</p>
+            
+                <div className="article-image">
+                    <img className="image" src={(!item) ? "" : item.image}/>
+                    <img className="labeled-price" src={(!item) ? "" : item.image}/>
+                </div>
+
+                <div className="article-information">
+                    
+                    <h3 className="article-title">{(!item) ? "?" : item.display_name}</h3>
+                    <p className="article-delivery-description">{(!item) ? "?" : item.basket_description}</p>
+
+                    <div className="article-icon">
+                        {(basket[id] < 5 && !compact)
+                            ? ([...Array(basket[id])].map((_,i) => <img key={i} className="icon" src="assets/home_icon.svg"/>))
+                            : (<><img className="icon" src="assets/home_icon.svg"/><p>x{basket[id]}</p></>)
+                        }
+                    </div>
+                    
+                    <div className="article-incrementator">
+                        <button id={id} className="article-remove" onClick={() => rm(id)}>-</button>
+                        <button id={id} className="article-add" onClick={() => add(id)}>+</button>
+                    </div>
+
+                    <p className="article-price">{(!item) ? "?" : item.price * basket[id]} €</p>
+
+                </div>
             </>}
 
-            <div className="basket-icon">
-                {(basket[id] < 5 && !compact)
-                    ? ([...Array(basket[id])].map((_,i) => <img key={i} className="basket-icon" src="assets/home_icon.svg"/>))
-                    : (<><img className="basket-icon" src="assets/home_icon.svg"/><p>x{basket[id]}</p></>)
-                }
-            </div>
-
-            {!compact && <>
-                <button id={id} className="basket-remove" onClick={() => rm(id)}>-</button>
-                <button id={id} className="basket-add" onClick={() => add(id)}>+</button>
-            </>}
-
-            <p className="basket-item-price">{(!item) ? "?" : item.price * basket[id]}$</p>
+           
         </div>
+
     );
 }
 
@@ -54,7 +67,7 @@ function BasketRows({ basket, compact, add, rm }) {
  * @return: Basket component of the website page
  */
 function BasketPrice({ basket, compact, next }) {
-    const { fetchItem } = useContext(APIContext);
+    const { fetchItem } = useContext(ShopAPIContext);
     const [price, setPrice] = useState({amount: 0, fee: 0});
 
     useEffect(() => {
@@ -72,13 +85,33 @@ function BasketPrice({ basket, compact, next }) {
     }, [basket]);
 
     return (
-        <div className="basket-price">
-            <p className="amount">Amount: {price.amount}</p>
-            <p className="fee">Shipping fee: {price.fee}</p>  
-            <p className="total">Total: {price.amount + price.fee}</p>
-            {!compact && (<button className="price-button" onClick={next}>JE PASSE A LA SUITE !</button>)}
+        <div className="order-summary">
+
+            <div className="title">ORDER SUMMARY</div>
+                
+            <div className="details">
+                
+                <div className="amount-row">
+                    <div className="label">Montant</div>
+                    <div className="value">{price.amount} €</div>
+                </div>
+                
+                <div className="delivery-row">
+                    <div className="label">Livraison</div>
+                    <div className="value">{price.fee} €</div>
+                </div>
+                
+                <div className="total-row">
+                    <div className="label">TOTAL</div>
+                    <div className="total-value">{price.amount + price.fee} €</div>
+                </div>
+
+            </div>
+
+            {!compact && (<button className="order-button" onClick={next}>JE PASSE À LA SUITE</button>)}
+
         </div>
-    );
+      );
 }
 
 /* @desc: This component is used to display all items currently in the basket and all pricing informations

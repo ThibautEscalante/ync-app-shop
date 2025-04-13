@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState } from "react";
-import APIContext from "../context/ShopAPIProvider";
+import ShopAPIContext from "../context/ShopAPIProvider";
 
 /* @desc: This component is used to display all informations about an item in store
  * @param id: the item identifier, used to retrieve item's data
@@ -9,7 +9,7 @@ import APIContext from "../context/ShopAPIProvider";
 function Item({ id, add, goto }) {
 
     const [item, setItem] = useState(null); // Item data
-    const { fetchItem } = useContext(APIContext);
+    const { fetchItem } = useContext(ShopAPIContext);
 
     useEffect(() => { // Fetch all item's data
         fetchItem(id)
@@ -17,31 +17,34 @@ function Item({ id, add, goto }) {
             .catch(e => console.error(`[Item;useEffect] ${e.message}`));
     }, []);
 
-    const img = ( // HTML image rendering
-        <div className="item-image">
-            <img src={(!item) ? "" : item.image} width="400"/>
-        </div>
-    );
+    const home = ( // HTML image rendering
+        <div className="item">
 
-    const desc = ( // HTML description rendering
-        <div className="item-description">
-            <p>{(!item) ? "" : item.description}</p>
+            <img src={(!item) ? "??" : item.image} alt=""/>
+
+            <div className="item-description-border">
+                <div className="item-description">
+                    <p>{(!item) ? "" : item.description}</p>
+                </div>
+            </div>
+
+            <button className="item-button" id={id} onClick={handleClick} price={item?.price}>
+            </button>
+
+
         </div>
     );
 
     function handleClick() { add(id); goto(); };
-    const price = ( // HTML button rendering
-        <button className="item-button" id={id} onClick={handleClick}>
-            {(!item) ? "" : item.price}$
-        </button>
-    );
 
     return (
-        <div className="item-container">
-            {img}
-            {desc}
-            {price}
+        <div className="home">
+            <div className="showcase">
+                {home}
+            </div>
         </div>
     );
+
+/* Fusionner la variable home et le rendu du composant Item */
 
 } export default Item;

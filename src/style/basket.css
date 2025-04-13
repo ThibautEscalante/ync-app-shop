@@ -1,0 +1,233 @@
+/* body */
+.basket {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    flex: 1;
+    margin-top: 15px;
+    border-top: 1px solid black;
+}
+
+
+
+
+/* Basket */
+.basket-rows {
+    display: flex;
+    flex-direction: column;
+    width: 55%;
+    margin-top: 90px;
+    margin-left: 100px;
+    margin-right: 85px;
+}
+
+
+
+
+/* Article */
+.article {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 120px;
+    border-bottom: 1px solid black;
+}
+
+
+
+
+/* Article Image*/
+.article-image {
+    width: 154px;
+    height: 176px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.image {
+    width: 100px;
+    height: 136px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1; /* Priorité d'affichage plus faible (image A dessous) */
+}
+
+.labeled-price {
+    width: 70px;
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 2; /* Priorité d'affichage plus élevée (image B dessus) */
+}
+
+
+
+
+/* Article Information */
+.article-information {
+    width: 870px;
+    height: 180px;
+    margin-left: 5%;
+    position: absolute;
+    top: 0;
+}
+
+/* Article Titre */
+.article-title {
+    margin: 0;
+    font-size: 14px;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+/* Article Delivery Description */
+.article-delivery-description {
+    margin: 5px 0;
+    font-size: 10px;
+    color: black;
+}
+
+/* Incrementator Icon */
+.article-icon {
+    display: flex;
+    gap: 5px;
+    
+}
+  
+.article-icon img {
+    width: 17px;
+    height: 20px;
+}
+  
+.article-icon p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Incrementator Button */
+.article-incrementator {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+}
+  
+.article-add, .article-remove {
+    display: flex;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0 2px;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #c14bff;
+    color: #c14bff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+/* Article Price */
+.article-price {
+    position: absolute;
+    top: 62%;
+    right: 0;
+    margin: 0;
+    text-align: right;
+    font-size: 23px;
+    font-weight: 400;
+}
+
+
+
+
+/* Order Summary */
+.order-summary {
+    display: flex;
+    flex-direction: column;
+    width: 390px;
+    height: 210px;
+    margin-top: 275px;
+    margin-left: 15px;
+    border: 1px solid #000;
+    z-index: 0;
+  }
+  
+/* Order Summary Title */
+.order-summary .title {
+    background-color: #000;
+    color: white;
+    padding: 8px 11px;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+ 
+/* Order Summary Details */
+.order-summary .details {
+    display: flex;
+    flex-direction: column;
+    margin-top: 6px;
+    padding: 15px;
+    padding-left: 40px;
+    font-size: 18.25px;
+}
+
+.amount-row, .delivery-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 18.25px;
+    text-align: left;
+}
+  
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 25px;
+    font-weight: 500;
+    text-align: left;
+}
+  
+.value {
+    font-size: 19px;
+    font-weight: 500;
+    color: #c14bff;
+}
+  
+.total-value {
+    font-size: 26px;
+    font-weight: 400;
+    color: #c14bff;
+}
+
+
+
+
+/* Order Summary Button */
+.order-button {
+    width: 100.5%;
+    padding: 21px 12px;
+    position: relative;
+    left: -1px;
+    background-color: white;
+    color: #c14bff;
+    border: 1px solid #c14bff;
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+  
+.order-button:hover {
+    background-color: #c14bff;
+    color: white;
+}

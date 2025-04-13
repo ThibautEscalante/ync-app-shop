@@ -13,8 +13,8 @@ function Bandeau({name, basket, homeFn, clickFn}) {
 
     return (
         <div className="bandeau">
-            <button className="bandeau left" onClick={homeFn}>YNC SHOP</button>
-            <button className="bandeau right" onClick={clickFn}>{display_name}</button>
+            <button className="bandeau-left" onClick={homeFn}>YNC SHOP</button>
+            <button className="bandeau-right" onClick={clickFn}>{display_name}</button>
         </div>
     );
 
