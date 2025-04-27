@@ -13,6 +13,7 @@ import Item from "./components/Item";
 import Basket from "./components/Basket";
 import Payment from "./components/Payment";
 import About from "./components/About";
+import Acknowledgment from "./components/Acknowledgment";
 
 
 /* Style imports */
@@ -22,6 +23,7 @@ import "./style/home.css";
 import "./style/basket.css";
 import "./style/payment.css";
 import "./style/about.css";
+import "./style/acknowledgment.css";
 
 function useBasket() {
     const { fetchBasket, postBasket } = useContext(ShopAPIContext);
@@ -74,13 +76,13 @@ function App() {
 
     function paymentState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Payment", image: "assets/home_icon.svg"})
+        setSection({name: "Payment", image: "assets/payment_icon.svg"})
         setState("PAYMENT");
     };
 
     function basketState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Panier", image: "assets/home_icon.svg"})
+        setSection({name: "Panier", image: "assets/basket_icon.svg"})
         setState("BASKET");
     };
 
@@ -90,11 +92,19 @@ function App() {
         setState("ABOUT");
     };
 
+    function acknowledgmentState() {
+        setButtonDisplay("RETOUR");
+        setSection({name: "Nous te remercions", image: "assets/acknowledgment_icon.svg"})
+        setState("ACKNOWLEDGMENT");
+    };
+
+    
+
     // onClick top right button
     const updateState = () => {
         if (state === "HOME" || state === "PAYMENT") {
             basketState();
-        } else if (state === "BASKET" || state === "ABOUT") {
+        } else if (state === "BASKET" || state === "ABOUT" || state === "ACKNOWLEDGMENT") {
             homeState();
         }
     }
@@ -104,13 +114,14 @@ function App() {
             <Bandeau name={buttonDisplay} basket={basket} homeFn={homeState} clickFn={updateState}/>
             <Section name={section.name} image={section.image}/>
 
-            {(state === "HOME") && <Item id="quelconque" add={addBasket} goto={basketState}/>}
+            {(state === "HOME") && <Item id="quelconque" galleryIds={["quelconque", "quelconque", "quelconque", "quelconque"]} add={addBasket} goto={basketState}/>}
             {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} next={paymentState}/>}
-            {(state === "PAYMENT") && <Payment basket={basket}/>}
+            {(state === "PAYMENT") && <Payment basket={basket} goto={acknowledgmentState}/>}
 
             {(state === "ABOUT") && <About />}
+            {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
 
-            <Footer onClick={aboutState} />
+            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />}
         </div>
     );
 

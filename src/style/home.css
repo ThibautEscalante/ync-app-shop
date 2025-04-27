@@ -1,89 +1,123 @@
-/* body */
+/* ================================
+    STRUCTURE PRINCIPALE : .home
+    Structure principale de la page
+================================ */
+
 .home {
     display: flex;
     flex-direction: column;
     flex: 1;
     width: 100%;
-    padding-top: 0;
-    border-top: 1px solid #F8F8F8;
+    border-top: 1px solid #f8f8f8;
 }
 
+/* ================================
+    VITRINE : .showcase
+    Partie vitrine de la page
+================================ */
 
-
-
-/* Showcase */
 .showcase {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
     padding-top: 90px;
     padding-bottom: 200px;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
 }
 
 
+/* ================================
+    ITEM CONTAINER : .item
+    Bloc contenant image + description
+================================ */
 
-
-/* Item */
 .item {
     display: flex;
     flex-direction: column;
+    align-items: center;
     position: relative;
     width: 100%;
-    height: 400px;
     max-width: 975px;
-    align-items: center;
+    height: 450px;
+    overflow: visible;
     transition: all 0.5s ease;
 }
 
-/* Item Image */
+/* ================================
+    IMAGE WRAPPER : .shadow-image
+    Gère ombre portée, effet 3D (parralax)
+================================ */
+
+.shadow-image {
+    display: inline-block;
+    position: relative;
+    perspective: 1000px;
+    transform-origin: center center;
+
+    /* Ombre portée réaliste */
+    filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease-out;
+}
+
+.shadow-image:hover {
+    transform: translateY(-0.5px) scale(1.005);
+}
+
+
+/* ================================
+    IMAGE : .item img
+    Apparition décalée + floutée
+================================ */
+
 .item img {
     width: 270px;
     height: 345px;
-    margin-bottom: 20px;
-    object-fit: cover; /* Assure que l'image couvre le cadre sans être déformée */
+    object-fit: cover;
     border: none;
-    animation: reveal-clip 1.5s ease forwards;
-}
-  
-@keyframes reveal-clip {
-    0% {
-      clip-path: inset(0 0 100% 0);
-    }
-    100% {
-      clip-path: inset(0 0 0 0);
-    }
-}
 
-/* Item Button */
+    /* Apparence initiale */
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    transform: translateY(30px) scale(0.95);
+    filter: blur(15px);
+
+    /* Animations combinées */
+    animation: 
+        fadeInImage 1.2s ease-out forwards,
+        revealClip 1.5s ease-out forwards,
+        clearBlur 1.2s ease-out forwards;
+
+    transition: clip-path 1.5s ease-out;
+}
+ 
+/* ================================
+    BOUTON ACTION : .item-button
+    Bouton animé + texte dynamique
+================================ */
+
 .item-button {
     width: 150px;
     height: 50px;
+    margin-top: 35px;
     border: none;
     background-color: #c14bff;
     color: white;
     font-size: 16px;
     font-family: "Necto Mono", monospace;
     cursor: pointer;
+
+    /* Apparence animée */
     clip-path: inset(0 0 100% 0);
-    animation: reveal-clip-button 2s 1.5s forwards;
+    animation: revealClipButton 2s 1.5s forwards;
 }
 
-@keyframes reveal-clip-button {
-    0% {
-        clip-path: inset(0 0 100% 0);
-        opacity: 0;
-    }
-    100% {
-        clip-path: inset(0 0 0 0);
-        opacity: 1;
-    }
-}
-
+/* Texte affiché par défaut */
 .item-button::before {
     content: "J'aime bien !";
 }
 
+/* Hover : effet inversé + texte modifié */
 .item-button:hover {
     background-color: white;
     color: #c14bff;
@@ -94,45 +128,202 @@
     content: attr(price);
     transition: all 0.6s ease;
 }
-
-/* Item Description Border */
+  
+/* ================================
+    DESCRIPTION BORDER : .item-description-border
+    Bordure animée qui accompagne l'item en vitrine
+================================ */
+  
 .item-description-border {
     position: absolute;
     top: 0;
     left: 63.75%;
     border-top: 1px solid black;
-    animation: draw-border 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+
+    /* Animation de tracé */
+    animation: drawBorder 1s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+
+    perspective: 1000px;
+    transform-origin: center center;
+
+    /* Ombre portée réaliste */
+    filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.4));
+    transition: transform 0.2s ease-out;
 }
 
-@keyframes draw-border {
-    0% {
-        width: 0;
-    }
-    100% {
-        width: 385px;
-    }
+.item-description-border:hover {
+    transform: translateY(-0.5px) scale(1.005);
 }
-
-/* Item Description */
+  
+/* ================================
+    DESCRIPTION : .item-description
+    Texte qui accompagne l'item en vitrine
+================================ */
+  
 .item-description {
-    width: 370px;
-    padding-left: 15px;
-    font-size: 12;
+    width: 334px; /* = 350px - 16px padding */
+    padding-left: 16px;
+    padding-top: 8px;
+    font-size: 12px;
     font-weight: 300;
 }
 
 .item-description p {
+    width: 100%;
     text-align: left;
     line-height: 1.25;
     opacity: 0;
-    animation: slideIn 0.5s ease 1.5s forwards;
-}
 
+    /* Apparition */
+    animation: slideIn 0.5s ease 1.5s forwards;
+    animation: 
+        revealClip 1.5s ease-out forwards,
+}
+  
+/* ================================
+    ANIMATIONS
+================================ */
+
+/* Apparition + montée + scale */
+@keyframes fadeInImage {
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+}
+  
+/* Révélation verticale */
+@keyframes revealClip {
+    0% {
+      clip-path: inset(0 0 100% 0);
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+    }
+}
+  
+/* Réduction progressive du flou */
+@keyframes clearBlur {
+    0% {
+      filter: blur(15px);
+    }
+    100% {
+      filter: blur(0);
+    }
+}
+  
+/* FLOU DE FONDS LORS DU SURVOL DE LA PAGE */
+/* onMouseEnter={() => document.querySelector('.App').classList.add('blur-active')}
+onMouseLeave={() => document.querySelector('.App').classList.remove('blur-active')} */
+/* .blur-active * {
+    filter: blur(6px);
+    transition: filter 0.3s ease;
+}
+.blur-active .item img,
+.blur-active .shadow-image * {
+  filter: none !important;
+} */
+  
+/* Révélation animée du bouton */
+@keyframes revealClipButton {
+    0% {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+    }
+    100% {
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
+    }
+}
+  
+/* Animation de bordure horizontale */
+@keyframes drawBorder {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 350px;
+    }
+}
+  
+/* Apparition du texte item vitrine */
 @keyframes slideIn {
     from {
-        opacity: 0;
+      opacity: 0;
     }
     to {
-        opacity: 1;
+      opacity: 1;
     }
+}
+
+
+
+
+
+/* ================================
+    Gallerie CSS à trier
+================================ */
+
+/* Conteneur général de la galerie */
+.gallery-container {
+    margin-top: 150px;
+    padding: 0 150px;
+    margin-bottom: 300px;
+}
+
+/* Conteneur pour les items de la galerie */
+.gallery-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 60px;      
+    padding-bottom: 80px;
+}
+
+
+.gallery-thumbnail {
+    flex: 1 1 calc(25% - 60px); 
+    background-color: #fafafa;  
+    position: relative;         
+    text-align: center;      
+    overflow: hidden;          
+    display: flex;
+    flex-direction: column;
+    align-items: center;     
+    padding-bottom: 20px;     
+    height: 350px;              
+    transition: transform 0.3s ease; 
+}
+
+
+.gallery-image {
+    width: 100%;          
+    max-width: 240px;     
+    height: auto;         
+    object-fit: contain; 
+    margin: 0 auto;       
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+.gallery-thumbnail:hover .gallery-image {
+    transform: scale(1.04); /* Zoom au survol */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2); /* Ombre au survol */
+}
+
+
+.gallery-title {
+    margin-top: 15px;              
+    font-size: 16px;               
+    font-weight: bold;               
+    color: #333;                    
+    text-align: center;             
+    width: 100%;                     
+    display: block;                 
+    transition: transform 0.3s ease;  
+}
+
+
+.gallery-thumbnail:hover .gallery-title {
+    transform: translateY(20px);  
 }

@@ -30,6 +30,7 @@ export const ShopAPIProvider = ({ children }) => {
             await axios.get(`${api_address}/connect`, config);
             const res = await axios.get(`${api_address}/item?id=${item}`, config);
             if (res.data.length === 1) res.data = res.data[0];
+            res.data.image = `data:image/jpeg;base64,${res.data.image}`;
             return res.data;
         } catch (e) { console.error('[fetchItem]', e); }
     };

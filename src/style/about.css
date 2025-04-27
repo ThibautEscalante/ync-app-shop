@@ -1,4 +1,4 @@
-/* body */
+
 .about {
     display: flex;
     flex-direction: column;
@@ -11,7 +11,7 @@
     justify-content: center;
 }
 
-/* Content */
+
 .content-left, .content-right {
     display: flex;
     flex-direction: row;
@@ -26,7 +26,7 @@
     text-align: right;
 }
   
-/* Content Image */
+
 .content-left img, .content-right img {
     width: 140px;
     height: 130px;
@@ -34,15 +34,14 @@
     margin : 5px 25px;
 }
   
-/* Content Title */
+
 .title {
     font-size: 18px;
     font-weight: 400;
     margin-bottom: 10px;
     text-transform: uppercase;
 }
-  
-/* Content Title  */
+
 p {
     width: 825px;
     margin: 0;
@@ -50,7 +49,6 @@ p {
     line-height: 1.5;
 }
   
-/* Button */
 .questions-button {
     display: block;
     background-color: #c000ff;

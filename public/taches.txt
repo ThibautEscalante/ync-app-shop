@@ -1,0 +1,10 @@
+
+- Modification de handleChange pour détecter si l'input est une checkbox et utiliser la propriété checked au lieu de value
+- Barre de chargement bouton
+- Context pour stocker les infos clients / Rafraichissement de page
+- Gérer le cgv en sync avec la désactivation du bouton de finalisation
+- CSS Alexis specs
+- Réécrire la fonction promesse afin d'avoir une fonction récursive sans passer par un while
+- Finaliser CSS basket-price page paiement
+- Factoriser CSS
+

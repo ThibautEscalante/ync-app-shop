@@ -1,16 +1,12 @@
 import {useContext, useEffect, useState, useCallback } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
 
-/* @desc: This component is used to display all informations about an item in store specifically for the basket page.
- * @param id: the item identifier, used to retrieve item's data
- * @param count: how many time the item is currently in the basket
- * @return: Row item component for the basket page
- */
+
 function BasketItem({ basket, id, compact, add, rm }) {
     const { fetchItem } = useContext(ShopAPIContext);
 
     const [item, setItem] = useState(null);
-    useEffect(() => { // Retrieve item's data
+    useEffect(() => {
         fetchItem(id)
             .then(data => setItem(data))
             .catch(e => console.error(`[BasketItem;useEffect] ${e.message}`));
@@ -23,7 +19,9 @@ function BasketItem({ basket, id, compact, add, rm }) {
             
                 <div className="article-image">
                     <img className="image" src={(!item) ? "" : item.image}/>
-                    <img className="labeled-price" src={(!item) ? "" : item.image}/>
+                    {/* <img className="labeled-price" src={(!item) ? "" : item.image}/> */}
+                    <img className="labeled-price" src="/assets/label_ync.png"/>
+                    {/* <p className="image-price">9,99 €</p> */}
                 </div>
 
                 <div className="article-information">
@@ -43,7 +41,7 @@ function BasketItem({ basket, id, compact, add, rm }) {
                         <button id={id} className="article-add" onClick={() => add(id)}>+</button>
                     </div>
 
-                    <p className="article-price">{(!item) ? "?" : item.price * basket[id]} €</p>
+                    <p className="article-price">{(!item) ? "?" : item.price * basket[id]}€</p>
 
                 </div>
             </>}
@@ -62,10 +60,7 @@ function BasketRows({ basket, compact, add, rm }) {
     );
 }
 
-/* @desc: This component is used to display all items currently in the basket and all pricing informations
- * @param basket: a list of all items in the basket
- * @return: Basket component of the website page
- */
+
 function BasketPrice({ basket, compact, next }) {
     const { fetchItem } = useContext(ShopAPIContext);
     const [price, setPrice] = useState({amount: 0, fee: 0});
@@ -74,8 +69,6 @@ function BasketPrice({ basket, compact, next }) {
         let new_fee = 0, new_amount = 0;
         for (const item in basket) {
             fetchItem(item).then((data) => {
-                // Compute fee based on data.price
-                // maybe set a coupon system ?
                 new_fee += .01 * basket[item];
                 new_amount += basket[item] * parseFloat(data.price);
                 setPrice( p => ({...p, amount: new_amount, fee: new_fee}) );
@@ -113,6 +106,7 @@ function BasketPrice({ basket, compact, next }) {
         </div>
       );
 }
+
 
 /* @desc: This component is used to display all items currently in the basket and all pricing informations
  * @param basket: a list of all items in the basket

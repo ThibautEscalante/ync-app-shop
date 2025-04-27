@@ -1,0 +1,74 @@
+/* body */
+.acknowledgment {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    margin-top: 15px;
+    border-top: 1px solid #F8F8F8;
+    align-items: center;
+}
+
+.carrousel{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 400px;
+    justify-content: center;
+}
+
+.center-image {
+    width: 200px;
+    height: 267px;
+    margin: 0 16px;
+    z-index: 20;
+    transition: all 0.3s ease;
+    transform: scale(1);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    border: 2px solid #d1d5db;
+}
+
+.side-image{
+    width: 150px;
+    height: 217px;
+    cursor: pointer;
+    opacity: 0.6;
+    transform: scale(0.75);
+    transition: all 0.3s ease;
+    z-index: 10;
+    border: 2px solid #d1d5db;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.side-image:hover {
+    opacity: 0.8;
+}
+
+
+
+
+.text {
+    text-align: center;
+    margin-bottom: 15px;
+    margin-top: 20px;
+    font-weight: 500;
+}
+  
+.ync-button {
+    display: block;
+    border: 1px solid #c000ff;
+    background-color: white;
+    color: #c000ff;
+    text-align: center;
+    padding: 10px;
+    width: 360px;
+    margin-top: 50px;
+    cursor: pointer;
+    font-size: 16px;
+}
+  
+  .ync-button:hover {
+    color: #eee;
+    background-color: #c000ff;
+  }
+  
