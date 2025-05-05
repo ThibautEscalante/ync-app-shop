@@ -8,16 +8,65 @@
 - Factoriser CSS
 -
 
-
+Spade
 Ici je veux bien que tu hiérarchise l'erreur en la rapprochant du champ concerné, et en espacant un peu plus avec l'input du dessous stp.
 A titre d'exemple j'ai mis 5px d'écart entre l'input "Pays/Région" et son message d'erreur, et 15 px d'écart entre le message d'erreur et "Prénom" et "Nom"
 
-
-Ré-organise, restructure, surpprime les redondances, supprime le code inutile, ajoute des commentaires pour décrire 
-les différentes parties du code, mon code doit etre precis concis pro.
-Pour donner un indicatif de la structure et donc l'ordre de rangement du CSS voici la structure React : ""
-
 Repasser sur custom cursor css et react
+
+Acknowledgment :
+- Modification de la structure du composant.
+- Modification et finalisation du CSS de la page.
+- Ajout d'une bannière de remerciements SVG.
+- Ajout de l'illustration YNC Tweeny.
+- Ajout de l'animation de défilement sur cette bannière.
+- Ajout de la propriété fixé en fonction du scroll vertical de la bannière de défilement au menu.
+- Ajout des sections : Livraison Artisanale, Confirmation et suivi, Prolonger l'expérience avec des liens spécifiques.
+- Ajout des redirections : Instagram, Mail, YNC-Home.
+
+About :
+- Refonte complète de la structure HTML avec une hiérarchie claire.
+- Renommage des className pour plus de lisibilité et cohérence.
+- Nettoyage et organisation du CSS avec commentaires structurants.
+- Création d’une grid pour afficher les informations secondaires de la page About.
+- Création de SVG fond d'écran YNGC réutilisable.
+- Ajout d'animation des effets de glissement des images au survol des sections intro.
+- Mise à jour de la section Contact.
+- Ajout de la redirection vers la page ync/home.
+
+Restructuration de Acknowledgment.tsx finalisée.
+Refactorisation de Acknowledgment.css effectuée.
+Restructuration de About.tsx finalisée.
+Refactorisation de About.css effectuée.
+Création de la page PopupItem.tsx. (Modal Item)
+Restructuration de PopupItem.tsx finalisée.
+Refactorisation de PopupItem.css effectuée.
+Restructuration de Item.tsx finalisée.
+Refactorisation de Item.css effectuée.
+Restructuration de Basket.tsx finalisée.
+Refactorisation de Basket.css effectuée.
+Création de la composante CustomCursor.
+Création des animations et du CSS CustomCursor.
+Mise en place de CustomCursor dans App.
+
+Finitions :
+- Ajout léger effet de zoom bouton vitrine, ajout léger effets sur le bouton droit du bandeau.
+- Ajout d'un icone SVG croix pour la fermeture de la popup.
+- Animation d’apparition d'opacité smooth de la galerie en fonction du scroll.
+- Nettoyage et tri du CSS.
+- Animation d'hover sur les items de la galerie.
+- Uniformisation et synchronisation des animations entre le texte la bordure et l'image de l'item de la vitrine.
+- Changement de l'image de la page remerciement.
+- Ajout d'un bas de page copyright à la galerie.
+- Ajout d'un logo YNC en feu ainsi qu'un texte sur le bas de page de la galerie.
+- Fix du problème de blocage du scroll (double scrolling stuck React).
+- Donner au bouton de la Vitrine et à celui de la Popup un léger effet de scale.
+- Correction CSS concernant la mauvais affichage de Basket-price de la page Basket et de la page Payment.
+- Ajouter une icône SVG pour le panier.
+- Animer l'icône (animation bannière de métro).
+- Créer la page panier vide avec ses éléments.
+- Empêcher l’accès au paiement si le panier est vide.
+- Afficher le prix centré et positionné correctement sur l’étiquette dans le composant BasketRow.
 
 
 
