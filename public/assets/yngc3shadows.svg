@@ -1,0 +1,57 @@
+<svg width="100%" height="100%" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- <rect width="100%" height="100%" fill="#e3e1e1" /> -->
+
+  <!-- Ombre ligne 1 (trois ombres légèrement grises) -->
+  <!-- Ombre 1 (droite, éloignée) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" transform="translate(10,5)">
+    YOUNG NEW
+  </text>
+  <!-- Ombre 2 (droite, moins éloignée) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7" transform="translate(5,2)">
+    YOUNG NEW
+  </text>
+  <!-- Ombre 3 (légèrement grisée, direction gauche et très proche) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.8" transform="translate(2,1)">
+    YOUNG NEW
+  </text>
+  <!-- Texte ligne 1 -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    YOUNG NEW
+  </text>
+
+  <!-- Ombre ligne 2 (trois ombres légèrement grises) -->
+  <!-- Ombre 1 (gauche, éloignée) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" transform="translate(-10,5)">
+    GAMERS
+  </text>
+  <!-- Ombre 2 (gauche, moins éloignée) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7" transform="translate(-5,2)">
+    GAMERS
+  </text>
+  <!-- Ombre 3 (légèrement grisée, direction droite et très proche) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.8" transform="translate(-2,1)">
+    GAMERS
+  </text>
+  <!-- Texte ligne 2 -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    GAMERS
+  </text>
+
+  <!-- Ombre ligne 3 (trois ombres légèrement grises) -->
+  <!-- Ombre 1 (droite, éloignée) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" transform="translate(10,5)">
+    CORPORATION
+  </text>
+  <!-- Ombre 2 (droite, moins éloignée) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7" transform="translate(5,2)">
+    CORPORATION
+  </text>
+  <!-- Ombre 3 (légèrement grisée, direction gauche et très proche) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.8" transform="translate(2,1)">
+    CORPORATION
+  </text>
+  <!-- Texte ligne 3 -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    CORPORATION
+  </text>
+</svg>

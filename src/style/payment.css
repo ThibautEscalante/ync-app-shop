@@ -38,7 +38,7 @@
 
 
   .delivery,
-  .contact,
+  .payment .contact,
   .shipping {
     margin-bottom: 30px;
   }
@@ -185,7 +185,6 @@
     border: 2px solid red;
   } */
 
-/* Basket Summary Container */
 .basket-summary {
     display: flex;
     flex-direction: column;
@@ -260,7 +259,7 @@
 
   .basket-price-compact {
     width: 100%;
-    padding: 15px;
+    /* padding: 15px; */
     padding-top: 5px;
     padding-bottom: 5px;
     font-size: 20px;
@@ -340,8 +339,8 @@
     width: 100%;
     transition: all 0.3s ease;
     z-index: 1;
-    position: relative;
-    left: -16px;
+    /* position: relative; */
+    /* left: -16px; */
   }
   
   .finalisation-button:not(:disabled):hover {
@@ -368,7 +367,8 @@
   
   .payment-note {
     width: 100%;
-    padding: 15px;
+    padding-top: 15px;
+    padding-bottom: 15px;
     font-size: 16px;
     color: black;
     text-align: left;

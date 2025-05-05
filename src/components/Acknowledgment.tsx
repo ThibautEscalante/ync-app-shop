@@ -1,61 +1,84 @@
-import {useContext, useEffect, useState } from "react";
-import ShopAPIContext from "../context/ShopAPIProvider";
+import {useContext, useEffect, useState, useRef } from "react";
 
-function Acknowledgment({ basket }) {
+function Acknowledgment() {
 
-    // const { fetchItem } = useContext(ShopAPIContext);
+    const bannerRef = useRef(null);
 
-    // const [item, setItem] = useState(null);
-    // useEffect(() => { // Retrieve item's data
-    //     fetchItem(id)
-    //         .then(data => setItem(data))
-    //         .catch(e => console.error(`[BasketItem;useEffect] ${e.message}`));
-    // }, [basket]);
+    useEffect(() => {
 
-    // const [currentIndex, setCurrentIndex] = useState(0);
+        const banner = bannerRef.current;
 
-    // Navigation du carrousel
-    // const goToPrevious = () => {
-    //     setCurrentIndex((prevIndex) => 
-    //     prevIndex === 0 ? images.length - 1 : prevIndex - 1
-    //     );
-    // };
+        const handleScroll = () => {
 
-    // const goToNext = () => {
-    //     setCurrentIndex((prevIndex) => 
-    //     prevIndex === images.length - 1 ? 0 : prevIndex + 1
-    //     );
-    // };
+            const isFixed = window.scrollY >= banner.offsetTop - 25;
+            Object.assign(banner.style, {
+                position: isFixed ? "fixed" : "relative",
+                top: isFixed ? "0px" : "",
+                left: isFixed ? "0" : "",
+                width: isFixed ? "100%" : "",
+                zIndex: isFixed ? "999" : ""
+            });
+
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+
+    }, []);
+
 
     return (
+
         <div className="acknowledgment">
 
-            <div className="carrousel">
+            {/* BANNER */}
+            <section className="banner-wrapper" ref={bannerRef}>
+                <div className="banner-track">
+                    <img src="/assets/acknowledgment/acknowledgment_message.svg" alt="Message défilant YNC" />
+                </div>
+            </section>
 
-                <div className="side-image" onClick={goToPrevious}>
-                    {/* <img src="image5.jpg" alt="Image 1"/> */}
-                    <img src="image6.jpg"/>
+
+            {/* IMAGE */}
+            <section className="cadre">
+                <img src="/assets/acknowledgment/acknowledgment2.png" alt="Confirmation de commande YNC"/>
+            </section>
+            
+            {/* CONTENT */}
+            <section className="ack-content">
+
+
+                <div className="ack-sections-row">
+
+                    <div className="ack-section">
+                        <h2>Livraison artisanale</h2>
+                        <p>Chaque commande est préparée à la main par notre équipe. De l’emballage à l’expédition, tout est réalisé avec soin pour une réception parfaite.</p>
+                    </div>
+
+                    <div className="ack-section">
+                        <h2>Confirmation & Suivi</h2>
+                        <p>Un email t’a été envoyé avec les détails de ta commande, les options de livraison (domicile ou point relais) et un lien de suivi.</p>
+                    </div>
+
+                    <div className="ack-section">
+                        <h2>Prolonge l’expérience</h2>
+                        <p>Explore <a href="/galerie">notre galerie</a> ou suis-nous sur <a href="https://www.instagram.com" target="_blank">Instagram</a> pour découvrir nos nouveautés et les coulisses de YNC.</p>
+                    </div>
+
                 </div>
 
-                <div className="center-image">
-                    {/* <img src="image1.jpg" alt="Image 1"/> */}
-                    <img src="image2.jpg"/>
+
+                <div className="ack-help">
+                    <h2>Besoin d’aide ?</h2>
+                    <p>Une question sur ta commande, un retour ou un suivi ? Contacte-nous à <a href="mailto:yn-corporation@ync.com">yn-corporation@ync.com</a>.</p>
                 </div>
 
-                <div className="side-image" onClick={goToNext}>
-                    {/* <img src="image3.jpg" alt="Image 1"/> */}
-                    <img src="image4.jpg"/>
-                </div>
 
-            </div>
+            </section>
 
-            <div className="text">
-                <p>Merci !</p>
-                <p>Ta commande a bien été passée (comment tu te sens ?).</p>
-                <p> <br />Tu recevras rapidement les détails concernant ta commande dans ta boîte mail.</p>
-            </div>
-
-            <button className="ync-button">QU'EST CE QUE YNC ?</button>
+            {/* BUTTON */}
+            <button className="ync-button" onClick={() => window.location.href = 'https://yn-corp.xyz/home'}>QU'EST CE QUE YNC ?</button>
+        
         </div>
     );
 } export default Acknowledgment;

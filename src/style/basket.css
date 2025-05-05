@@ -1,8 +1,6 @@
 /* ================================
-    STRUCTURE PRINCIPALE : .basket
-    Structure principale de la page
+    PAGE PANIER : .basket
 ================================ */
-
 .basket {
     display: flex;
     flex-direction: row;
@@ -13,9 +11,7 @@
 
 /* ================================
     BLOC ARTICLES : .basket-rows
-    Liste des articles du panier
 ================================ */
-
 .basket-rows {
     display: flex;
     flex-direction: column;
@@ -23,13 +19,12 @@
     margin-top: 90px;
     margin-left: 100px;
     margin-right: 85px;
+    margin-bottom: 25px;
 }
 
 /* ================================
     ARTICLE : .article
-    Article du panier
 ================================ */
-
 .article {
     display: flex;
     flex-direction: row;
@@ -38,7 +33,7 @@
     border-bottom: 1px solid black;
 }
 
-/* Article Images*/
+/* Article Image*/
 .article-image {
     width: 154px;
     height: 176px;
@@ -63,6 +58,19 @@
     bottom: 0;
     left: 0;
     z-index: 2;
+}
+
+.image-price {
+    position: absolute;
+    bottom: -9px;
+    left: 42px;
+    transform: translate(-50%, -50%) rotate(+2.8deg); 
+    font-size: 10px;
+    font-weight: bold;
+    color: black; 
+    z-index: 3;
+    pointer-events: none;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Article Information */
@@ -108,9 +116,7 @@
 
 /* ================================
     INCRÉMENTATEUR : .article-incrementator
-    Boutons d'ajout et de retrait d'articles
 ================================ */
-
 .article-incrementator {
     width: min-content;
     margin-top: 40px;
@@ -147,17 +153,15 @@
 
 /* ================================
     ORDER SUMMARY : .order-summary
-    Résumé des prix des articles panier
 ================================ */
-
 .order-summary {
     display: flex;
     flex-direction: column;
     position: absolute;
-    bottom: 34px;
+    bottom: 62px;
     right: 0;
     width: 420px;
-    height: 200px;
+    height: 210px;
     margin-left: 12px;
     border: 1px solid #000;
 }
@@ -177,7 +181,7 @@
 .order-summary .details {
     display: flex;
     flex-direction: column;
-    padding: 10px 15px 15px 20px;
+    padding: 10px 15px 5px 20px;
     font-size: 18.25px;
 }
 
@@ -193,6 +197,7 @@
     display: flex;
     justify-content: space-between;
     margin-top: 15px;
+    margin-bottom: 10px;
     font-size: 25px;
     font-weight: 500;
     text-align: left;
@@ -211,7 +216,9 @@
     color: #c14bff;
 }
 
-/* Bouton passer à la suite */
+/* ================================
+    BOUTON PASSER A LA SUITE : .order-button
+================================ */
 .order-button {
     width: 100.5%;
     padding: 21px 12px;
@@ -232,4 +239,83 @@
 .order-button:hover {
     background-color: #c14bff;
     color: white;
+}
+
+/* ================================
+    PAGE PANIER VIDE
+================================ */
+.empty-basket-wrapper {
+    position: absolute;
+    top: 54%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.empty-basket {
+    font-size: 2.2rem;
+    font-weight: bold;
+    color: #333;
+    animation: zoomIn 0.5s ease-out forwards;
+    animation: pulseZoom 3s ease-in-out infinite;
+}
+  
+.empty-basket-image-container {
+    width: 100vw;
+    margin-top: 2rem;
+    overflow: hidden;
+    position: relative;
+    height: 150px;
+}
+  
+.empty-basket-image {
+    position: absolute;
+    left: -30%; /* commence hors écran */
+    top: 50%;
+    transform: translateY(-50%);
+    height: 45px;
+    width: auto;
+    animation: slideMetro 20s infinite ease-in-out;
+    opacity: 0.8;
+    animation-delay: 18s;
+}
+
+/* ================================
+    ANIMATIONS
+================================ */
+@keyframes zoomIn {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulseZoom {
+    0%, 100% {
+        transform: scale(1);    
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+  
+@keyframes slideMetro {
+    0% {
+        left: -30%;
+    }
+    30% {
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    80% {
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    100% {
+        left: 130%;
+    }
 }

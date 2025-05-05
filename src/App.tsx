@@ -15,6 +15,8 @@ import Payment from "./components/Payment";
 import About from "./components/About";
 import Acknowledgment from "./components/Acknowledgment";
 
+/* Custom Cursor component import */
+import CustomCursor from "./CustomCursor";
 
 /* Style imports */
 import "./style/styles.css";
@@ -24,6 +26,8 @@ import "./style/basket.css";
 import "./style/payment.css";
 import "./style/about.css";
 import "./style/acknowledgment.css";
+import "./style/popup_item.css";
+import "./style/custom_cursor.css";
 
 function useBasket() {
     const { fetchBasket, postBasket } = useContext(ShopAPIContext);
@@ -88,13 +92,13 @@ function App() {
 
     function aboutState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Qu'est ce que la YNC ?", image: "assets/home_icon.svg"})
+        setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
         setState("ABOUT");
     };
 
     function acknowledgmentState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Nous te remercions", image: "assets/acknowledgment_icon.svg"})
+        setSection({name: "Nous te remercions", image: "assets/acknowledgment/acknowledgment_icon.svg"})
         setState("ACKNOWLEDGMENT");
     };
 
@@ -125,9 +129,11 @@ function App() {
         </div>
     );
 
-    return ( // HTML website rendering
+    return (
         // <Logo content={content} />
-        content
+        <CustomCursor targetClass="custom-target">
+            {content}
+        </CustomCursor>
     );
 
 } export default App;

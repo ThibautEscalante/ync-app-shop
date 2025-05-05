@@ -1,0 +1,81 @@
+<svg width="100%" height="100%" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="black" />
+
+  <!-- Ombre ligne 1 (cinq ombres légèrement grises) -->
+  <!-- Ombre 1 (droite, très éloignée) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.5" transform="translate(12,6)">
+    YOUNG NEW
+  </text>
+  <!-- Ombre 2 (droite, éloignée) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" transform="translate(8,4)">
+    YOUNG NEW
+  </text>
+  <!-- Ombre 3 (droite, un peu moins éloignée) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7" transform="translate(4,2)">
+    YOUNG NEW
+  </text>
+  <!-- Ombre 4 (gauche, un peu plus proche) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.8" transform="translate(2,1)">
+    YOUNG NEW
+  </text>
+  <!-- Ombre 5 (très proche, légère) -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.9" transform="translate(1,0)">
+    YOUNG NEW
+  </text>
+  <!-- Texte ligne 1 -->
+  <text x="50%" y="40%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    YOUNG NEW
+  </text>
+
+  <!-- Ombre ligne 2 (cinq ombres légèrement grises) -->
+  <!-- Ombre 1 (gauche, très éloignée) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.5" transform="translate(-12,6)">
+    GAMERS
+  </text>
+  <!-- Ombre 2 (gauche, éloignée) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" transform="translate(-8,4)">
+    GAMERS
+  </text>
+  <!-- Ombre 3 (gauche, un peu moins éloignée) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7" transform="translate(-4,2)">
+    GAMERS
+  </text>
+  <!-- Ombre 4 (droite, un peu plus proche) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.8" transform="translate(-2,1)">
+    GAMERS
+  </text>
+  <!-- Ombre 5 (très proche, légère) -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.9" transform="translate(-1,0)">
+    GAMERS
+  </text>
+  <!-- Texte ligne 2 -->
+  <text x="50%" y="55%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    GAMERS
+  </text>
+
+  <!-- Ombre ligne 3 (cinq ombres légèrement grises) -->
+  <!-- Ombre 1 (droite, très éloignée) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.5" transform="translate(12,6)">
+    CORPORATION
+  </text>
+  <!-- Ombre 2 (droite, éloignée) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.6" transform="translate(8,4)">
+    CORPORATION
+  </text>
+  <!-- Ombre 3 (droite, un peu moins éloignée) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.7" transform="translate(4,2)">
+    CORPORATION
+  </text>
+  <!-- Ombre 4 (gauche, un peu plus proche) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.8" transform="translate(2,1)">
+    CORPORATION
+  </text>
+  <!-- Ombre 5 (très proche, légère) -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle" opacity="0.9" transform="translate(1,0)">
+    CORPORATION
+  </text>
+  <!-- Texte ligne 3 -->
+  <text x="50%" y="70%" fill="white" font-size="48" font-family="Helvetica, Arial, sans-serif" text-anchor="middle">
+    CORPORATION
+  </text>
+</svg>

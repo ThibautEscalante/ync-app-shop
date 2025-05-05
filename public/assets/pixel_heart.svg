@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" 
+     xmlns:xlink="http://www.w3.org/1999/xlink" 
+     version="1.1" 
+     x="0px" y="0px" 
+     viewBox="0 0 5 6.25" 
+     enable-background="new 0 0 5 5" 
+     xml:space="preserve">
+
+  <g>
+    <g>
+      <rect x="4.376" y="1.085" fill="#000000" width="0.347" height="0.344"/>
+    </g>
+    <g>
+      <rect x="3.691" y="0.8" fill="#000000" width="0.342" height="0.344"/>
+    </g>
+    <g>
+      <path fill="#000000" d="M3.691,1.822H3.347v-0.34H3.005v0.34H2.669l0,0v-0.34H2.326v0.34v0.002H1.987v0.335L1.977,2.162h-0.34
+        V2.159V1.824H1.295V1.822v-0.34H0.952v0.34l0,0H0.613v0.335H0.277v0.337v0.01v0.332h0.339V3.18h0.336h0.007v0.342h0.339v0.338
+        h0.341v0.342h0.343V3.859h0.342V3.521h0.341V3.18h0.005h0.336V2.836h0.342V3.18h0.345V2.836H3.347V2.504v-0.01v-0.33h0.345v0.34
+        h0.342V2.157H3.691v-0.33h0.342V1.482H3.691V1.822z M2.32,3.51v0.008 M1.303,3.518V3.51 M3.347,2.157h-0.34v-0.33h0.34V2.157z"/>
+    </g>
+    <g>
+      <rect x="2.659" y="3.526" fill="#000000" width="0.346" height="0.345"/>
+    </g>
+  </g>
+
+  <text x="0" y="20" fill="#000000" font-size="5px" font-weight="bold"
+        font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">
+    Created by Alice Noir
+  </text>
+  <text x="0" y="25" fill="#000000" font-size="5px" font-weight="bold"
+        font-family="'Helvetica Neue', Helvetica, Arial-Unicode, Arial, Sans-serif">
+    from the Noun Project
+  </text>
+</svg>

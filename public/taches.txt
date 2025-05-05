@@ -3,8 +3,25 @@
 - Barre de chargement bouton
 - Context pour stocker les infos clients / Rafraichissement de page
 - Gérer le cgv en sync avec la désactivation du bouton de finalisation
-- CSS Alexis specs
+- CSS Alexis specs ?
 - Réécrire la fonction promesse afin d'avoir une fonction récursive sans passer par un while
-- Finaliser CSS basket-price page paiement
 - Factoriser CSS
+-
+
+
+Ici je veux bien que tu hiérarchise l'erreur en la rapprochant du champ concerné, et en espacant un peu plus avec l'input du dessous stp.
+A titre d'exemple j'ai mis 5px d'écart entre l'input "Pays/Région" et son message d'erreur, et 15 px d'écart entre le message d'erreur et "Prénom" et "Nom"
+
+
+Ré-organise, restructure, surpprime les redondances, supprime le code inutile, ajoute des commentaires pour décrire 
+les différentes parties du code, mon code doit etre precis concis pro.
+Pour donner un indicatif de la structure et donc l'ordre de rangement du CSS voici la structure React : ""
+
+Repasser sur custom cursor css et react
+
+
+
+
+
+
 

@@ -3,9 +3,10 @@ import ShopAPIContext from "../context/ShopAPIProvider";
 
 
 function BasketItem({ basket, id, compact, add, rm }) {
-    const { fetchItem } = useContext(ShopAPIContext);
 
+    const { fetchItem } = useContext(ShopAPIContext);
     const [item, setItem] = useState(null);
+
     useEffect(() => {
         fetchItem(id)
             .then(data => setItem(data))
@@ -13,17 +14,23 @@ function BasketItem({ basket, id, compact, add, rm }) {
     }, [basket]);
 
     return (
-        <div className="article">
+
+        <div className="article"> {/* ARTICLE */}
             
             {!compact && <>
+
             
+                {/* IMAGE */}
                 <div className="article-image">
+
                     <img className="image" src={(!item) ? "" : item.image}/>
                     {/* <img className="labeled-price" src={(!item) ? "" : item.image}/> */}
                     <img className="labeled-price" src="/assets/label_ync.png"/>
-                    {/* <p className="image-price">9,99 €</p> */}
+                    <p className="image-price">999,99 €</p>
+
                 </div>
 
+                {/* INFOS */}
                 <div className="article-information">
                     
                     <h3 className="article-title">{(!item) ? "?" : item.display_name}</h3>
@@ -44,8 +51,8 @@ function BasketItem({ basket, id, compact, add, rm }) {
                     <p className="article-price">{(!item) ? "?" : item.price * basket[id]}€</p>
 
                 </div>
-            </>}
 
+            </>}
            
         </div>
 
@@ -53,35 +60,47 @@ function BasketItem({ basket, id, compact, add, rm }) {
 }
 
 function BasketRows({ basket, compact, add, rm }) {
+
     return (
+
         <div className="basket-rows">
             {Object.keys(basket).map((item, i) => <BasketItem key={i} basket={basket} id={item} compact={compact} add={add} rm={rm}/>)}
         </div>
+
     );
+
 }
 
 
 function BasketPrice({ basket, compact, next }) {
+
     const { fetchItem } = useContext(ShopAPIContext);
     const [price, setPrice] = useState({amount: 0, fee: 0});
 
     useEffect(() => {
+
         let new_fee = 0, new_amount = 0;
+
         for (const item in basket) {
+
             fetchItem(item).then((data) => {
                 new_fee += .01 * basket[item];
                 new_amount += basket[item] * parseFloat(data.price);
                 setPrice( p => ({...p, amount: new_amount, fee: new_fee}) );
             }).catch(e => console.error(`[BasketPrice;useEffect] ${e.message}`));
+            
         }
 
     }, [basket]);
 
     return (
+
         <div className="order-summary">
 
+            {/* TITLE */}
             <div className="title">ORDER SUMMARY</div>
                 
+            {/* DETAILS */}
             <div className="details">
                 
                 <div className="amount-row">
@@ -101,6 +120,7 @@ function BasketPrice({ basket, compact, next }) {
 
             </div>
 
+            {/* BUTTON */}
             {!compact && (<button className="order-button" onClick={next}>JE PASSE À LA SUITE</button>)}
 
         </div>
@@ -114,13 +134,30 @@ function BasketPrice({ basket, compact, next }) {
  */
 function Basket({ basket, compact=true, add=undefined, rm=undefined, next=undefined }) {
 
+    const isEmpty = !basket || Object.keys(basket).length === 0;
+
     return (
-        (!basket)
-            ? (<div>No item in your cute lil basket</div>)
-            : (<div className="basket">
-                <BasketRows basket={basket} compact={compact} add={add} rm={rm}/>
-                <BasketPrice basket={basket} compact={compact} next={next}/>
+
+        isEmpty
+            ? (<div className="empty-basket-wrapper"> {/* NO BASKET */}
+
+                <p className="empty-basket">&lt; No item in your cute lil basket &gt;</p>
+              
+                <div className="empty-basket-image-container">
+                    <img src="/assets/empty_basket3.svg" alt="Empty basket" className="empty-basket-image" />
+                </div>
+
             </div>)
+            : (<div className="basket"> {/* BASKET */}
+
+                {/* BASKET ARTICLES */}
+                <BasketRows basket={basket} compact={compact} add={add} rm={rm}/>
+
+                {/* ORDER SUMMARY */}
+                <BasketPrice basket={basket} compact={compact} next={next}/>
+
+            </div>)
+
     );
 
 } export default Basket;

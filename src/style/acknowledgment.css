@@ -1,74 +1,235 @@
-/* body */
+/* ================================
+    PAGE : Acknowledgement
+================================ */
+
 .acknowledgment {
     display: flex;
     flex-direction: column;
+    align-items: center;
     width: 100%;
     flex: 1;
     margin-top: 15px;
-    border-top: 1px solid #F8F8F8;
-    align-items: center;
+    border-top: 1px solid #f8f8f8;
 }
 
-.carrousel{
+/* ================================
+    BANNIÈRE DÉFILANTE : .banner-wrapper
+================================ */
+
+.banner-wrapper {
+    width: 100%;
+    height: 5vh;
+    background-color: black;
+    overflow: hidden;
+    position: relative;
+    margin: 30px 0;
+}
+
+.banner-track {
     display: flex;
     align-items: center;
+    position: absolute;
+    height: 100%;
     width: 100%;
-    height: 400px;
+    white-space: nowrap;
+    will-change: transform;
+    animation: scroll-banner 30s linear infinite;
+    animation-delay: 4s;
+}
+
+.banner-track img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ================================
+    IMAGE : Illustration YNC
+================================ */
+
+.cadre img {
+    max-width: 80%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+/* ================================
+    SECTION : Contenu textuel
+================================ */
+
+.ack-content {
+    max-width: 1200px;
+    margin: 20px 100px 0;
+    padding: 0 20px;
+    font-family: 'Helvetica Neue', sans-serif;
+    color: #1e1e1e;
+}
+
+.ack-title {
+    font-size: 32px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+    color: #111;
+}
+
+.ack-subtitle {
+    font-size: 21px;
+    text-align: center;
+    color: #444;
+    margin: 0 20px 25px;
+    padding-bottom: 20px;
+}
+
+.ack-header {
+    display: flex;
+    align-items: baseline;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 20px;
 }
-
-.center-image {
-    width: 200px;
-    height: 267px;
-    margin: 0 16px;
-    z-index: 20;
-    transition: all 0.3s ease;
-    transform: scale(1);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-    border: 2px solid #d1d5db;
-}
-
-.side-image{
-    width: 150px;
-    height: 217px;
-    cursor: pointer;
-    opacity: 0.6;
-    transform: scale(0.75);
-    transition: all 0.3s ease;
-    z-index: 10;
-    border: 2px solid #d1d5db;
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-}
-
-.side-image:hover {
-    opacity: 0.8;
-}
-
-
-
 
 .text {
     text-align: center;
-    margin-bottom: 15px;
-    margin-top: 20px;
+    margin: 20px 0 15px;
     font-weight: 500;
 }
-  
+
+
+/* ================================
+    SECTION : Les trois blocs d'informations
+================================ */
+
+.ack-sections-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 36px;
+}
+
+.ack-section {
+    flex: 1;
+    min-width: 280px;
+    max-width: 360px;
+    background-color: #f9f9f9;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    opacity: 0;
+    animation: fadeInUp 0.6s forwards;
+}
+
+.ack-section:nth-child(1) { animation-delay: 1.7s; }
+.ack-section:nth-child(2) { animation-delay: 1.9s; }
+.ack-section:nth-child(3) { animation-delay: 2.1s; }
+
+.ack-section h2 {
+    font-size: 18px;
+    color: #c14bff;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.ack-section p {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333;
+}
+
+.ack-section a {
+    color: #c000ff;
+    text-decoration: underline;
+}
+
+.ack-section a:hover {
+    color: #8b00c9;
+}
+
+/* ================================
+    SECTION : Bloc d'information aide
+================================ */
+
+.ack-help {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.ack-help h2 {
+    font-size: 18px;
+    text-transform: uppercase;
+    color: #c14bff;
+    margin-bottom: 10px;
+}
+
+.ack-help p {
+    font-size: 15px;
+    color: #333;
+}
+
+.ack-help a {
+    color: #c14bff;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.ack-help a:hover {
+    color: #a03be0;
+}
+
+/* ================================
+    BOUTON : Redirection Ync-Home
+================================ */
+
 .ync-button {
     display: block;
-    border: 1px solid #c000ff;
-    background-color: white;
-    color: #c000ff;
+    background-color: #c000ff;
+    color: white;
     text-align: center;
     padding: 10px;
     width: 360px;
-    margin-top: 50px;
+    margin: 50px auto 60px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.1s ease-in-out, transform 0.1s ease;
 }
-  
-  .ync-button:hover {
-    color: #eee;
-    background-color: #c000ff;
-  }
-  
+
+.ync-button:hover {
+    background-color: white;
+    color: #c000ff;
+    border: 1px solid #c000ff;
+    transform: scale(1.025);
+}
+
+/* ================================
+    ANIMATIONS
+================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scroll-banner {
+    0%, 10% {
+        transform: translateX(100%);
+    }
+    39%, 51% {
+        transform: translateX(0%);
+    }
+    90%, 100% {
+        transform: translateX(-100%);
+    }
+}

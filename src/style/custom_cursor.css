@@ -1,0 +1,56 @@
+/* ================================
+    CURSEUR PERSONNALISE : .custom-cursor
+================================ */
+.custom-target {
+    cursor: none;
+}
+.custom-cursor {
+    position: fixed;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    background-size: cover;
+    animation: flameCursorAnim 850ms steps(10) infinite;
+    z-index: 9999;
+    transition: transform 0.2s ease-in-out;
+    opacity: 0.8;
+}
+
+@keyframes flameCursorAnim {
+    0%    { background-image: url('../../public/assets/blue_flamme/01.png'); }
+    10%   { background-image: url('../../public/assets/blue_flamme/01.png'); }
+  
+    20%   { background-image: url('../../public/assets/blue_flamme/02.png'); }
+    30%   { background-image: url('../../public/assets/blue_flamme/02.png'); }
+  
+    40%   { background-image: url('../../public/assets/blue_flamme/03.png'); }
+  
+    50%   { background-image: url('../../public/assets/blue_flamme/04.png'); }
+    60%   { background-image: url('../../public/assets/blue_flamme/04.png'); }
+  
+    70%   { background-image: url('../../public/assets/blue_flamme/05.png'); }
+    80%   { background-image: url('../../public/assets/blue_flamme/05.png'); }
+  
+    90%   { background-image: url('../../public/assets/blue_flamme/06.png'); }
+    100%  { background-image: url('../../public/assets/blue_flamme/02.png'); }
+}
+
+@-webkit-keyframes flameCursorAnim {
+    0%    { background-image: url('../../public/assets/blue_flamme/01.png'); }
+    10%   { background-image: url('../../public/assets/blue_flamme/01.png'); }
+  
+    20%   { background-image: url('../../public/assets/blue_flamme/02.png'); }
+    30%   { background-image: url('../../public/assets/blue_flamme/02.png'); }
+  
+    40%   { background-image: url('../../public/assets/blue_flamme/03.png'); }
+  
+    50%   { background-image: url('../../public/assets/blue_flamme/04.png'); }
+    60%   { background-image: url('../../public/assets/blue_flamme/04.png'); }
+  
+    70%   { background-image: url('../../public/assets/blue_flamme/05.png'); }
+    80%   { background-image: url('../../public/assets/blue_flamme/05.png'); }
+  
+    90%   { background-image: url('../../public/assets/blue_flamme/06.png'); }
+    100%  { background-image: url('../../public/assets/blue_flamme/02.png'); }
+}

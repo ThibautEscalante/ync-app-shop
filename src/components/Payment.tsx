@@ -1,9 +1,8 @@
-import { useState,  useEffect, useContext } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { isChrome, isFirefox, isSafari, isOpera, isIE } from 'react-device-detect';
 import { make } from 'simple-body-validator';
 
 import ShopAPIContext from "../context/ShopAPIProvider";
-
 import Basket from "./Basket";
 
 import { useForm } from "react-hook-form";
@@ -13,117 +12,111 @@ import { useMemo } from 'react';
 const ADDRESS_API_URL = "https://api-adresse.data.gouv.fr/search/";
 
 const PAYMENT_STATES = {
-    INITIAL: 'INITIAL',
-    CREATING_ORDER: 'CREATING_ORDER',
-    ORDER_CREATED: 'ORDER_CREATED',
-    AWAITING_APPROVAL: 'AWAITING_APPROVAL',
-    APPROVED: 'APPROVED',
-    CAPTURING: 'CAPTURING',
-    COMPLETED: 'COMPLETED',
-    CANCELLED: 'CANCELLED',
-    FAILED: 'FAILED',
-    POPUP_BLOCKED: 'POPUP_BLOCKED',
-    TIMEOUT: 'TIMEOUT',
-    NETWORK_ERROR: 'NETWORK_ERROR'
+  INITIAL: 'INITIAL',
+  CREATING_ORDER: 'CREATING_ORDER',
+  ORDER_CREATED: 'ORDER_CREATED',
+  AWAITING_APPROVAL: 'AWAITING_APPROVAL',
+  APPROVED: 'APPROVED',
+  CAPTURING: 'CAPTURING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  FAILED: 'FAILED',
+  POPUP_BLOCKED: 'POPUP_BLOCKED',
+  TIMEOUT: 'TIMEOUT',
+  NETWORK_ERROR: 'NETWORK_ERROR'
 };
 
-    async function openPaypalPopup(order) {
-        const popup = window.open(order.links[1].href, "paypalCheckout", "left=100,top=100,width=600,height=800");
-        if (!popup || popup.closed || typeof popup.closed === "undefined") {
-          throw {
+async function openPaypalPopup(order) {
+    const popup = window.open(order.links[1].href, "paypalCheckout", "left=100,top=100,width=600,height=800");
+    if (!popup || popup.closed || typeof popup.closed === "undefined") {
+        throw {
             status: PAYMENT_STATES.POPUP_BLOCKED,
             message: "Veuillez autoriser les popups pour ce site pour compléter le paiement",
-          };
-        }
-        return popup;
-      }
-
-      
-      function waitForPopupClose(popup) {
-        return new Promise(resolve => {
-          const interval = setInterval(() => {
-            if (popup.closed) {
-              clearInterval(interval);
-              resolve({
-                status: PAYMENT_STATES.CANCELLED,
-                message: "Paiement annulé par l'utilisateur",
-              });
-            }
-          }, 500);
-        });
-      }
-      
-      async function pollPaypalStatus(order, fetchOrder, captureOrder, maxAttempts = 60) {
-        let attempts = 0;
-      
-        while (attempts < maxAttempts) {
-          let res;
-          try {
-            res = await fetchOrder(order.id);
-          } catch (error) {
-            throw {
-              status: PAYMENT_STATES.FETCH_FAILED,
-              message: "Erreur lors de la récupération de la commande",
-              error,
-            };
-          }
-      
-          if (!res || typeof res.status !== "string") {
-            throw {
-              status: PAYMENT_STATES.INVALID_RESPONSE,
-              message: "Réponse inattendue de l'API",
-              raw: res,
-            };
-          }
-      
-          if (res.status === PAYMENT_STATES.APPROVED || res.status === PAYMENT_STATES.COMPLETED) {
-            try {
-              await captureOrder({ id: order.id, uuid: order.uuid });
-              return { ...res, status: PAYMENT_STATES.COMPLETED };
-            } catch (error) {
-              throw {
-                status: PAYMENT_STATES.CAPTURE_FAILED,
-                message: "Erreur lors de la capture du paiement",
-                error,
-              };
-            }
-          }
-      
-          await new Promise(resolve => setTimeout(resolve, 1000));
-          attempts++;
-        }
-      
-        throw {
-          status: PAYMENT_STATES.TIMEOUT,
-          message: "Le délai de validation du paiement a expiré",
         };
-      }
-      
-      export async function paypalPage(order, fetchOrder, captureOrder) {
+    }
+    return popup;
+}
+
+function waitForPopupClose(popup) {
+    return new Promise(resolve => {
+        const interval = setInterval(() => {
+            if (popup.closed) {
+                clearInterval(interval);
+                resolve({
+                    status: PAYMENT_STATES.CANCELLED,
+                    message: "Paiement annulé par l'utilisateur",
+                });
+            }
+        }, 500);
+    });
+}
+
+async function pollPaypalStatus(order, fetchOrder, captureOrder, maxAttempts = 60) {
+    let attempts = 0;
+
+    while (attempts < maxAttempts) {
+        let res;
         try {
-          const popup = await openPaypalPopup(order);
-          const popupClosed = waitForPopupClose(popup);
-          const polling = pollPaypalStatus(order, fetchOrder, captureOrder);
-          const result = await Promise.race([popupClosed, polling]);
-      
-          if (popup && !popup.closed) {
-            popup.close();
-          }
-      
-          return result;
+            res = await fetchOrder(order.id);
         } catch (error) {
-          return {
+            throw {
+                status: PAYMENT_STATES.FETCH_FAILED,
+                message: "Erreur lors de la récupération de la commande",
+                error,
+            };
+        }
+
+        if (!res || typeof res.status !== "string") {
+            throw {
+                status: PAYMENT_STATES.INVALID_RESPONSE,
+                message: "Réponse inattendue de l'API",
+                raw: res,
+            };
+        }
+
+        if (res.status === PAYMENT_STATES.APPROVED || res.status === PAYMENT_STATES.COMPLETED) {
+            try {
+                await captureOrder({ id: order.id, uuid: order.uuid });
+                return { ...res, status: PAYMENT_STATES.COMPLETED };
+            } catch (error) {
+                throw {
+                    status: PAYMENT_STATES.CAPTURE_FAILED,
+                    message: "Erreur lors de la capture du paiement",
+                    error,
+                };
+            }
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        attempts++;
+    }
+
+    throw {
+        status: PAYMENT_STATES.TIMEOUT,
+        message: "Le délai de validation du paiement a expiré",
+    };
+}
+
+export async function paypalPage(order, fetchOrder, captureOrder) {
+    try {
+        const popup = await openPaypalPopup(order);
+        const popupClosed = waitForPopupClose(popup);
+        const polling = pollPaypalStatus(order, fetchOrder, captureOrder);
+        const result = await Promise.race([popupClosed, polling]);
+
+        if (popup && !popup.closed) {
+            popup.close();
+        }
+
+        return result;
+    } catch (error) {
+        return {
             status: error.status || PAYMENT_STATES.FAILED,
             message: error.message || "Erreur inattendue durant le processus de paiement",
             error,
-          };
-        }
-      }
-      
-      
-
-
-
+        };
+    }
+}
 
 function PaymentForm({ basket, handleChange, rules, order}) {
 
@@ -226,7 +219,7 @@ function PaymentForm({ basket, handleChange, rules, order}) {
 
        // Fonction de validation spécifique au téléphone
   const validatePhone = (value) => {
-    if (!value) return ''; // Pas obligatoire -> OK
+    if (!value) return '';
     if (!/^0\d{9}$/.test(value)) return 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.'; // commence par "0" et contient exactement 10 chiffres
     return ''; // Si aucune erreur
   };
@@ -240,12 +233,12 @@ function PaymentForm({ basket, handleChange, rules, order}) {
       if (errorMessage) {
         setErrors((prev) => ({
           ...prev,
-          [name]: errorMessage, // Mise à jour de l'erreur du champ téléphone
+          [name]: errorMessage,
         }));
       } else {
         setErrors((prev) => ({
           ...prev,
-          [name]: undefined, // Aucune erreur pour le téléphone
+          [name]: undefined,
         }));
       }
     } else {
