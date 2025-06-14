@@ -1,94 +1,69 @@
-import { useState } from 'react';
+import { useState, useId } from 'react';
 
-function PopupItem({ item, onClose, add, isSoldOut, toggleLike }) {
-    const [selectedSize, setSelectedSize] = useState('M');
-    const [quantity, setQuantity] = useState(1);
+function FoldoutSection({ title, content }) {
+    const [display, setDisplay] = useState(false);
+    const handleDisplay = () => { setDisplay(!display); };
+
+    return (
+        <div className="foldout-section">
+            <div className="foldout-header" onClick={handleDisplay}>
+                <span className="foldout-title">{title}</span>
+                <span className="foldout-icon">+</span>
+            </div>
+            <div className="foldout-content">
+                {display && content}
+            </div>
+        </div>
+    );
+}
+
+function PopupItem({ item, quantity, onClose, add }) {
+    const [selectedSize, setSelectedSize] = useState(undefined);
+    const [imageIndex, setImageIndex] = useState(0);
 
     if (!item) return null;
 
-    const handleQuantityChange = (change) => {
-        setQuantity(prev => Math.max(1, prev + change));
-    };
-
     return (
-        <div className="popuppage" onClick={onClose}>
+        <div className="popup-page" onClick={onClose}>
             <div className="model" onClick={(e) => e.stopPropagation()}>
-                
-                {/* HEADER BAR */}
-                {/* <div className="popup-header" style={{ height: '50px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-                    <button className="popup-close-btn" onClick={onClose}>
-                        <img src="/assets/croix.svg" alt="X" />
-                    </button>
-                </div> */}
 
-                {/* MAIN SPLIT CONTAINER */}
-                <div className="popup-main" style={{ display: 'flex' }}>
-                    
-                    {/* LEFT SIDE – IMAGE */}
-                    <div className="popup-image-container" style={{ width: '50%' }}>
-                        <img src={item.image || '/path/to/default-image.png'} alt={item.title} className="popup-image" />
+                <div className="popup-image-container">
+                    {item.images.map((img, i) => {
+                        return <img className="popup-mini-image" src={img} alt="YNC Tee Shirt STAIRS" onClick={() => setImageIndex(i)}/>
+                    })}
+                    <img className="popup-main-image" src={item.images[imageIndex]} alt="YNC Tee Shirt STAIRS"/>
+                </div>
+
+                <div className="content-section">
+                    <button className="popup-close" onClick={onClose}><img src="/assets/croix.svg" alt="X"/></button>
+
+                    <div className="popup-quote"><q>{item.quote}</q></div>
+
+                    <h1 className="popup-title">{item.title}</h1>
+                    <div className="popup-subtitle">{item.subtitle}</div>
+
+                    <div className="popup-price">{item.price}€</div>
+
+                    <p className="popup-description">{item.description}</p>
+
+                    <div className="size-selector">
+                        <select className="size-dropdown" onChange={e => {setSelectedSize(e.target.value !== "none" ? e.target.value : undefined)}}>
+                            <option value={"none"}>Sélectionne ta taille :)</option>
+                            {item.sizes.map((size) => {
+                                if (quantity[size] > 0) {
+                                    return <option value={size}>{size}</option>
+                                } else {
+                                    return <option value={size} disabled>{size}</option>
+                                }
+                            })}
+                        </select>
                     </div>
 
-                    {/* RIGHT SIDE – CONTENT */}
-                    <div className="content-section" style={{ width: '50%', padding: '2rem' }}>
-                        <button className="popup-close-btn" onClick={onClose}>
-                            <img src="/assets/croix.svg" alt="X" />
-                        </button>
-                        
-                        <div className="top-section">  
-                            <div className="content-header" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                <h1 className="popup-title">{item.title || 'STAIRS Tee'}</h1>
-                                <span className="popup-quote"><em>“Create or consume.”</em></span>
-                            </div>
-                        
-                        
-                            <p className="popup-subtitle">BLACK ON WHITE • UNISEX ♂</p>
-                            <p className="popup-price">{item.price} €</p>
-                            <p className="popup-description">
-                                {item.description || `Là où l’âme chante afin de proclamer son existence, d’autres accueillent dans un écho cette lancinante mélodie. 
-                                STAIRS est une ode au va-et-vient entre l’intime et le partagé – là où l’art prend tout son sens.`}
-                            </p>
-                        </div>    
-                    
-                        <div className="mid-section">
-                            <div className="options-section">
-                                <div className="option-group">
-                                    <label className="option-label">Dis-moi quelle taille tu portes !</label>
-                                    <div className="size-buttons">
-                                        {['S', 'M', 'L', 'XL'].map(size => (
-                                            <button 
-                                                key={size}
-                                                className={`size-button ${selectedSize === size ? 'selected' : ''}`}
-                                                onClick={() => setSelectedSize(size)}
-                                            >
-                                                {size}
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
+                    <button className="popup-add" onClick={() => console.log(selectedSize)}>AJOUTER AU PANIER</button>
 
-                                <div className="option-group">
-                                    <label className="option-label">Combien tu en veux l'ami(e) ?</label>
-                                    <div className="quantity-controls">
-                                        <button className="quantity-button" onClick={() => handleQuantityChange(-1)}>-</button>
-                                        <span className="quantity-display">{quantity}</span>
-                                        <button className="quantity-button" onClick={() => handleQuantityChange(1)}>+</button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="action-section">
-                                <button 
-                                    className="popup-button custom-target" 
-                                    id={item.id} 
-                                    onClick={() => add(item.id, selectedSize, quantity)}
-                                >
-                                    JE LE PRENDS !
-                                </button>
-                            </div>
-                        </div>
-
-                    </div>
+                    <FoldoutSection title="HISTOIRE DU PRODUIT" content={item.details}/>
+                    <FoldoutSection title="DETAILS DU PRODUIT" content={item.spec}/>
+                    <FoldoutSection title="INFORMATIONS DE LIVRAISON" content={"SOME SOME SOME SOME SOME SOME SOME SOME"}/>
                 </div>
             </div>
         </div>

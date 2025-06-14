@@ -32,7 +32,7 @@ import "./style/showcase.css";
 import "./style/gallery.css";
 import "./style/basket.css";
 import "./style/payment.css";
-import "./style/about.css";
+// import "./style/about.css";
 import "./style/acknowledgment.css";
 import "./style/popup_item.css";
 import "./style/custom_cursor.css";
@@ -60,7 +60,7 @@ function useBasket() {
         if (basket[item]) {
             const count = basket[item] - 1;
             const updated = { ...basket };
-    
+
             if (count <= 0) {
                 delete updated[item];
             } else {
@@ -94,7 +94,7 @@ function App() {
 
 
     const [currentSection, setCurrentSection] = useState<"VITRINE" | "GALLERY">("VITRINE");
-const galleryRef = useRef<HTMLDivElement | null>(null);
+    const galleryRef = useRef<HTMLDivElement | null>(null);
 
 // useEffect(() => {
 //     let lastScroll = window.scrollY;
@@ -127,38 +127,36 @@ const galleryRef = useRef<HTMLDivElement | null>(null);
 
 useEffect(() => {
     let scrollLocked = false;
-  
+
     const handleWheel = (e: WheelEvent) => {
       if (scrollLocked) return;
-  
+
       const delta = e.deltaY;
-  
+
       if (currentSection === "VITRINE" && delta > 30) {
         scrollLocked = true;
         setCurrentSection("GALLERY");
-  
+
         setTimeout(() => {
           scrollLocked = false;
           window.scrollTo({ top: 0 }); // Remet en haut proprement
         }, 1000); // Bloque pendant 1 seconde pour éviter double scroll
       }
-  
+
       if (currentSection === "GALLERY" && delta < -30) {
         scrollLocked = true;
         setCurrentSection("VITRINE");
-  
+
         setTimeout(() => {
           scrollLocked = false;
           window.scrollTo({ top: 0 });
         }, 1000);
       }
     };
-  
+
     window.addEventListener("wheel", handleWheel, { passive: true });
     return () => window.removeEventListener("wheel", handleWheel);
   }, [currentSection]);
-  
-
 
     const { basket, addBasket, removeBasket } = useBasket();
 
@@ -199,8 +197,6 @@ useEffect(() => {
         setState("ACKNOWLEDGMENT");
     };
 
-    
-
     // onClick top right button
     const updateState = () => {
         if (state === "HOME" || state === "PAYMENT" || state === "VITRINE" || state === "GALLERY") {
@@ -210,29 +206,19 @@ useEffect(() => {
         }
     }
 
-
-
-
-
-
-
-
-    
     const [popupItem, setPopupItem] = useState(null);
+    const [popupQuantity, setPopupQuantity] = useState(null);
     const [popupId, setPopupId] = useState(null);
     const [likes, setLikes] = useState(0);
 
-    const { fetchItem } = useContext(ShopAPIContext);
-
-
-
-
+    const { fetchItem, fetchQuantity } = useContext(ShopAPIContext);
 
     const handleItemClick = (clickedId) => setPopupId(clickedId);
 
     const closePopup = () => {
         setPopupId(null);
         setPopupItem(null);
+        setPopupQuantity(null);
     };
 
     useEffect(() => {
@@ -242,6 +228,12 @@ useEffect(() => {
                 .catch(e => {
                     console.error(`[PopupItem] ${e.message}`);
                     setPopupItem(null);
+                });
+            fetchQuantity(popupId)
+                .then(setPopupQuantity)
+                .catch(e => {
+                    console.error(`[PopupItem] ${e.message}`);
+                    setPopupQuantity(null);
                 });
         }
     }, [popupId, fetchItem]);
@@ -258,13 +250,13 @@ useEffect(() => {
             {state === "HOME" && (
             <>
                 {currentSection === "VITRINE" && (
-                <Vitrine id="quelconque" add={addBasket} goto={basketState} />
+                    <Vitrine id="quelconque" add={addBasket} goto={basketState} />
                 )}
 
                 {currentSection === "GALLERY" && (
-                <div ref={galleryRef}>
-                    <Gallery ids={["quelconque", "quelconque", "quelconque", "quelconque"]} onItemClick={(id) => setPopupId(id)} />
-                </div>
+                    <div ref={galleryRef}>
+                        <Gallery ids={["quelconque", "quelconque", "quelconque", "quelconque"]} onItemClick={(id) => setPopupId(id)} />
+                    </div>
                 )}
             </>
             )}
@@ -275,23 +267,22 @@ useEffect(() => {
             {(state === "ABOUT") && <About />}
             {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
 
-            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={acknowledgmentState} />}
+            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />}
 
             {popupItem && popupId && (
-            <PopupItem
-                item={popupItem}
-                onClose={closePopup}
-                add={addBasket}
-                isSoldOut={false}
-                toggleLike={() => setLikes(likes + 1)}
-            />
+                <PopupItem
+                    item={popupItem}
+                    quantity={popupQuantity}
+                    onClose={closePopup}
+                    add={addBasket}
+                    toggleLike={() => setLikes(likes + 1)}
+                />
             )}
 
         </div>
     );
 
     return (
-        
         // <Logo content={content} />
         <CustomCursor targetClass="custom-target">
             {content}
