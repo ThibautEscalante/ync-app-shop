@@ -52,15 +52,6 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    if (name === 'phone') {
-      const errorMessage = validatePhone(value);
-      setErrors((prev) => ({
-        ...prev,
-        [name]: errorMessage || undefined,
-      }));
-      return;
-    }
-
     // Validation générique avec simple-body-validator
     const singleFieldData = { [name]: value };
     const singleRule = { [name]: rules[name as keyof Rules] };
