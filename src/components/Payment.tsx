@@ -371,7 +371,6 @@ function PaymentPrice({ basket, time2Pay, formValid}){
     );
 }
 
-
 function Payment({ basket, goto }) {
 
     const { fetchItem, fetchOrder, postOrder, captureOrder } = useContext(ShopAPIContext);
