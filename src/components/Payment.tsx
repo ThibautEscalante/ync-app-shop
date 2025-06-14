@@ -1,15 +1,15 @@
 import { useState, useEffect, useContext, useMemo } from 'react';
-import { isChrome, isFirefox, isSafari, isOpera, isIE } from 'react-device-detect';
+// import { isChrome, isFirefox, isSafari, isOpera, isIE } from 'react-device-detect';
 import { make } from 'simple-body-validator';
 
 import ShopAPIContext from "../context/ShopAPIProvider";
-import Basket from "./Basket";
+// import Basket from "./Basket";
 
-import { useForm } from "react-hook-form";
+// import { useForm } from "react-hook-form";
 
 import { paypalPage, PAYMENT_STATES } from './PaymentServices';
 
-import { usePaymentForm } from './PaymentForm';
+import { usePaymentForm } from './usePaymentForm';
 
 
 // Address API URL
@@ -17,7 +17,7 @@ const ADDRESS_API_URL = "https://api-adresse.data.gouv.fr/search/";
 
 function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) {
 
-    const [addressInput, setAddressInput] = useState("");
+    const [addressInput, setAddressInput] = useState(order.address || "");
     const [suggestions, setSuggestions] = useState([]);
     const [selectedSuggestion, setSelectedSuggestion] = useState(null);
 
@@ -221,7 +221,7 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) 
                         {errors.postal_code && <p className="error-message">{errors.postal_code}</p>}
                         {errors.city && <p className="error-message">{errors.city}</p>}
 
-                        <input type="text" name="phone" placeholder="Téléphone" // type="tel"
+                        <input type="tel" name="phone" placeholder="Téléphone" // type="tel"
                             value={order.phone}
                             onChange={handleChange} 
                             onBlur={handleBlur} 

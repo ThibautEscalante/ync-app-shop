@@ -1,11 +1,23 @@
 import { useState, useMemo } from 'react';
-import { make, register } from 'simple-body-validator';
+import { make, register, setTranslationObject } from 'simple-body-validator';
 
-// Ajout de la regle personnalisé pour le champs téléphone dans la verif que fait simplebodyvalidator
+// Ajout de la regle personnalisée pour le champs téléphone dans la verif que fait simplebodyvalidator
 register('telephone', function (value) {
   if (!value) return true;
   return /^0\d{9}$/.test(value);
-}, "Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.");
+});
+
+// Doit être appelé une seule fois si pref au chargement de l'application
+setTranslationObject({
+  en: {
+      telephone: 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.',
+  },
+  fr: {
+    telephone: 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.',
+  }
+});
+
+const rules = { phone: 'nullable|telephone' };
 
 type Order = {
   first_name: string;
@@ -27,16 +39,6 @@ type Rules = {
 export function usePaymentForm(initialOrder: Order, rules: Rules) {
   const [order, setOrder] = useState<Order>(initialOrder);
   const [errors, setErrors] = useState<{ [key in keyof Order]?: string }>({});
-
-
-  // Validation spécifique au téléphone
-  const validatePhone = (value: string) => {
-    if (!value) return '';
-    if (!/^0\d{9}$/.test(value))
-      return 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.';
-    return '';
-  };
-
 
   // Gestion des changements dans les inputs (texte et checkbox)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,7 +98,7 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
     console.log('formValid (result):', isValid);
     console.log('-----------------------------');
 
-    return !hasErrors && allRequiredFilled;
+    return isValid;
   }, [errors, order, rules]);
 
   return { order, errors, handleChange, handleBlur, formValid, setOrder, setErrors };
