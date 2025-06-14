@@ -25,26 +25,33 @@ export const ShopAPIProvider = ({ children }) => {
         } catch (e) { console.error('[postBasket]', e); }
     };
 
-    // const fetchItem = async (item) => { // Récupérer les données de l'article en fonction de id_article
-    //     try {
-    //         await axios.get(`${api_address}/connect`, config);
-    //         const res = await axios.get(`${api_address}/item?id=${item}`, config);
-    //         if (res.data.length === 1) res.data = res.data[0];
-    //         res.data.image = `data:image/jpeg;base64,${res.data.image}`;
-    //         return res.data;
-    //     } catch (e) { console.error('[fetchItem]', e); }
-    // };
+    const fetchItem = async (item) => { // Récupérer les données de l'article en fonction de id_article
+        /*
+        try {
+            await axios.get(`${api_address}/connect`, config);
+            const res = await axios.get(`${api_address}/item?id=${item}`, config);
+            if (res.data.length === 1) res.data = res.data[0];
+            res.data.image = `data:image/jpeg;base64,${res.data.image}`;
+            return res.data;
+        } catch (e) { console.error('[fetchItem]', e); }
+        */
+        return Promise.resolve({
+            id: "quelconque",
+            category: "quelconque",
+            image: "/assets/background1.jpg",
+            display_name: "Quelconque",
+            description: "“Quelconque” est une photo prise au lac de Gradignan le 14 mars 2024...",
+            basket_description: "Livré avec son cadre photo aléatoire.",
+            price: 10.99
+        });
+    };
 
-    // Mocking fetchItem
-    const fetchItem = (id) => Promise.resolve({
-        id: "quelconque",
-        category: "quelconque",
-        image: "/assets/background1.jpg",
-        display_name: "Quelconque",
-        description: "“Quelconque” est une photo prise au lac de Gradignan le 14 mars 2024...",
-        basket_description: "Livré avec son cadre photo aléatoire.",
-        price: 10.99
-    });
+    const fetchQuantity = async (item) => {
+        return Promise.resolve({
+            id: "quelconque",
+            sizes: { S: 25, M: 25, L: 0 }
+        });
+    };
 
     const fetchOrder = async (order) => {
         try {

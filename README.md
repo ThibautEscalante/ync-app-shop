@@ -31,3 +31,5 @@ Creating the environment variables at runtime has brought us a lot of problems. 
 - Modify env variables with the Dockerfile: does not work in a kubernetes deployment since the environment variables will not be part of the container.
 - env-config.js: Basically a kube configMap, env file would be loaded after building the app and then used to set REACT_APP env variables.
 - Custom entrypoint bash file: this option allows to build the app at container runtime and then to capture env variables given to kubernetes, this is also the easiest solution for all deployment size.
+
+This is me!
