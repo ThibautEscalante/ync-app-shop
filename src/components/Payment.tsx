@@ -15,7 +15,7 @@ import { usePaymentForm } from './PaymentForm';
 // Address API URL
 const ADDRESS_API_URL = "https://api-adresse.data.gouv.fr/search/";
 
-function PaymentForm({ basket, handleChange, rules, order}) {
+function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) {
 
     const [addressInput, setAddressInput] = useState("");
     const [suggestions, setSuggestions] = useState([]);
@@ -43,8 +43,7 @@ function PaymentForm({ basket, handleChange, rules, order}) {
             setSuggestions([]);
         }
     };
-        
-
+    
         // {
         //     "features": [
         //       {
@@ -78,8 +77,6 @@ function PaymentForm({ basket, handleChange, rules, order}) {
         handleChange(e);
     };
     
-    
-
     const handleSuggestionClick = (suggestion) => {
         const label = suggestion.properties.label;
         setAddressInput(label);
@@ -113,61 +110,6 @@ function PaymentForm({ basket, handleChange, rules, order}) {
         }
       };
       
-      
-      
-      
-
-    const [errors, setErrors] = useState({});
-
-       // Fonction de validation spécifique au téléphone
-  const validatePhone = (value) => {
-    if (!value) return '';
-    if (!/^0\d{9}$/.test(value)) return 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.'; // commence par "0" et contient exactement 10 chiffres
-    return ''; // Si aucune erreur
-  };
-
-  const handleBlur = (e) => {
-    const { name, value } = e.target;
-  
-    // Valisation spécifique pour le téléphone
-    if (name === 'phone') {
-      const errorMessage = validatePhone(value);
-      if (errorMessage) {
-        setErrors((prev) => ({
-          ...prev,
-          [name]: errorMessage,
-        }));
-      } else {
-        setErrors((prev) => ({
-          ...prev,
-          [name]: undefined,
-        }));
-      }
-    } else {
-      const singleFieldData = { [name]: value };
-      const singleRule = { [name]: rules[name] };
-  
-      const validator = make(singleFieldData, singleRule);
-  
-      if (!validator.validate()) {
-        const fieldError = validator.errors().first(name);
-        setErrors((prev) => ({
-          ...prev,
-          [name]: fieldError,
-        }));
-      } else {
-        setErrors((prev) => ({
-          ...prev,
-          [name]: undefined, // Aucune erreur pour ce champ
-        }));
-      }
-    }
-  
-    };
-
-    useEffect(() => {
-        console.log('errors updated:', errors);
-      }, [errors]);
 
     return (
         <div className="form">
@@ -188,11 +130,17 @@ function PaymentForm({ basket, handleChange, rules, order}) {
 
                         <h1>Contact</h1>
 
-                        <input type="email" name="mail" placeholder="Email" onChange={handleChange} onBlur={handleBlur} required className={errors.mail ? 'error-border' : ''}/>
+                        <input type="email" name="mail" placeholder="Email"
+                            value={order.mail}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            required className={errors.mail ? 'error-border' : ''}/>
                         {errors.mail && <p className="error-message">{errors.mail}</p>}
 
                         <div className="checkbox-container">
-                            <input type="checkbox" id="newsletter" name="newsletter" onChange={handleChange} />
+                            <input type="checkbox" id="newsletter" name="newsletter"
+                                checked={order.newsletter}
+                                onChange={handleChange} />
                             <label htmlFor="newsletter">M'envoyer un mail lorsque YNG sort une nouvelle création.</label>
                         </div>
 
@@ -205,18 +153,39 @@ function PaymentForm({ basket, handleChange, rules, order}) {
                         
                         <div className="name-fields">
 
-                            <input type="text" name="first_name" placeholder="Prénom*" onChange={handleChange} onBlur={handleBlur} required className={errors.first_name ? 'error-border' : ''}/>
-                            <input type="text" name="name" placeholder="Nom" onChange={handleChange} onBlur={handleBlur} required className={errors.name ? 'error-border' : ''}/>
+                            <input type="text" name="first_name" placeholder="Prénom"
+                                value={order.first_name}
+                                onChange={handleChange} 
+                                onBlur={handleBlur} 
+                                required className={errors.first_name ? 'error-border' : ''}/>
                             
+                            <input type="text" name="name" placeholder="Nom"
+                                value={order.name}
+                                onChange={handleChange} 
+                                onBlur={handleBlur} 
+                                required className={errors.name ? 'error-border' : ''}/>
                 
                         </div>
-                        {errors.first_name && <p className="error-message">{errors.first_name}</p>}
-                            {errors.name && <p className="error-message">{errors.name}</p>}
 
-                        <input type="text" name="region" placeholder="Pays/Région" value={order.region || ""} onChange={handleChange} onBlur={handleBlur} required className={errors.region ? 'error-border' : ''}/>
+                        {errors.first_name && <p className="error-message">{errors.first_name}</p>}
+                        {errors.name && <p className="error-message">{errors.name}</p>}
+
+
+                        <input type="text" name="region" placeholder="Pays/Région"
+                                value={order.region || ""}
+                                onChange={handleChange} 
+                                onBlur={handleBlur} 
+                                required className={errors.region ? 'error-border' : ''}/>
+
                         {errors.region && <p className="error-message">{errors.region}</p>}
 
-                        <input type="text" name="address" placeholder="Adresse" value={addressInput} onChange={handleAddressChange} onBlur={handleBlur} required className={errors.address ? 'error-border' : ''}/>
+
+                        <input type="text" name="address" placeholder="Adresse"
+                                value={addressInput}
+                                onChange={handleAddressChange} 
+                                onBlur={handleBlur} 
+                                required className={errors.address ? 'error-border' : ''}/>
+
                         {suggestions && suggestions.length > 0 && (
                             <ul className="autocomplete-list">
                                 {suggestions.map((suggestion, index) => (
@@ -230,30 +199,56 @@ function PaymentForm({ basket, handleChange, rules, order}) {
                                 ))}
                             </ul>
                         )}
+
                         {errors.address && <p className="error-message">{errors.address}</p>}
 
                         <div className="city-fields">
-                            <input type="text" name="postal_code" placeholder="Code Postal" value={order.postal_code || ""} onChange={handleChange} onBlur={handleBlur} required className={errors.postal_code ? 'error-border' : ''}/>
-                            <input type="text" name="city" placeholder="Ville"  value={order.city || ""}onChange={handleChange} onBlur={handleBlur} required className={errors.city ? 'error-border' : ''}/>
-                            
-                        </div>
-                        {errors.postal_code && <p className="error-message">{errors.postal_code}</p>}
-                            {errors.city && <p className="error-message">{errors.city}</p>}
 
-                        <input type="tel" name="phone" placeholder="Téléphone" onChange={handleChange} onBlur={handleBlur} className={errors.phone ? 'error-border' : ''}/>
+                            <input type="text" name="postal_code" placeholder="Code Postal"
+                                value={order.postal_code || ""}
+                                onChange={handleChange} 
+                                onBlur={handleBlur} 
+                                required className={errors.postal_code ? 'error-border' : ''}/>
+                            
+                            <input type="text" name="city" placeholder="Ville"
+                                value={order.city || ""}
+                                onChange={handleChange} 
+                                onBlur={handleBlur} 
+                                required className={errors.city ? 'error-border' : ''}/>
+    
+                        </div>
+
+                        {errors.postal_code && <p className="error-message">{errors.postal_code}</p>}
+                        {errors.city && <p className="error-message">{errors.city}</p>}
+
+                        <input type="text" name="phone" placeholder="Téléphone" // type="tel"
+                            value={order.phone}
+                            onChange={handleChange} 
+                            onBlur={handleBlur} 
+                            className={errors.phone ? 'error-border' : ''}/>
+
                         {errors.phone && <p className="error-message">{errors.phone}</p>}
                 
                     </div>
 
+
                     <div className="checkbox-container">
-                        <input type="checkbox" id="gtc" name="gtc" onChange={handleChange} />
+                        <input type="checkbox" id="gtc" name="gtc"
+                            checked={order.gtc}
+                            onChange={handleChange} />
                         <label htmlFor="gtc">J'ai lu et j'accepte les conditions générales de vente.</label>
-                        {/* {errors.gtc && <p className="error-message">Vous devez accepter les CGV.</p>} */}
+
+                        {errors.gtc && <p className="error-message">Vous devez accepter les CGV.</p>}
                     </div>
 
                 </div>
     );
 }
+
+
+
+
+
 function PaymentRow({ basket, id }) {
         const { fetchItem } = useContext(ShopAPIContext);
 
@@ -375,16 +370,10 @@ function PaymentPrice({ basket, time2Pay, formValid}){
             </div>
     );
 }
+
 function Payment({ basket, goto }) {
+
     const { fetchItem, fetchOrder, postOrder, captureOrder } = useContext(ShopAPIContext);
-
-    // const [errors, setErrors] = useState({});
-
-    // const [order, setOrder] = useState({
-    //     first_name: '', name: '', phone: '', mail: '',
-    //     address: '', postal_code: '', city: '', region: '',
-    //     newsletter: false, gtc: false
-    // });
 
     const rules = {
         first_name: 'required|alpha', name: 'required|alpha', phone: 'nullable|telephone', mail: 'required|email',
@@ -399,27 +388,38 @@ function Payment({ basket, goto }) {
     }, rules);
     
     
-
-    
-
     const [approved, setApproved] = useState('');
-    
     const [message, setMessage] = useState('');
 
     const time2Pay = async () => {
   
-
-
         const validator = make(order, rules);
 
         if (!validator.validate()) {
             setApproved('UNVALID_FORM_ORDER');
             const errs = validator.errors().all();
+
+            setErrors(prev => {
+                let newErrors = {};
+                Object.keys(rules).forEach(key => {
+                    newErrors[key] = errs[key] ? errs[key][0] : undefined;
+                });
+                if (rules.gtc.includes('accepted') && !order.gtc) {
+                    newErrors.gtc = newErrors.gtc || 'Vous devez accepter les CGV.';
+                }
+                return newErrors;
+            });
+
             let err_msg = '';
             Object.keys(errs).map(key => err_msg += `- ${key} : ${errs[key]}`);
             setMessage(err_msg);
+            return;
 
         } else {
+    
+            // Si la validation globale réussit, on efface toutes les erreurs
+            setErrors({});
+
             setApproved('VALID_FORM_ORDER');
             setMessage('Processing payment...');
 
@@ -431,55 +431,45 @@ function Payment({ basket, goto }) {
             }
     
             let res = await postOrder({...order, items: basket, price: price});
-            await paypalPage(res, fetchOrder, captureOrder).then((order) => {
-                // @TODO
-                // Page element to thank user;
-                setApproved(order.status);
+            await paypalPage(res, fetchOrder, captureOrder).then((paypalResult) => {
+                setApproved(paypalResult.status);
                 // mailConfirmation(order);
-                setMessage('THANKS A LOT !');
+                setMessage('THANKS A LOT !'); // setMessage(paypalResult.message);
                 goto();
-            }).catch(e => console.error(`[Payment;time2pay] ${e.message} (${e.status})`));
+            }).catch(e => {
+                console.error(`[Payment;time2pay] ${e.message} (${e.status})`);
+                setApproved(e.status || PAYMENT_STATES.FAILED);
+                setMessage(e.message || "Une erreur inattendue est survenue.");
+            });
         }
     };
 
-    // const formValid = useMemo(() => {
-    //     const hasErrors = Object.values(errors).some(e => e !== undefined && e !== null && e !== '');
-    
-    //     const allRequiredFilled = rules && Object.keys(rules).every((key) => {
-    //     if (rules[key].includes('required') || rules[key].includes('accepted')) {
-    //         const val = order[key];
-    //         return val !== undefined && val !== null && val !== '' && val !== false;
-    //     }
-    //     return true;
-    //     });
-    
-    //     return !hasErrors && allRequiredFilled;
-    // }, [errors, order]);
-
     return (
-
 
             <div className="payment">
 
+                <PaymentForm
+                    order={order}
+                    errors={errors}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    rules={rules}
+                    basket={basket}
+                />            
 
-                <PaymentForm basket={basket} handleChange={handleChange} rules={rules} order={order}/>
+                {/* PARTIE DROITE */}
 
-            
-
-            {/* PARTIE DROITE */}
-
-            <PaymentPrice basket={basket} time2Pay={time2Pay} formValid={formValid}/>
-            
-            
-            {/* Message conditionnel si le paiement est approuvé */}
-            {(approved !== '') && (
-                <div className="payment-message">
-                {message}
-                </div>
-            )}
+                <PaymentPrice basket={basket} time2Pay={time2Pay} formValid={formValid}/>
+                
+                
+                {/* Message conditionnel si le paiement est approuvé */}
+                {(approved !== '') && (
+                    <div className="payment-message">
+                    {message}
+                    </div>
+                )}
             
             </div>
-
 
     );
 } export default Payment;
