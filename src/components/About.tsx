@@ -14,7 +14,7 @@ function About() {
 
                 <div className="intro-content">
 
-                    <img src="/assets/background1.jpg" alt="YN image gauche" className="intro-image-left" />
+                    {/*<img src="/assets/background1.jpg" alt="YN image gauche" className="intro-image-left" />*/}
 
                     <div className="text-block">
                         <h1 className="title">YNSHOP, C'EST QUOI ?</h1>
@@ -35,7 +35,7 @@ function About() {
 
                 <div className="intro-content reverse">
 
-                    <img src="/assets/background2.jpg" alt="YN image droite" className="intro-image-right" />
+                    {/*<img src="/assets/background2.jpg" alt="YN image droite" className="intro-image-right" />*/}
 
                     <div className="text-block">
                         <h1 className="title">NOTRE VISION</h1>
@@ -56,7 +56,7 @@ function About() {
 
                 <div className="intro-content">
 
-                    <img src="/assets/background3.jpg" alt="YNShop image gauche" className="intro-image-left" />
+                    {/*<img src="/assets/background3.jpg" alt="YNShop image gauche" className="intro-image-left" />*/}
 
                     <div className="text-block">
                         <h1 className="title">QUI SOMMES NOUS ?</h1>

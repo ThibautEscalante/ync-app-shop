@@ -39,18 +39,21 @@ export const ShopAPIProvider = ({ children }) => {
             id: "quelconque",
             category: "quelconque",
             image: "/assets/background1.jpg",
-            display_name: "Quelconque",
+            images: ["/assets/background1.jpg", "/assets/background1.jpg"],
+            title: "Quelconque",
+            subtitle: "Black on White - Unisex",
+            quote: "Create or consume",
             description: "“Quelconque” est une photo prise au lac de Gradignan le 14 mars 2024...",
+            details: "Tu peux penser qu'il est banal et sans âme, mais à YNC, nous on l'aime ce tee-shirt. C'est le premier (et pas le dernier), il nous représente, il montre qu'on est pas juste des vieux geek. En plus de tout ça, je peux le porter en dehors de chez moi et savoir qu'il y aura pas grand monde qui l'aura. Le jour où je croiserai quelqu'un avec, je serai plus que ravi de discuter avec lui parce que c'est obligé que, lui et moi, on ait des trucs en commun à partager.",
+            spec: "100% coton bio • Impression DTF • Lavage à 40°C • Assemblé en France.",
+            sizes: ["S", "M", "L"],
             basket_description: "Livré avec son cadre photo aléatoire.",
             price: 10.99
         });
     };
 
     const fetchQuantity = async (item) => {
-        return Promise.resolve({
-            id: "quelconque",
-            sizes: { S: 25, M: 25, L: 0 }
-        });
+        return Promise.resolve({ S: 25, M: 25, L: 0 });
     };
 
     const fetchOrder = async (order) => {
@@ -79,7 +82,7 @@ export const ShopAPIProvider = ({ children }) => {
     };
 
     return (
-        <ShopAPIContext.Provider value={{ fetchBasket, postBasket, fetchItem, fetchOrder, postOrder, captureOrder }}>
+        <ShopAPIContext.Provider value={{ fetchBasket, postBasket, fetchItem, fetchQuantity, fetchOrder, postOrder, captureOrder }}>
             {children}
         </ShopAPIContext.Provider>
     );
