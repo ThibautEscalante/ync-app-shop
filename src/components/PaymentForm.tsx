@@ -46,7 +46,6 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
       [name]: type === 'checkbox' ? checked : value,
     }));
   };
-  
 
   // Gestion du blur
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -86,6 +85,16 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
       }
       return true;
     });
+
+
+    const isValid = !hasErrors && allRequiredFilled;
+    // logs pour débugger
+    console.log('--- formValid calculation ---');
+    console.log('Current errors state:', errors);
+    console.log('hasErrors:', hasErrors);
+    console.log('allRequiredFilled:', allRequiredFilled);
+    console.log('formValid (result):', isValid);
+    console.log('-----------------------------');
 
     return !hasErrors && allRequiredFilled;
   }, [errors, order, rules]);
