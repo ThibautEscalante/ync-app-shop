@@ -1,5 +1,11 @@
 import { useState, useMemo } from 'react';
-import { make } from 'simple-body-validator';
+import { make, register } from 'simple-body-validator';
+
+// Ajout de la regle personnalisé pour le champs téléphone dans la verif que fait simplebodyvalidator
+register('telephone', function (value) {
+  if (!value) return true;
+  return /^0\d{9}$/.test(value);
+}, "Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.");
 
 type Order = {
   first_name: string;
@@ -22,6 +28,7 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
   const [order, setOrder] = useState<Order>(initialOrder);
   const [errors, setErrors] = useState<{ [key in keyof Order]?: string }>({});
 
+
   // Validation spécifique au téléphone
   const validatePhone = (value: string) => {
     if (!value) return '';
@@ -29,6 +36,7 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
       return 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.';
     return '';
   };
+
 
   // Gestion des changements dans les inputs (texte et checkbox)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,18 +48,9 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
   };
   
 
-  // Gestion du blur et validation à la volée
+  // Gestion du blur
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-
-    if (name === 'phone') {
-      const errorMessage = validatePhone(value);
-      setErrors((prev) => ({
-        ...prev,
-        [name]: errorMessage || undefined,
-      }));
-      return;
-    }
 
     // Validation générique avec simple-body-validator
     const singleFieldData = { [name]: value };
