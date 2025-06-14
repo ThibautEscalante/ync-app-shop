@@ -2,6 +2,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
 import PopupItem from "./PopupItem";
 
+/* Défilement personnalisé */
+import useSmoothScroll from "../useSmoothScroll"; 
+
 function Vitrine({ id, add, goto }) {
 
     const [item, setItem] = useState(null);
@@ -51,7 +54,7 @@ function Vitrine({ id, add, goto }) {
 }
 
 
-function Gallery({ ids, onItemClick }) {
+function Gallery({ ids, onItemClick}) {
 
     const { fetchItem } = useContext(ShopAPIContext);
     const [images, setImages] = useState([]);
@@ -111,22 +114,39 @@ function Gallery({ ids, onItemClick }) {
 
                     {images.map(({ id, src }) => (
                         <div key={id} className="gallery-thumbnail">
-                            <img src={src} alt={`Article ${id}`} className="gallery-image" onClick={() => onItemClick(id)} />
-                            <div className="gallery-title">{src}</div>
+                            <div className="image-wrapper">
+                                <img src={src} alt={`Article ${id}`} className="gallery-image" onClick={() => onItemClick(id)} />
+                            </div>
+                            <div className="description-wrapper">
+                                <div className="gallery-title">STAIRS Tee</div>
+                                <div className="gallery-description">Black on White • Unisex</div>
+                                <div className="gallery-note">“Create or consume.”</div>
+                                <div className="gallery-label">AAA</div>
+                            </div>
                         </div>
                     ))}
+
                     
                 </div>
 
             </div>
+
+            <div className="gallery-logo"> 
+                <img src="/assets/yng_metal_logo.png" alt="ync-logo" className="gallery-logo-image"/>
+            </div>
             
             {/* GALLERY COPYRIGHT FOOTER */}
+            <div className="gallery-phrase">
+
+                
+            </div>
+
             <div className="gallery-text">
 
                 <p> Nous préparons de nouveaux articles et designs exclusifs.
                     <br /> Restes connecté — notre équipe adore explorer de nouveaux concepts, tester des idées folles, pour enrichir notre univers avec de nouvelles pièces.
                 </p>
-                <img src="/assets/ync_circle_fire.png" alt="ync-fire-logo" className="gallery-text-image" />
+
                 <p>© 2025 Young New Corporation. L’univers est en expansion – nous aussi.</p>
 
             </div>
@@ -136,15 +156,12 @@ function Gallery({ ids, onItemClick }) {
 }
 
 
-function Item({ id, galleryIds, add, goto }) {
+function Item({ id, galleryIds, add, goto}) {
 
     const { fetchItem } = useContext(ShopAPIContext);
     const [popupItem, setPopupItem] = useState(null);
     const [popupId, setPopupId] = useState(null);
-    const [isGalleryVisible, setIsGalleryVisible] = useState(false);
     const [likes, setLikes] = useState(0);
-
-    const galleryTriggerRef = useRef(null);
 
     const handleItemClick = (clickedId) => setPopupId(clickedId);
 
@@ -154,27 +171,21 @@ function Item({ id, galleryIds, add, goto }) {
     };
 
     useEffect(() => {
-
-        const observer = new IntersectionObserver(([entry]) => { // IntersectionObserver détecte quand notre ref (galleryTriggerRef) le viewport ( la zone visible à l'écran)
-            if (entry.isIntersecting) setIsGalleryVisible(true);
-        }, { threshold: 0.8 }); // Si entry est visible à l'écran à au moins 80%
-
-        if (galleryTriggerRef.current) { // existe donc on commence à le surveiller avec notre observer
-            observer.observe(galleryTriggerRef.current);
-        }
-        return () => galleryTriggerRef.current && observer.unobserve(galleryTriggerRef.current); // on arrête de surveiller une fois l’apparition de la galerie pour ne ré-afficher la gallerie
-        
-    }, []);
-
-    useEffect(() => {
-
         if (popupId) {
             fetchItem(popupId)
-                .then(setPopupItem)
-                .catch(err => console.error(`[Popup Fetch] ${err.message}`));
+                .then(item => {
+                    setPopupItem(item);
+                })
+                .catch(e => {
+                    console.error(`[Item Popup] ${e.message}`);
+                    setPopupItem(null);
+                });
         }
+    }, [popupId, fetchItem]);
 
-    }, [popupId]);
+    const ref1 = useRef(null);
+
+    useSmoothScroll([ref1], true);
 
     return (
 
@@ -184,11 +195,10 @@ function Item({ id, galleryIds, add, goto }) {
             <Vitrine id={id} add={add} goto={goto} />
 
             {/* GALLERY */}
-            <div ref={galleryTriggerRef} style={{ height: "10px" }}></div>
-            {isGalleryVisible && <Gallery ids={galleryIds} onItemClick={handleItemClick} />}
+            <Gallery ref={ref1} ids={galleryIds} onItemClick={handleItemClick}/>
 
             {/* POPUP */}
-            {popupItem && (<PopupItem item={popupItem} onClose={closePopup} add={add} isSoldOut={false} toggleLike={() => setLikes(likes + 1)} />)}
+            {popupItem && popupId && (<PopupItem item={popupItem} onClose={closePopup} add={add} isSoldOut={false} toggleLike={() => setLikes(likes + 1)} />)}
 
         </div>
 

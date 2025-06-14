@@ -6,8 +6,8 @@
 }
 .custom-cursor {
     position: fixed;
-    width: 12px;
-    height: 12px;
+    width: 16px;
+    height: 16px;
     pointer-events: none;
     transform: translate(-50%, -50%);
     background-size: cover;

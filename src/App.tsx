@@ -1,15 +1,18 @@
 /* npm & React module imports */
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useRef} from "react";
 
 /* Custom context imports */
 import ShopAPIContext from "./context/ShopAPIProvider";
 
 /* Custom component imports */
-import Bandeau from "./components/Bandeau";
+import Header from "./components/Header";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
 import Logo from "./components/Splashpage";
-import Item from "./components/Item";
+// import Item from "./components/Item"; /* A supprimer par la suite */
+import Vitrine from "./components/Vitrine";
+import Gallery from "./components/Gallery";
+import PopupItem from "./components/PopupItem";
 import Basket from "./components/Basket";
 import Payment from "./components/Payment";
 import About from "./components/About";
@@ -18,10 +21,15 @@ import Acknowledgment from "./components/Acknowledgment";
 /* Custom Cursor component import */
 import CustomCursor from "./CustomCursor";
 
+/* Scrolling smooth component import */
+import useSmoothScroll from "../useSmoothScroll";
+
 /* Style imports */
 import "./style/styles.css";
 import "./style/app.css";
-import "./style/home.css";
+// import "./style/home.css";
+import "./style/showcase.css";
+import "./style/gallery.css";
 import "./style/basket.css";
 import "./style/payment.css";
 import "./style/about.css";
@@ -48,8 +56,16 @@ function useBasket() {
     };
 
     function removeBasket(item) {
+
         if (basket[item]) {
-            let count = basket[item] - 1;
+            const count = basket[item] - 1;
+            const updated = { ...basket };
+    
+            if (count <= 0) {
+                delete updated[item];
+            } else {
+                updated[item] = count;
+            }
 
             postBasket({...basket, [item]: count});
             setBasket({...basket, [item]: count});
@@ -59,16 +75,97 @@ function useBasket() {
     return { basket, addBasket, removeBasket };
 }
 
+
+
+
+
+
+// const galleryRef = useRef(null);
+// useSmoothScroll([galleryRef], true);
+
+  
+
+
+
 /* @desc: the main component orchestating all different components of the website
  * @return: the whole website content
  */
 function App() {
+
+
+    const [currentSection, setCurrentSection] = useState<"VITRINE" | "GALLERY">("VITRINE");
+const galleryRef = useRef<HTMLDivElement | null>(null);
+
+// useEffect(() => {
+//     let lastScroll = window.scrollY;
+  
+//     const onScroll = () => {
+//       const currentScroll = window.scrollY;
+//       const goingDown = currentScroll > lastScroll + 10;
+//       const goingUp = currentScroll < lastScroll - 10;
+  
+//       if (currentSection === "VITRINE" && goingDown) {
+//         setCurrentSection("GALLERY");
+//         // Remonte la page en haut pour éviter un scroll trop bas d’entrée
+//         setTimeout(() => window.scrollTo({ top: 0, behavior: "auto" }), 0);
+//       }
+  
+//       if (currentSection === "GALLERY" && goingUp) {
+//         const galleryTop = galleryRef.current?.getBoundingClientRect().top ?? 0;
+//         if (galleryTop >= -10) {
+//           setCurrentSection("VITRINE");
+//           setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 0);
+//         }
+//       }
+  
+//       lastScroll = currentScroll;
+//     };
+  
+//     window.addEventListener("scroll", onScroll, { passive: true });
+//     return () => window.removeEventListener("scroll", onScroll);
+//   }, [currentSection]);
+
+useEffect(() => {
+    let scrollLocked = false;
+  
+    const handleWheel = (e: WheelEvent) => {
+      if (scrollLocked) return;
+  
+      const delta = e.deltaY;
+  
+      if (currentSection === "VITRINE" && delta > 30) {
+        scrollLocked = true;
+        setCurrentSection("GALLERY");
+  
+        setTimeout(() => {
+          scrollLocked = false;
+          window.scrollTo({ top: 0 }); // Remet en haut proprement
+        }, 1000); // Bloque pendant 1 seconde pour éviter double scroll
+      }
+  
+      if (currentSection === "GALLERY" && delta < -30) {
+        scrollLocked = true;
+        setCurrentSection("VITRINE");
+  
+        setTimeout(() => {
+          scrollLocked = false;
+          window.scrollTo({ top: 0 });
+        }, 1000);
+      }
+    };
+  
+    window.addEventListener("wheel", handleWheel, { passive: true });
+    return () => window.removeEventListener("wheel", handleWheel);
+  }, [currentSection]);
+  
+
+
     const { basket, addBasket, removeBasket } = useBasket();
 
     // Define default app state
     const [state, setState] = useState("HOME");
 
-    // Define default "Bandeau" and "Section" state
+    // Define default "Header" and "Section" state
     const [buttonDisplay, setButtonDisplay] = useState("PANIER");
     const [section, setSection] = useState({name: "Quelconque", image: "assets/home_icon.svg"});
 
@@ -106,30 +203,95 @@ function App() {
 
     // onClick top right button
     const updateState = () => {
-        if (state === "HOME" || state === "PAYMENT") {
+        if (state === "HOME" || state === "PAYMENT" || state === "VITRINE" || state === "GALLERY") {
             basketState();
         } else if (state === "BASKET" || state === "ABOUT" || state === "ACKNOWLEDGMENT") {
             homeState();
         }
     }
 
+
+
+
+
+
+
+
+    
+    const [popupItem, setPopupItem] = useState(null);
+    const [popupId, setPopupId] = useState(null);
+    const [likes, setLikes] = useState(0);
+
+    const { fetchItem } = useContext(ShopAPIContext);
+
+
+
+
+
+    const handleItemClick = (clickedId) => setPopupId(clickedId);
+
+    const closePopup = () => {
+        setPopupId(null);
+        setPopupItem(null);
+    };
+
+    useEffect(() => {
+        if (popupId) {
+            fetchItem(popupId)
+                .then(setPopupItem)
+                .catch(e => {
+                    console.error(`[PopupItem] ${e.message}`);
+                    setPopupItem(null);
+                });
+        }
+    }, [popupId, fetchItem]);
+
+
     const content = (
         <div className="App">
-            <Bandeau name={buttonDisplay} basket={basket} homeFn={homeState} clickFn={updateState}/>
+            <Header name={buttonDisplay} basket={basket} homeFn={homeState} clickFn={updateState}/>
             <Section name={section.name} image={section.image}/>
 
-            {(state === "HOME") && <Item id="quelconque" galleryIds={["quelconque", "quelconque", "quelconque", "quelconque"]} add={addBasket} goto={basketState}/>}
+            {/* {(state === "HOME") && <Item id="quelconque" galleryIds={["quelconque", "quelconque", "quelconque", "quelconque"]} add={addBasket} goto={basketState}/>}
+             */}
+
+            {state === "HOME" && (
+            <>
+                {currentSection === "VITRINE" && (
+                <Vitrine id="quelconque" add={addBasket} goto={basketState} />
+                )}
+
+                {currentSection === "GALLERY" && (
+                <div ref={galleryRef}>
+                    <Gallery ids={["quelconque", "quelconque", "quelconque", "quelconque"]} onItemClick={(id) => setPopupId(id)} />
+                </div>
+                )}
+            </>
+            )}
+
             {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} next={paymentState}/>}
             {(state === "PAYMENT") && <Payment basket={basket} goto={acknowledgmentState}/>}
 
             {(state === "ABOUT") && <About />}
             {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
 
-            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />}
+            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={acknowledgmentState} />}
+
+            {popupItem && popupId && (
+            <PopupItem
+                item={popupItem}
+                onClose={closePopup}
+                add={addBasket}
+                isSoldOut={false}
+                toggleLike={() => setLikes(likes + 1)}
+            />
+            )}
+
         </div>
     );
 
     return (
+        
         // <Logo content={content} />
         <CustomCursor targetClass="custom-target">
             {content}

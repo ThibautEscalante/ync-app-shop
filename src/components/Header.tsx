@@ -5,17 +5,19 @@
  * @param clickFn: the onClick handler for the top right button
  * @return: the top menu component of the website page
  */
-function Bandeau({name, basket, homeFn, clickFn}) {
+function Header({name, basket, homeFn, clickFn}) {
 
     // If top right button is "PANIER" then display the number of items in basket next to it
     let item_count = Object.values(basket).reduce((a, b) => a + b, 0);
     let display_name = (name === "PANIER") ? `${name}[${item_count}]` : name;
 
     return (
-        <div className="bandeau">
-            <button className="bandeau-left" onClick={homeFn}>YNC SHOP</button>
-            <button className="bandeau-right" onClick={clickFn}>{display_name}</button>
+        <div className="header-mask">
+            <div className="header">
+                <button className="header-left" onClick={homeFn}>YNC SHOP</button>
+                <button className="header-right" onClick={clickFn}>{display_name}</button>
+            </div>
         </div>
     );
 
-} export default Bandeau;
+} export default Header;

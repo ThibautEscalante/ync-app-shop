@@ -8,6 +8,7 @@
     "starter"
   ],
   "main": "src/index.tsx",
+  "homepage": ".",
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@paypal/react-paypal-js": "^8.3.0",

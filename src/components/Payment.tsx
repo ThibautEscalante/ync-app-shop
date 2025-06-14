@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect, useContext, useMemo } from 'react';
 import { isChrome, isFirefox, isSafari, isOpera, isIE } from 'react-device-detect';
 import { make } from 'simple-body-validator';
 
@@ -6,117 +6,14 @@ import ShopAPIContext from "../context/ShopAPIProvider";
 import Basket from "./Basket";
 
 import { useForm } from "react-hook-form";
-import { useMemo } from 'react';
+
+import { paypalPage, PAYMENT_STATES } from './PaymentServices';
+
+import { usePaymentForm } from './PaymentForm';
+
 
 // Address API URL
 const ADDRESS_API_URL = "https://api-adresse.data.gouv.fr/search/";
-
-const PAYMENT_STATES = {
-  INITIAL: 'INITIAL',
-  CREATING_ORDER: 'CREATING_ORDER',
-  ORDER_CREATED: 'ORDER_CREATED',
-  AWAITING_APPROVAL: 'AWAITING_APPROVAL',
-  APPROVED: 'APPROVED',
-  CAPTURING: 'CAPTURING',
-  COMPLETED: 'COMPLETED',
-  CANCELLED: 'CANCELLED',
-  FAILED: 'FAILED',
-  POPUP_BLOCKED: 'POPUP_BLOCKED',
-  TIMEOUT: 'TIMEOUT',
-  NETWORK_ERROR: 'NETWORK_ERROR'
-};
-
-async function openPaypalPopup(order) {
-    const popup = window.open(order.links[1].href, "paypalCheckout", "left=100,top=100,width=600,height=800");
-    if (!popup || popup.closed || typeof popup.closed === "undefined") {
-        throw {
-            status: PAYMENT_STATES.POPUP_BLOCKED,
-            message: "Veuillez autoriser les popups pour ce site pour compléter le paiement",
-        };
-    }
-    return popup;
-}
-
-function waitForPopupClose(popup) {
-    return new Promise(resolve => {
-        const interval = setInterval(() => {
-            if (popup.closed) {
-                clearInterval(interval);
-                resolve({
-                    status: PAYMENT_STATES.CANCELLED,
-                    message: "Paiement annulé par l'utilisateur",
-                });
-            }
-        }, 500);
-    });
-}
-
-async function pollPaypalStatus(order, fetchOrder, captureOrder, maxAttempts = 60) {
-    let attempts = 0;
-
-    while (attempts < maxAttempts) {
-        let res;
-        try {
-            res = await fetchOrder(order.id);
-        } catch (error) {
-            throw {
-                status: PAYMENT_STATES.FETCH_FAILED,
-                message: "Erreur lors de la récupération de la commande",
-                error,
-            };
-        }
-
-        if (!res || typeof res.status !== "string") {
-            throw {
-                status: PAYMENT_STATES.INVALID_RESPONSE,
-                message: "Réponse inattendue de l'API",
-                raw: res,
-            };
-        }
-
-        if (res.status === PAYMENT_STATES.APPROVED || res.status === PAYMENT_STATES.COMPLETED) {
-            try {
-                await captureOrder({ id: order.id, uuid: order.uuid });
-                return { ...res, status: PAYMENT_STATES.COMPLETED };
-            } catch (error) {
-                throw {
-                    status: PAYMENT_STATES.CAPTURE_FAILED,
-                    message: "Erreur lors de la capture du paiement",
-                    error,
-                };
-            }
-        }
-
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        attempts++;
-    }
-
-    throw {
-        status: PAYMENT_STATES.TIMEOUT,
-        message: "Le délai de validation du paiement a expiré",
-    };
-}
-
-export async function paypalPage(order, fetchOrder, captureOrder) {
-    try {
-        const popup = await openPaypalPopup(order);
-        const popupClosed = waitForPopupClose(popup);
-        const polling = pollPaypalStatus(order, fetchOrder, captureOrder);
-        const result = await Promise.race([popupClosed, polling]);
-
-        if (popup && !popup.closed) {
-            popup.close();
-        }
-
-        return result;
-    } catch (error) {
-        return {
-            status: error.status || PAYMENT_STATES.FAILED,
-            message: error.message || "Erreur inattendue durant le processus de paiement",
-            error,
-        };
-    }
-}
 
 function PaymentForm({ basket, handleChange, rules, order}) {
 
@@ -126,7 +23,12 @@ function PaymentForm({ basket, handleChange, rules, order}) {
 
 
     const fetchSuggestions = async (query) => {
-        if (!query) return setSuggestions([]); // Si le form est vide on efface les suggestions
+        // Si le form est vide on efface les suggestions
+        if (!query) {
+            setSuggestions([]);
+            return;
+          }
+          
         try {
             const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`);
             const data = await response.json();
@@ -261,8 +163,11 @@ function PaymentForm({ basket, handleChange, rules, order}) {
       }
     }
   
-    console.log(errors);
     };
+
+    useEffect(() => {
+        console.log('errors updated:', errors);
+      }, [errors]);
 
     return (
         <div className="form">
@@ -392,18 +297,41 @@ function PaymentPrice({ basket, time2Pay, formValid}){
     const { fetchItem } = useContext(ShopAPIContext);
     const [price, setPrice] = useState({amount: 0, fee: 0});
 
-    useEffect(() => {
-        let new_fee = 0, new_amount = 0;
-        for (const item in basket) {
-            fetchItem(item).then((data) => {
+    // useEffect(() => {
+    //     let new_fee = 0, new_amount = 0;
+    //     for (const item in basket) {
+    //         fetchItem(item).then((data) => {
                 
-                new_fee += .01 * basket[item];
-                new_amount += basket[item] * parseFloat(data.price);
-                setPrice( p => ({...p, amount: new_amount, fee: new_fee}) );
-            }).catch(e => console.error(`[BasketPrice;useEffect] ${e.message}`));
-        }
+    //             new_fee += .01 * basket[item];
+    //             new_amount += basket[item] * parseFloat(data.price);
+    //             setPrice( p => ({...p, amount: new_amount, fee: new_fee}) );
+    //         }).catch(e => console.error(`[BasketPrice;useEffect] ${e.message}`));
+    //     }
 
-    }, [basket]);
+    // }, [basket]);
+
+    useEffect(() => {
+        async function calculatePrice() {
+          let new_fee = 0;
+          let new_amount = 0;
+      
+          // On lance toutes les requêtes fetchItem en parallèle
+          const itemsData = await Promise.all(Object.keys(basket).map(item => fetchItem(item)));
+      
+          // Une fois toutes les réponses reçues, on calcule le total
+          itemsData.forEach((data, index) => {
+            const quantity = basket[Object.keys(basket)[index]];
+            new_fee += 0.01 * quantity;
+            new_amount += quantity * parseFloat(data.price);
+          });
+      
+          // Mise à jour une seule foiss de l'état
+          setPrice({ amount: new_amount, fee: new_fee });
+        }
+      
+        calculatePrice();
+      }, [basket]);
+      
 
     return (
         <div className="payment-basket">
@@ -438,7 +366,7 @@ function PaymentPrice({ basket, time2Pay, formValid}){
                     </div>
 
                     <div className="payment-note">
-                Cette Action Redirigera Vers Paypal Qui Est L'unique Moyen De Paiement Disponible Actuellement (Désolé D'avance :/)
+                    Tu seras redirigé vers PayPal, notre unique moyen de paiement pour le moment. (Désolé D'avance :/)
                     </div>
 
                 
@@ -450,14 +378,13 @@ function PaymentPrice({ basket, time2Pay, formValid}){
 function Payment({ basket, goto }) {
     const { fetchItem, fetchOrder, postOrder, captureOrder } = useContext(ShopAPIContext);
 
-    const [errors, setErrors] = useState({});
+    // const [errors, setErrors] = useState({});
 
-    const [order, setOrder] = useState({
-        first_name: '', name: '', phone: '', mail: '',
-        address: '', postal_code: '', city: '', region: '',
-        newsletter: false, gtc: false
-    });
-    
+    // const [order, setOrder] = useState({
+    //     first_name: '', name: '', phone: '', mail: '',
+    //     address: '', postal_code: '', city: '', region: '',
+    //     newsletter: false, gtc: false
+    // });
 
     const rules = {
         first_name: 'required|alpha', name: 'required|alpha', phone: 'nullable|telephone', mail: 'required|email',
@@ -465,14 +392,19 @@ function Payment({ basket, goto }) {
         gtc: 'accepted'
     };
 
+    const { order, errors, handleChange, handleBlur, formValid, setOrder, setErrors } = usePaymentForm({
+        first_name: '', name: '', phone: '', mail: '',
+        address: '', postal_code: '', city: '', region: '',
+        newsletter: false, gtc: false
+    }, rules);
+    
+    
+
+    
+
     const [approved, setApproved] = useState('');
     
     const [message, setMessage] = useState('');
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setOrder((order) => ({...order, [name]: value}));
-    };
 
     const time2Pay = async () => {
   
@@ -510,20 +442,19 @@ function Payment({ basket, goto }) {
         }
     };
 
-
-    const formValid = useMemo(() => {
-        const hasErrors = Object.values(errors).some(e => e !== undefined && e !== null && e !== '');
+    // const formValid = useMemo(() => {
+    //     const hasErrors = Object.values(errors).some(e => e !== undefined && e !== null && e !== '');
     
-        const allRequiredFilled = rules && Object.keys(rules).every((key) => {
-        if (rules[key].includes('required') || rules[key].includes('accepted')) {
-            const val = order[key];
-            return val !== undefined && val !== null && val !== '' && val !== false;
-        }
-        return true;
-        });
+    //     const allRequiredFilled = rules && Object.keys(rules).every((key) => {
+    //     if (rules[key].includes('required') || rules[key].includes('accepted')) {
+    //         const val = order[key];
+    //         return val !== undefined && val !== null && val !== '' && val !== false;
+    //     }
+    //     return true;
+    //     });
     
-        return !hasErrors && allRequiredFilled;
-    }, [errors, order]);
+    //     return !hasErrors && allRequiredFilled;
+    // }, [errors, order]);
 
     return (
 
@@ -532,6 +463,7 @@ function Payment({ basket, goto }) {
 
 
                 <PaymentForm basket={basket} handleChange={handleChange} rules={rules} order={order}/>
+
             
 
             {/* PARTIE DROITE */}
