@@ -1,0 +1,173 @@
+/* ================================
+    GALERIE : .gallery
+================================ */
+.gallery {
+    opacity: 1;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    animation: fadeInUpGallery 1.25s ease both;
+    animation-delay: 1s;
+    padding-top: 39px;
+}
+
+.gallery-container {
+    margin: 0px 15px;
+    margin-top: 150px;
+}
+
+.gallery-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding-bottom: 80px;
+}
+
+.gallery-thumbnail {
+    width: 25%;
+    aspect-ratio: 1 / 1;
+    box-sizing: border-box;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    border: 1px solid #e2e2e2;
+}
+
+.image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #e2e2e2;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    align-items: center;
+    background-image: ;
+}
+
+.gallery-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-width: 240px;
+    border: none;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.description-wrapper {
+    height: calc(100px - 20px);
+    padding-left: 12px;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    text-align: left;
+}
+
+.gallery-title {
+    margin-top: 11px;
+    font-size: 18px;
+    color: #333;
+    width: 100%;
+    display: block;
+    transition: color 0.3s ease;
+    font-weight: bold;
+}
+
+.gallery-description {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #000000;
+    margin-bottom: 11px;
+}
+
+.gallery-note {
+    font-family: 'Bodoni Moda', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: #000000;
+}
+
+.gallery-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: #000000;
+    padding-top: 8px;
+}
+
+/* ================================
+    LOGO : .gallery-logo
+================================ */
+.gallery-logo {
+    margin-top: 105px;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gallery-logo-image {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* ================================
+    BAS DE PAGE : .gallery-text
+================================ */
+.gallery-phrase,
+.gallery-text {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.gallery-phrase {
+    background-color: white;
+}
+
+.gallery-phrase p,
+.gallery-text p {
+    font-size: 12px;
+    color: black;
+    margin: 10px 0;
+    line-height: 1.6;
+    max-width: 1600px;
+    opacity: 0.6;
+}
+
+.gallery-text {
+    background-color: #dededec8;
+}
+
+.gallery-text-image {
+    width: 80px;
+    height: auto;
+    margin: 20px 0;
+}
+
+/* ================================
+    ANIMATIONS GALERIE
+================================ */
+@keyframes fadeInUpGallery {
+    from {
+        opacity: 0;
+        transform: translateY(75px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

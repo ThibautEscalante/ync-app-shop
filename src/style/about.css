@@ -13,7 +13,7 @@
 ================================ */
 .banner {
     width: 100%;
-    height: 85vh;
+    height: 0vh;
     background-image:
         url('../../public/assets/yngc3shadows.svg'),
         url('../../public/assets/background4.jpg');
@@ -28,7 +28,7 @@
 .intro-content {
     display: flex;
     align-items: center;
-    gap: 60px;
+    gap: 50px;
     margin: 5px 0;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .text-block .title {
-    font-size: 27px;
+    font-size: 24px;
     font-weight: 600;
     margin: 80px 0 40px;
     color: #333;
@@ -71,7 +71,7 @@
 
 .text-block .text-left,
 .text-block .text-right {
-    font-size: 19px;
+    font-size: 17px;
     line-height: 1.8;
     color: #333;
     max-width: 1300px;
@@ -88,8 +88,8 @@
 .intro-image-left,
 .intro-image-right {
     margin-top: 50px;
-    width: 130px;
-    height: 160px;
+    width: 110px;
+    height: 140px;
     object-fit: cover;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
     opacity: 0;

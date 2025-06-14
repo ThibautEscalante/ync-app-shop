@@ -3,6 +3,10 @@
     Scrollbar masquée + structure de base
 ================================ */
 
+html {
+    scroll-behavior: smooth;
+}  
+
 html, body {
     width: 100%;
     /* overflow-x: hidden; */
@@ -29,6 +33,15 @@ body::-webkit-scrollbar-track {
 }  
 
 /* ================================
+    FONT PERSONNALISE
+================================ */
+
+@font-face {
+    font-family : Necto Mono;
+    src: url(fonts/NectoMono-Regular.otf);
+}
+
+/* ================================
     STRUCTURE PRINCIPALE : .App
     Application React Squid Head
 ================================ */
@@ -42,46 +55,59 @@ body::-webkit-scrollbar-track {
 }
 
 /* ================================
-    BANDEAU FIXE : .bandeau
+    HEADER FIXE : .header
     Menu sticky avec boutons
 ================================ */
 
-.bandeau {
+.header-mask {
+    display: flex;
+    position: fixed;
+    width: 1920px;
+    height: 55px;
+    z-index: 99;
+    background-color: white;
+}
+
+.header {
     display: flex;
     position: fixed;
     top: 0;
     z-index: 100;
-    width: 100%;
-    height: 30px;
+    width: calc(1920px - 30px);
+    height: 40px;
     padding: 0 5px;
+    margin: 15px;
     background-color: #f8f8f8;
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+
+    animation: fadeInUpApp 1.9s ease both;
+    animation-delay: 3s;
 }
 
-/* Boutons du bandeau */
-.bandeau button {
-    margin: 0 1%;
+/* Boutons du header */
+.header button {
+    margin: 0;
     padding: 7px 6.5px;
     border: none;
     background: none;
-    font-size: 11px;
-    font-weight: 600;
+    font-size: 16px;
     transition: all 0.1s ease;
+    font-family: "Necto Mono", monospace;
 }
 
-.bandeau-left {
+.header-left {
     text-align: left;
 }
 
-.bandeau-right {
+.header-right {
     cursor: pointer;
     text-align: right;
     color: #c14bff;
 }
 
-.bandeau-right:hover {
+.header-right:hover {
     border: 1px solid #c14bff;
     background-color: transparent;
     transform: scale(1.025);
@@ -94,60 +120,45 @@ body::-webkit-scrollbar-track {
 
 .section {
     display: flex;
+    position: fixed;
     flex-direction: row;
+    z-index: 100;
     width: 100%;
-    height: 95px;
-    margin-top: 42px;
-    padding-left: 15px;
+    height: 100px;
+    margin-top: calc( 42px + 15px );
+    padding-top: 30px;
+    padding-left: 30px;
+    background-color: #f8f8f8;
+    animation: fadeInUpApp 1.9s ease both;
+    animation-delay: 3s;
 }
 
 /* Logo */
 .section-image {
-    width: 48px;
-    height: 58px;
+    width: 51px;
+    height: 65px;
     margin: 0 10px;
     object-fit: contain;
     flex-shrink: 0;
-
-    /* Ombre légère sous le SVG */
-    filter: 
-        drop-shadow(0 2px 2px rgba(0, 0, 0, 0.32))
-        drop-shadow(0 3px 5px rgba(0, 0, 0, 0.28))
-        drop-shadow(0 0 3px rgba(0, 0, 0, 0.18)); 
-
-    animation: float-breathe 20s ease-in-out infinite;
-    will-change: transform; /* sert à prévenir le navigateur qu’un élément va bientôt subir une transformation */
 }
 
 /* Titre */
 .section-title {
     height: calc(100% - 12px);
     margin: 0;
-    padding-top: 12px;
-    padding-left: 25px;
+    padding-top: 4px;
+    padding-left: 35px;
     color: #0d0d0d;
-    font-size: 32.5px;
-    font-weight: 100;
-    line-height: 1.2;
-
-    /* Ombre appliquée lettre par lettre */
-    text-shadow:
-        1px 1px 2px rgba(0, 0, 0, 0.15),
-        0.5px 0.5px 1px rgba(0, 0, 0, 0.05);
-    animation: float-breathe 20s ease-in-out infinite;
-    will-change: transform; 
+    font-size: 40px;
+    align-items: center;
 }
 
-/* Animation */
-@keyframes float-breathe {
+@keyframes fadeInUpApp {
     0% {
-        transform: translateY(0px) scale(1);
-    }
-    50% {
-        transform: translateY(-1px) scale(1.02);
+        opacity: 0;
     }
     100% {
-        transform: translateY(0px) scale(1);
+        opacity: 1;
     }
 }
 
@@ -164,13 +175,16 @@ body::-webkit-scrollbar-track {
     z-index: 100;
     justify-content: flex-end;
     padding: 0;
+
+    animation: fadeInUpApp 1.9s ease both;
+    animation-delay: 3s;
 }
 
 .footer-title {
     background-color: #c14bff;
     color: white;
     border: none;
-    padding: 5px 50px;
+    padding: 5px 25px;
     font-size: 9px;
     font-weight: 300;
     text-transform: uppercase;
@@ -187,9 +201,9 @@ body::-webkit-scrollbar-track {
     DEBUG :
 ================================ */
 
-/* * {
+* {
     outline: 1px solid red;
-} */
+}
 
 /* * {
     background-color: rgba(0, 128, 255, 0.05);

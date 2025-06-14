@@ -17,11 +17,11 @@ function About() {
                     <img src="/assets/background1.jpg" alt="YN image gauche" className="intro-image-left" />
 
                     <div className="text-block">
-                        <h1 className="title">QUI SOMMES NOUS ?</h1>
+                        <h1 className="title">YNSHOP, C'EST QUOI ?</h1>
                         <p className="text-left">
-                            YNC, YNCorp, ou encore YNCorporation est un collectif d'amis Bordelais. Développeur, Designer, 
-                            Vendeur, Ingénieur du son, qu'importe notre métier, c'est la volonté d'explorer l'art sous 
-                            toutes ses formes qui constitue l'ADN de notre crew.
+                            YNShop, c’est notre premier terrain d’expression. Une boutique de photos, visuels, objets, concepts. 
+                            Chaque produit vient de notre imaginaire collectif. Tous racontent une histoire : celle d’un crew 
+                            passionné qui refuse de choisir entre art, jeu, et sincérité.
                         </p>
                     </div>
 
@@ -59,11 +59,11 @@ function About() {
                     <img src="/assets/background3.jpg" alt="YNShop image gauche" className="intro-image-left" />
 
                     <div className="text-block">
-                        <h1 className="title">YNSHOP, C'EST QUOI ?</h1>
+                        <h1 className="title">QUI SOMMES NOUS ?</h1>
                         <p className="text-left">
-                            YNShop, c’est notre premier terrain d’expression. Une boutique de photos, visuels, objets, concepts. 
-                            Chaque produit vient de notre imaginaire collectif. Tous racontent une histoire : celle d’un crew 
-                            passionné qui refuse de choisir entre art, jeu, et sincérité.
+                            YNC, YNCorp, ou encore YNCorporation est un collectif d'amis Bordelais. Développeur, Designer, 
+                            Vendeur, Ingénieur du son, qu'importe notre métier, c'est la volonté d'explorer l'art sous 
+                            toutes ses formes qui constitue l'ADN de notre crew.
                         </p>
                     </div>
 

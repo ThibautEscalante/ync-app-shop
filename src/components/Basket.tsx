@@ -134,7 +134,9 @@ function BasketPrice({ basket, compact, next }) {
  */
 function Basket({ basket, compact=true, add=undefined, rm=undefined, next=undefined }) {
 
-    const isEmpty = !basket || Object.keys(basket).length === 0;
+    // const isEmpty = !basket || Object.keys(basket).length === 0;
+    const isEmpty = !basket || Object.entries(basket).every(([_, quantity]) => quantity <= 0);
+
 
     return (
 
