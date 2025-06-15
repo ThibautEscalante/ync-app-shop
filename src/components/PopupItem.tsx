@@ -25,24 +25,29 @@ function PopupItem({ item, quantity, onClose, add }) {
     if (!item) return null;
 
     return (<>
-        <Section name="POPUPITEM" image="assets/home_icon.svg" />
+        <Section name="Items" image="assets/home_icon.svg" />
 
         <div className="popup-page" onClick={onClose}>
             <div className="model" onClick={(e) => e.stopPropagation()}>
 
                 <div className="popup-image-container">
-                    {item.images.map((img, i) => {
-                        return <img className="popup-mini-image" src={img} alt="YNC Tee Shirt STAIRS" onClick={() => setImageIndex(i)}/>
-                    })}
+
                     <img className="popup-main-image" src={item.images[imageIndex]} alt="YNC Tee Shirt STAIRS"/>
+
+                    {item.images.map((img, i) => {
+                        if (i === imageIndex) return null;
+                        return <img key={i} className="popup-mini-image" src={img} alt="YNC Tee Shirt STAIRS" onClick={() => setImageIndex(i)}/>
+                    })}
+                   
                 </div>
 
                 <div className="content-section">
                     <button className="popup-close" onClick={onClose}><img src="/assets/croix.svg" alt="X"/></button>
 
-                    <div className="popup-quote"><q>{item.quote}</q></div>
-
-                    <h1 className="popup-title">{item.title}</h1>
+                    <div className="popup-title_quote">
+                        <h1 className="popup-title">{item.title}</h1>
+                        <div className="popup-quote"><q>{item.quote}</q></div>
+                    </div>
                     <div className="popup-subtitle">{item.subtitle}</div>
 
                     <div className="popup-price">{item.price}€</div>
