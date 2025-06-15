@@ -1,212 +1,78 @@
-/* ================================
-    PAGE : .about
-================================ */
 .about {
+    margin-top: 10%;
     color: #1e1e1e;
-    display: flex;
-    flex-direction: column;
     background-color: #f9f9f9;
+    position: relative;
 }
 
-/* ================================
-    BANNIÈRE IMAGE : .banner
-================================ */
-.banner {
-    width: 100%;
-    height: 0vh;
-    background-image:
-        url('../../public/assets/yngc3shadows.svg'),
-        url('../../public/assets/background4.jpg');
-    background-size: cover, cover;
-    background-position: center, center;
+.wrapper {
+    display: flex;
+    text-align: left;
 }
 
-/* ================================
-    INFORMATIONS PRINCIPALES : .intro-content
-    Qui sommes nous, notre vision, Ynshop c'est quoi.
-================================ */
-.intro-content {
+.content {
+    width: 50%;
     display: flex;
     align-items: center;
-    gap: 50px;
-    margin: 5px 0;
+    flex-direction: column;
+    margin-bottom: 100px;
 }
 
-.intro-content.reverse {
-    flex-direction: row-reverse;
-}
-
-.intro-left {
-    text-align: left;
-    margin-left: 100px;
-}
-
-.intro-right {
-    text-align: right;
-    margin-right: 100px;
-}
-
-/* ================================
-    INFORMATIONS PRINCIPALES TEXTES : .text-block
-================================ */
-.text-block {
-    flex: 1;
-    transition: transform 0.5s ease;
-}
-
-.intro-content:hover .text-block {
-    transform: translateX(10px);
-}
-
-.intro-content.reverse:hover .text-block {
-    transform: translateX(-10px);
-}
-
-.text-block .title {
+span {
     font-size: 24px;
-    font-weight: 600;
-    margin: 80px 0 40px;
-    color: #333;
+    font-weight: 950;
+    letter-spacing: 1px;
 }
 
-.text-block .text-left,
-.text-block .text-right {
-    font-size: 17px;
-    line-height: 1.8;
-    color: #333;
-    max-width: 1300px;
-    margin: 10px 0 18px;
+p {
+    max-width: 75%;
 }
 
-.text-block .text-right {
-    margin-left: 600px;
+.faq {
+    display: flex;
 }
 
-/* ================================
-    INFORMATIONS PRINCIPALES IMAGES : .intro-image-*
-================================ */
-.intro-image-left,
-.intro-image-right {
-    margin-top: 50px;
-    width: 110px;
-    height: 140px;
-    object-fit: cover;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-    opacity: 0;
-    transform: translateX(20px);
-    transition: opacity 0.8s ease, transform 0.5s ease;
-    pointer-events: none;
+.faq h1 {
+    left: 0;
+    bottom: 0;
+    font-size: 48px;
+    font-weight: 950;
+    letter-spacing: 1px;
+    display: inline-block;
 }
 
-.intro-image-left {
-    margin-right: 20px;
-    transform: translateX(-20px);
+.faq span, .info {
+    font-size: 12px;
+    width: 20%;
+    height: 350px;
+    padding-left: 10px;
 }
 
-.intro-content:hover .intro-image-left,
-.intro-content:hover .intro-image-right {
-    opacity: 1;
-    transform: translateX(0);
+.faq h3 {
+    display: inline;
 }
 
-/* ================================
-    INFORMATIONS GRILLE : .six-grid-wrapper
-================================ */
-.six-grid-wrapper {
-    width: 100%;
-    background-color: #ffffff;
-    background-image: url('../../public/assets/background3.jpg');
-    background-size: cover;
-    background-position: center;
-    padding: 80px 10px;
-    padding-bottom: 90px;
-    margin-top: 100px;
+.faq.visible img {
+    transform: rotate(180deg);
+    display: inline;
 }
 
-.six-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 40px;
-    max-width: 1600px;
-    margin: 0 auto;
+.faq.hidden img {
+    visibility: visible;
+    display: inline;
 }
 
-/* ================================
-    BLOC INDIVIDUEL GRILLE : .six-grid .column
-================================ */
-.six-grid .column {
-    background: linear-gradient(to bottom right, rgba(240, 232, 255, 0.94), rgba(255, 255, 255, 0.7));
-    padding: 22px 25px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    text-align: left;
-    border-radius: 3px;
-    transition: transform 1.8s ease, box-shadow 0.15s ease;
+.visible {
+    visibility: visible;
 }
 
-.six-grid .column h2 {
-    font-size: 23px;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-    color: #1e1e1e;
+.hidden {
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
 }
 
-.six-grid .column p {
-    font-size: 17px;
-    line-height: 1.8;
-    color: #444;
-}
-
-.six-grid .column:hover {
-    transform: scale(1.0025);
-    background: linear-gradient(to bottom right, rgba(240, 232, 255, 0.96), rgba(255, 255, 255, 0.81));
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-}
-
-/* ================================
-    CONTACT : .contact
-================================ */
-.about .contact {
-    background-color: #ffffff;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    text-align: center;
-    padding: 25px 20px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
-}
-
-.contact .content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.contact .text {
-    font-size: 20px;
-    line-height: 1.8;
-    color: #333;
-    margin-bottom: 40px;
-    font-weight: 500;
-}
-
-/* ================================
-    BOUTON CONTACT: .button
-================================ */
-.contact .button {
-    display: block;
-    background-color: #c000ff;
-    color: white;
-    text-align: center;
-    padding: 14px;
-    width: 360px;
-    margin: 0 auto;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 600;
-    transition: background-color 0.1s ease-in-out, transform 0.1s ease;
-}
-
-.button:hover {
-    background-color: white;
-    color: #c000ff;
-    border: 1px solid #c000ff;
-    transform: scale(1.025);
+.faq h3 {
+    position: relative;
+    bottom: 0;
 }

@@ -1,146 +1,66 @@
+import { useState, useEffect } from 'react';
+
 function About() {
+    const [info, setInfo] = useState({
+        delivery: false,
+        delay: false,
+        feedback: false
+    });
+
+    const toggleInfo = (el) => {
+        const update = {...info};
+        for (const key in info) {
+            update[key] = (key === el) ? !info[key] : false;
+        }
+        return () => setInfo(update);
+    };
 
     return (
-
         <div className="about">
+            <div className="select">
+            </div>
 
+            <div className="wrapper">
+                <div className="content">
+                    <p><span>1.YNCORP</span>Nous sommes la Young New Corporation, dit YNC ou YNCorp. Un collectif d'amis Bordelais et Montpelliérains. Bercés pas la culture et l'univers numérique, nous avons pour vocation d'explorer l'art sous toutes ses formes, de nous en approprier les codes pour mieux les briser, et de créer de zéro par nous même.</p>
 
-            {/* BANNER */}
-            <div className="banner" />
+                    <p>Ce que l'on ressent, ce qui nous inspire, on veut donner vie à toutes ces pensées éphémères. En partageant une part de nous, on espère fédérer des individus comme vous et moi, si nous avons la même sensibilité on l'espère.</p>
 
-
-            {/* QUI SOMMES NOUS ? */}
-            <section className="intro-left">
-
-                <div className="intro-content">
-
-                    {/*<img src="/assets/background1.jpg" alt="YN image gauche" className="intro-image-left" />*/}
-
-                    <div className="text-block">
-                        <h1 className="title">YNSHOP, C'EST QUOI ?</h1>
-                        <p className="text-left">
-                            YNShop, c’est notre premier terrain d’expression. Une boutique de photos, visuels, objets, concepts. 
-                            Chaque produit vient de notre imaginaire collectif. Tous racontent une histoire : celle d’un crew 
-                            passionné qui refuse de choisir entre art, jeu, et sincérité.
-                        </p>
-                    </div>
-
+                    <p>Votre implication nous est importante et très appréciée, vos retours et votre implication nous permet de développer l'histoire de la YNCorp ensemble. Vous aussi vous pouvez faire partie de cette aventure collaborative ! Nous prônons l'échange, la communication, l'humilité et le dépassement de soi.</p>
                 </div>
-
-            </section>
-
-
-            {/* NOTRE VISION */}
-            <section className="intro-right">
-
-                <div className="intro-content reverse">
-
-                    {/*<img src="/assets/background2.jpg" alt="YN image droite" className="intro-image-right" />*/}
-
-                    <div className="text-block">
-                        <h1 className="title">NOTRE VISION</h1>
-                        <p className="text-right">
-                            On ne veut pas juste vendre. On veut créer avec vous.
-                            Votre regard, vos retours, vos idées nourrissent notre démarche. 
-                            YNShop est une plateforme, mais aussi un laboratoire de création libre, collaborative, audacieuse. 
-                        </p>
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            {/* YNSHOP, C'EST QUOI ? */}
-            <section className="intro-left">
-
-                <div className="intro-content">
-
-                    {/*<img src="/assets/background3.jpg" alt="YNShop image gauche" className="intro-image-left" />*/}
-
-                    <div className="text-block">
-                        <h1 className="title">QUI SOMMES NOUS ?</h1>
-                        <p className="text-left">
-                            YNC, YNCorp, ou encore YNCorporation est un collectif d'amis Bordelais. Développeur, Designer, 
-                            Vendeur, Ingénieur du son, qu'importe notre métier, c'est la volonté d'explorer l'art sous 
-                            toutes ses formes qui constitue l'ADN de notre crew.
-                        </p>
-                    </div>
-
-                </div>
-
-            </section>
-
-
-            {/* GRID INFOS */}
-            <section className="six-grid-wrapper">
-
-                <div className="six-grid">
-
-
-                    <div className="column">
-                        <h2>NOTRE VISION CRÉATIVE</h2>
-                        <p>
-                            Chaque photographie est une émotion figée, une idée rendue visible. 
-                            Nous cherchons à provoquer du ressenti, à explorer sans cesse de nouvelles formes narratives.
-                        </p>
-                    </div>
-
-                    <div className="column">
-                        <h2>QUALITÉ & RESPONSABILITÉ</h2>
-                        <p>
-                            Impressions haut de gamme, encres écologiques, emballages soignés — notre art est aussi un engagement pour un monde plus durable.
-                        </p>
-                    </div>
-
-                    <div className="column">
-                        <h2>LIEN AVEC LES ARTISTES</h2>
-                        <p>
-                            Derrière chaque œuvre, un créateur. Rencontrez-les lors de nos événements, découvrez leur univers et échangez en toute sincérité.
-                        </p>
-                    </div>
-
-                    <div className="column">
-                        <h2>ACCESSIBILITÉ DE L’ART</h2>
-                        <p>
-                            Nos œuvres existent en plusieurs formats et gammes de prix. L’art doit appartenir à tous, pas seulement à une élite.
-                        </p>
-                    </div>
-
-                    <div className="column">
-                        <h2>COMMUNAUTÉ ACTIVE</h2>
-                        <p>
-                            Ateliers, collaborations, partages d’idées : nous créons avec vous, pour vous, et grâce à vous.
-                        </p>
-                    </div>
-
-                    <div className="column">
-                        <h2>REJOINDRE L’AVENTURE</h2>
-                        <p>
-                            Abonnez-vous, participez, explorez : notre univers est ouvert, en mouvement, et vous y avez votre place.
-                        </p>
-                    </div>
-
-
-                </div>
-
-            </section>
-
-
-            {/* CONTACT */}
-            <section className="contact">
 
                 <div className="content">
+                    <p><span>2.YNSHOP</span>YNShop est un de nos services, notre modeste boutique, et d'autres sont à venir, tous différents les uns des autres. À travers cette boutique, nous voulons proposer des produits issus de notre imaginaire chaotique, des idées de toutes part, qui peuvent vous faire sourire, ressentir une émotion, ou mêmevous être tout simplement utile. Sans aucune prétention (toujours).</p>
 
-                    <p className="text"> Envie de discuter, de proposer une idée, de collaborer ? On est là. Sérieusement.</p>
-                    <button className="button" onClick={() => window.location.href = 'https://yn-corp.xyz/home'}>Questions en vrac</button>
-                    
+                    <p>Cette boutique nous sert à connecter les différents projets de l'univers YNCorp que nous essayons de peindre. Il nous permet aussi d'améliorer la qualité des projets futurs.</p>
+
+                    <p>Tout ce que vous trouverez dans ce shop est ici pour deux raisons: 1. On aime tellement ce produit qu'on le voulait pour nous avant de la mettre dans la boutique. 2. Différents acteurs nous ont permis de retranscrire une idée de la meilleure des façons (ça se peut aussi que ce soit juste les qui se sont alignées mais on n'a pas trop creusé cette piste).</p>
                 </div>
+            </div>
 
-            </section>
-
+            <div className="faq">
+                <h1>FAQ</h1>
+                <span className="info" onClick={toggleInfo("delivery")}>
+                    <p className={info.delivery ? "visible" : "hidden"}>on livre.NShop est un de nos services, notre modeste boutique, et d'autres sont à venir, tous différents les uns des autres. À travers cette boutique, nous voulons proposer des produits issus de notre imaginaire chaotique, des idées de toutes part, qui peuvent vous faire sourire, ressentir une émotion, ou mêmevous être tout simplement utile. Sans aucune prétention (toujours).</p>
+                    <h3>OÙ LIVREZ-VOUS ?</h3>
+                    <img className={info.delivery ? "visible" : "hidden"} src="assets/arrow.svg"/>
+                </span>
+                {/*
+                <span className="info" onClick={toggleInfo("delay")}>
+                    <p className={info.delay ? "visible" : "hidden"}>la poste.</p>
+                    <div className="info button">
+                        <h3>DÉLAIS DE LIVRAISON</h3><img src="assets/arrow.svg"/>
+                    </div>
+                </span>
+                <span className="info" onClick={toggleInfo("feedback")}>
+                    <p className={info.feedback ? "visible" : "hidden"}>ta gueule.</p>
+                    <div className="info button">
+                        <h3>FAIRE UN RETOUR</h3><img src="assets/arrow.svg"/>
+                    </div>
+                </span>
+                */}
+            </div>
         </div>
-
     );
 }
 

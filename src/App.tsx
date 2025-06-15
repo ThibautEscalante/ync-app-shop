@@ -33,7 +33,7 @@ import "./style/showcase.css";
 import "./style/gallery.css";
 import "./style/basket.css";
 import "./style/payment.css";
-// import "./style/about.css";
+import "./style/about.css";
 import "./style/acknowledgment.css";
 import "./style/popup_item.css";
 
@@ -208,7 +208,7 @@ function App() {
     function aboutState() {
         setButtonDisplay("RETOUR");
         // setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
-        setState("ACKNOWLEDGMENT");
+        setState("ABOUT");
     };
 
     function acknowledgmentState() {
