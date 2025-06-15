@@ -4,7 +4,7 @@
 
 .popup-page {
     position: fixed;
-    top: 0;
+    top: 19%;
     left: 0;
     width: 100vw;
     height: 100vh;
@@ -13,7 +13,7 @@
     justify-content: center;
     align-items: center;
     z-index: 9999;
-    padding: 20px;
+    /* padding: 20px; */
     box-sizing: border-box;
 }
 

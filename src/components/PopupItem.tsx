@@ -25,7 +25,8 @@ function PopupItem({ item, quantity, onClose, add }) {
     if (!item) return null;
 
     return (<>
-        <Section name={item.title} image="assets/home_icon.svg" />
+        <Section name="POPUPITEM" image="assets/home_icon.svg" />
+
         <div className="popup-page" onClick={onClose}>
             <div className="model" onClick={(e) => e.stopPropagation()}>
 
