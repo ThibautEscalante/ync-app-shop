@@ -189,31 +189,31 @@ function App() {
 
     function homeState() {
         setButtonDisplay("PANIER");
-        setSection({name: "Quelconque", image: "assets/home_icon.svg"})
+        // setSection({name: "Quelconque", image: "assets/home_icon.svg"})
         setState("HOME");
     };
 
     function paymentState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Payment", image: "assets/payment_icon.svg"})
+        // setSection({name: "Payment", image: "assets/payment_icon.svg"})
         setState("PAYMENT");
     };
 
     function basketState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Panier", image: "assets/basket_icon.svg"})
+        // setSection({name: "Panier", image: "assets/basket_icon.svg"})
         setState("BASKET");
     };
 
     function aboutState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
+        // setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
         setState("ACKNOWLEDGMENT");
     };
 
     function acknowledgmentState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Nous te remercions", image: "assets/acknowledgment/acknowledgment_icon.svg"})
+        // setSection({name: "Nous te remercions", image: "assets/acknowledgment/acknowledgment_icon.svg"})
         setState("ACKNOWLEDGMENT");
     };
 
@@ -244,13 +244,13 @@ function App() {
     useEffect(() => {
         if (popupId) {
             fetchItem(popupId)
-                .then(setPopupItem)
+                .then(data => setPopupItem(data))
                 .catch(e => {
                     console.error(`[PopupItem] ${e.message}`);
                     setPopupItem(null);
                 });
             fetchQuantity(popupId)
-                .then(setPopupQuantity)
+                .then(data => setPopupQuantity(data.sizes))
                 .catch(e => {
                     console.error(`[PopupItem] ${e.message}`);
                     setPopupQuantity(null);
