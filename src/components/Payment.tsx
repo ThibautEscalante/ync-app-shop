@@ -11,11 +11,13 @@ import { paypalPage, PAYMENT_STATES } from './PaymentServices';
 
 import { usePaymentForm } from './usePaymentForm';
 
+import Section from './Section';
+
 
 // Address API URL
 const ADDRESS_API_URL = "https://api-adresse.data.gouv.fr/search/";
 
-function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) {
+function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlurAsync, errors}) {
 
     const [addressInput, setAddressInput] = useState(order.address || "");
     const [suggestions, setSuggestions] = useState([]);
@@ -105,7 +107,7 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) 
           }
         }
 
-        handleBlur({ target: {name: "address",value: label,}});
+        handleBlurAsync({ target: {name: "address",value: label,}});
 
       };
       
@@ -182,7 +184,7 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) 
                         <input type="text" name="address" placeholder="Adresse"
                                 value={addressInput}
                                 onChange={handleAddressChange} 
-                                onBlur={handleBlur} 
+                                onBlur={handleBlurAsync} 
                                 required className={errors.address ? 'error-border' : ''}/>
 
                         {suggestions && suggestions.length > 0 && (
@@ -257,28 +259,35 @@ function PaymentRow({ basket, id }) {
                 .then(data => setItem(data))
                 .catch(e => console.error(`[BasketItem;useEffect] ${e.message}`));
         }, [basket]);
+
+          // basket[id] { taille: quantité,  }
     return (
         <div className="payment-product">
                         
                         <div className="payment-product-image">
 
                             <div className="payment-product-icon" >
-                                <img className="payment-basket-image" src={(!item) ? "" : item.image}/>
+                                <img className="payment-basket-image" src={item ? item.images?.[0] || "" : ""} alt={item ? item.display_name : "?"}/>
                             </div>
 
                         </div>
 
                         <div className="payment-product-details">
 
-                            <div className="product-name"> {(!item) ? "?" : item.display_name} </div>
-                            <div className="product-quantity"> {basket[id]}</div>
-
+                            <div className="product-name"> {item ? item.display_name : "?"} </div>
+                            {item && Object.entries(basket[id]).map(([size, quantity]) => (
+                                <div key={size} className="product-quantity">
+                                    Taille: {size} — Quantité: {quantity}
+                                </div>
+                                ))}
                         </div>
 
-                        <div className="product-price"> {(!item) ? "?" : item.price * basket[id]} €</div>
+                        <div className="product-price"> {item ? Object.entries(basket[id]).reduce((total, [_, qty]) => total + qty * item.price, 0) : "?"} €</div>
         </div>
     );
 }
+
+
 function PaymentRows({ basket }){
     return (
         <div className="payment-rows">
@@ -286,6 +295,8 @@ function PaymentRows({ basket }){
         </div>
     );
 }
+
+
 function PaymentPrice({ basket, time2Pay, formValid}){
 
     const { fetchItem } = useContext(ShopAPIContext);
@@ -314,9 +325,14 @@ function PaymentPrice({ basket, time2Pay, formValid}){
       
           // Une fois toutes les réponses reçues, on calcule le total
           itemsData.forEach((data, index) => {
-            const quantity = basket[Object.keys(basket)[index]];
-            new_fee += 0.01 * quantity;
-            new_amount += quantity * parseFloat(data.price);
+            // const quantity = basket[Object.keys(basket)[index]];
+            const itemSizes = basket[Object.keys(basket)[index]];
+            let totalQty = 0;
+            for (const qty of Object.values(itemSizes)) {
+                totalQty += qty;
+            }
+            new_fee += 0.01 * totalQty;
+            new_amount += totalQty * parseFloat(data.price);
           });
       
           // Mise à jour une seule foiss de l'état
@@ -449,10 +465,10 @@ function Payment({ basket, goto }) {
         }
     };
 
-    return (
-
+    return (<>
+            <Section name="Payment" image="assets/payment_icon.svg" />
             <div className="payment">
-
+                 {/* PARTIE GAUCHE */}
                 <PaymentForm
                     order={order}
                     errors={errors}
@@ -463,9 +479,7 @@ function Payment({ basket, goto }) {
                 />            
 
                 {/* PARTIE DROITE */}
-
                 <PaymentPrice basket={basket} time2Pay={time2Pay} formValid={formValid}/>
-                
                 
                 {/* Message conditionnel si le paiement est approuvé */}
                 {(approved !== '') && (
@@ -476,5 +490,5 @@ function Payment({ basket, goto }) {
             
             </div>
 
-    );
+            </>);
 } export default Payment;
