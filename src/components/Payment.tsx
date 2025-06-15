@@ -395,7 +395,7 @@ function Payment({ basket, goto }) {
         gtc: 'accepted'
     };
 
-    const { order, errors, handleChange, handleBlur, formValid, setOrder, setErrors } = usePaymentForm({
+    const { order, errors, handleChange, handleBlur, handleBlurAsync, formValid, setOrder, setErrors } = usePaymentForm({
         first_name: '', name: '', phone: '', mail: '',
         address: '', postal_code: '', city: '', region: '',
         newsletter: false, gtc: false
@@ -466,9 +466,10 @@ function Payment({ basket, goto }) {
                     errors={errors}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
+                    handleBlurAsync={handleBlurAsync}
                     rules={rules}
                     basket={basket}
-                />            
+                />
 
                 {/* PARTIE DROITE */}
                 <PaymentPrice basket={basket} time2Pay={time2Pay} formValid={formValid}/>

@@ -37,9 +37,11 @@ register('telephone', function (value) {
 // Ajout de la regle personnalisée pour la verification d'adresse, de ville, de code postal et de pays/region + passage simplebodyvalidator
 register('address_api_check', async function (addressValue) {
 
+    /*
     if (!addressValue || addressValue.length < 3) {
         return false; // L'adresse est vide ou trop courte, la validation échoue
     }
+    */
 
     const apiAddress = await searchFrenchAddress(addressValue);
 
@@ -49,6 +51,7 @@ register('address_api_check', async function (addressValue) {
 
      // Convertir en minuscules et supprimer les espaces
     const formData = this.data; // // this.data accede à toutes les données de l'objet qu'on a donné au make de validator
+  console.log(formData, this.data);
 
     const formCity = formData?.city?.toLowerCase().trim();
     const formPostalCode = formData?.postal_code?.trim();

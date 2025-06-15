@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function PaymentForm({}) {
+function PaymentSummary({ basket, valid }) {
     return (<>
     </>);
 }
