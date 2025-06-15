@@ -88,16 +88,12 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) 
           target: {
             name: "address",
             value: label,
-          },
+          }
         });
       
         // Mise à jour des autres champs
         if (suggestion) {
           const { city, postcode, context } = suggestion.properties;
-      
-          console.log("→ city:", city);
-          console.log("→ postcode:", postcode);
-          console.log("→ context:", context);
       
           handleChange({ target: { name: "city", value: city || "" } });
           handleChange({ target: { name: "postal_code", value: postcode || "" } });
@@ -108,6 +104,9 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, errors}) 
             handleChange({ target: { name: "region", value: region } });
           }
         }
+
+        handleBlur({ target: {name: "address",value: label,}});
+
       };
       
 
@@ -376,8 +375,14 @@ function Payment({ basket, goto }) {
     const { fetchItem, fetchOrder, postOrder, captureOrder } = useContext(ShopAPIContext);
 
     const rules = {
-        first_name: 'required|alpha', name: 'required|alpha', phone: 'nullable|telephone', mail: 'required|email',
-        address: 'required|string', postal_code: 'required|string', city: 'required|string', region: 'required|string',
+        first_name: 'required|alpha', 
+        name: 'required|alpha', 
+        phone: 'nullable|telephone', 
+        mail: 'required|email',
+        address: 'required|address_api_check', 
+        postal_code: 'required|string', 
+        city: 'required|string', 
+        region: 'required|string',
         gtc: 'accepted'
     };
 

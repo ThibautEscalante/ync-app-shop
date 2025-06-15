@@ -4,30 +4,42 @@
 
 .popup-page {
     position: fixed;
-    top: 13%;
+    top: 0;
     left: 0;
     width: 100vw;
-    height: calc( 100vh - 220px );
+    height: 100vh;
     background: rgba(0, 0, 0, 0.75);
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 9999;
+    padding: 20px;
+    box-sizing: border-box;
 }
-
 
 /* ================================
     SECTION MODELE : .model
 ================================ */
 .model {
-    width: 100vw;
+    width: 100%;
     height: 100%;
-    /* max-height: calc( 100vh - 220px ); */
     display: flex;
     background: #fff;
     overflow: hidden;
     position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* ================================
@@ -39,14 +51,50 @@
     height: 100%;
     background-color: #f8f8f8;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
+    flex-direction: column;
+    padding: 20px;
     box-sizing: border-box;
 }
 
+/* NEW CSS FOR THE PURPLE BLOCK */
+.purple-table-block {
+    background-color: #c14bff; /* A shade of purple */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white; /* If you add text inside */
+    font-size: 2em; /* If you add text inside */
+    /* You can add more styles here to make it look like a "table" if desired,
+       e.g., border, shadows, different gradients.
+       For now, it's a solid purple block. */
+}
 
-.popup-image-container img {
+
+.popup-thumbnails {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.popup-mini-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.popup-mini-image.active {
+    border-color: #c14bff;
+}
+
+.popup-main-image-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .popup-main-image {
@@ -55,31 +103,28 @@
     object-fit: contain;
 }
 
-.popup-mini-image {
-    width: 100%;
-}
-
-
 /* ================================
     SECTION DETAILS : .content-section
 ================================ */
 .content-section {
     width: 50%;
-    padding: 40px 60px;
+    padding: 40px 50px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    gap: 20px;
+    gap: 15px;
     position: relative;
+    overflow-y: auto;
 }
 
 /* Titre */
 .popup-title {
-    font-size: 24px;
+    width: 187px;
+    height: 29px;
+    font-size: 28px;
     font-weight: 700;
     text-transform: uppercase;
     color: #0d0d0d;
-    margin-bottom: 5px;
+    margin: 0;
 }
 
 /* Citation en haut à droite */
@@ -88,20 +133,22 @@
     font-size: 12px;
     color: #888;
     opacity: 0.7;
+    text-align: right;
+    margin-bottom: 10px;
 }
 
 /* Sous-titre (BLACK ON WHITE • UNISEX ♂) */
 .popup-subtitle {
-    font-size: 18px;
+    font-size: 16px;
     color: #0d0d0d;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
 }
 
 /* Prix */
 .popup-price {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 700;
     color: #0d0d0d;
 }
@@ -120,6 +167,16 @@
 
 .size-dropdown {
     width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.size-dropdown:focus {
+    outline: none;
+    border-color: #c14bff;
 }
 
 /* ================================
@@ -135,7 +192,7 @@
 
 .popup-add {
     width: 100%;
-    height: 45px;
+    height: 50px;
     border: none;
     background-color: #c14bff;
     color: white;
@@ -149,7 +206,13 @@
 
 .popup-add:hover {
     background-color: #a03dcc;
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+}
+
+.popup-add:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    transform: none;
 }
 
 /* ================================
@@ -157,45 +220,79 @@
 ================================ */
 .popup-close {
     position: absolute;
-    width: 40%;
-    top: 0%;
-    right: 14px;
+    top: 15px;
+    right: 15px;
     background: transparent;
     border: none;
     cursor: pointer;
-    z-index: 9999;
+    z-index: 10;
+    font-size: 24px;
+    color: #666;
+    padding: 5px;
+    width: 35px;
+    height: 35px;
+    transition: color 0.2s ease;
 }
 
-.popup-close button {
-    width: 2%;
+.popup-close:hover {
+    color: #000;
 }
 
 .popup-close img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
+
+
 
 /* ================================
     FOLDOUT
 ================================ */
 
 .foldout-section {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.foldout-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
 }
 
 .foldout-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
+    padding: 10px 0;
+    transition: background-color 0.2s ease;
+}
+
+.foldout-header:hover {
+    background-color: rgba(193, 75, 255, 0.05);
 }
 
 .foldout-title {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #0d0d0d;
 }
 
 .foldout-icon {
-    margin: 2%;
-    display: inline-block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #c14bff;
+    transition: transform 0.2s ease;
 }
 
 .foldout-content {
-    padding-top: 5px;
+    padding-top: 10px;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
     animation: fadeIn 0.3s ease-out;
 }
 
@@ -203,26 +300,97 @@
     RESPONSIVE
 ================================ */
 @media (max-width: 768px) {
+    .popup-page {
+        padding: 10px;
+    }
+    
     .model {
         width: 95vw;
+        height: 90vh;
         flex-direction: column;
-        max-height: 90vh;
         overflow-y: auto;
     }
 
     .popup-image-container,
     .content-section {
         width: 100%;
-        padding: 30px;
+        padding: 20px;
+    }
+    
+    .popup-image-container {
+        height: auto;
+        min-height: 300px;
+    }
+    
+    .content-section {
+        height: auto;
+        overflow-y: visible;
     }
 
-    .options-section {
-        flex-direction: column;
-        gap: 20px;
+    .popup-thumbnails {
+        order: 2;
+        margin-top: 15px;
+        margin-bottom: 0;
+    }
+    
+    .popup-main-image-container {
+        order: 1;
+        min-height: 250px;
     }
 
     .popup-quote {
         position: static;
-        align-self: flex-end;
+        text-align: left;
+    }
+    
+    .popup-title {
+        font-size: 24px;
+    }
+    
+    .popup-subtitle {
+        font-size: 14px;
+    }
+    
+    .popup-price {
+        font-size: 20px;
+    }
+    
+    .popup-close {
+        top: 10px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .popup-page {
+        padding: 5px;
+    }
+    
+    .model {
+        width: 98vw;
+        height: 95vh;
+    }
+    
+    .popup-image-container,
+    .content-section {
+        padding: 15px;
+    }
+    
+    .popup-thumbnails {
+        gap: 8px;
+    }
+    
+    .popup-mini-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .popup-title {
+        font-size: 20px;
+    }
+    
+    .popup-add {
+        height: 45px;
+        font-size: 13px;
     }
 }
