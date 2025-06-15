@@ -5,21 +5,22 @@ import { useState, useContext, useEffect, useRef} from "react";
 import ShopAPIContext from "./context/ShopAPIProvider";
 
 /* Custom component imports */
+import Logo from "./components/Splashpage";
+
 import Header from "./components/Header";
 import Section from "./components/Section";
 import Footer from "./components/Footer";
-import Logo from "./components/Splashpage";
-// import Item from "./components/Item"; /* A supprimer par la suite */
+
 import Vitrine from "./components/Vitrine";
 import Gallery from "./components/Gallery";
 import PopupItem from "./components/PopupItem";
+
 import Basket from "./components/Basket";
+
 import Payment from "./components/Payment";
+
 import About from "./components/About";
 import Acknowledgment from "./components/Acknowledgment";
-
-/* Custom Cursor component import */
-import CustomCursor from "./CustomCursor";
 
 /* Scrolling smooth component import */
 import useSmoothScroll from "../useSmoothScroll";
@@ -35,7 +36,6 @@ import "./style/payment.css";
 // import "./style/about.css";
 import "./style/acknowledgment.css";
 import "./style/popup_item.css";
-import "./style/custom_cursor.css";
 
 function useBasket() {
     const { fetchBasket, postBasket } = useContext(ShopAPIContext);
@@ -43,56 +43,76 @@ function useBasket() {
 
     useEffect(() => {
         fetchBasket()
-            .then((data) => { if (data) setBasket(data); })
+            .then((data) => { console.log(data); setBasket(data); })
             .catch(e => console.error(`[useBasket;useEffect | fetchBasket] ${e.message} (${e.status}))`));
     }, []);
 
-    function addBasket(item) {
-        let count = 1;
-        if (basket[item]) count = basket[item] + 1;
+    function addBasket(item, size) {
+        console.log(basket);
 
-        postBasket({...basket, [String(item)]: count});
-        setBasket({...basket, [String(item)]: count});
-    };
+        // Create new basket without mutating current state
+        const newBasket = {...basket};
 
-    function removeBasket(item) {
+        if (!newBasket[item]) {
+            newBasket[item] = {};
+        }
 
-        if (basket[item]) {
-            const count = basket[item] - 1;
-            const updated = { ...basket };
+        const currentCount = newBasket[item][size] || 0;
+        const newCount = currentCount + 1;
+
+        // Update the specific size
+        newBasket[item] = {...newBasket[item], [String(size)]: newCount};
+
+        postBasket(newBasket);
+        setBasket(newBasket);
+    }
+
+    function removeBasket(item, size) {
+        if (basket[item]?.[size]) {
+            const count = basket[item][size] - 1;
+            const newBasket = {...basket};
 
             if (count <= 0) {
-                delete updated[item];
+                newBasket[item] = {...newBasket[item]};
+                delete newBasket[item][size];
+
+                if (Object.keys(newBasket[item]).length === 0) {
+                    delete newBasket[item];
+                }
             } else {
-                updated[item] = count;
+                newBasket[item] = {...newBasket[item], [size]: count};
             }
 
-            postBasket({...basket, [item]: count});
-            setBasket({...basket, [item]: count});
+            postBasket(newBasket);
+            setBasket(newBasket);
         }
-    };
+    }
 
-    return { basket, addBasket, removeBasket };
+    function removeBasketSize(item, size) {
+        if (basket[item]?.[size]) {
+            const newBasket = {...basket};
+            newBasket[item] = {...newBasket[item]};
+
+            // Remove the specific size completely
+            delete newBasket[item][size];
+
+            // Remove the entire item if no sizes left
+            if (Object.keys(newBasket[item]).length === 0) {
+                delete newBasket[item];
+            }
+
+            postBasket(newBasket);
+            setBasket(newBasket);
+        }
+    }
+
+    return { basket, addBasket, removeBasket, removeBasketSize };
 }
-
-
-
-
-
-
-// const galleryRef = useRef(null);
-// useSmoothScroll([galleryRef], true);
-
-  
-
-
 
 /* @desc: the main component orchestating all different components of the website
  * @return: the whole website content
  */
 function App() {
-
-
     const [currentSection, setCurrentSection] = useState<"VITRINE" | "GALLERY">("VITRINE");
     const galleryRef = useRef<HTMLDivElement | null>(null);
 
@@ -125,40 +145,40 @@ function App() {
 //     return () => window.removeEventListener("scroll", onScroll);
 //   }, [currentSection]);
 
-useEffect(() => {
-    let scrollLocked = false;
+    useEffect(() => {
+        let scrollLocked = false;
 
-    const handleWheel = (e: WheelEvent) => {
-      if (scrollLocked) return;
+        const handleWheel = (e: WheelEvent) => {
+            if (scrollLocked) return;
 
-      const delta = e.deltaY;
+            const delta = e.deltaY;
 
-      if (currentSection === "VITRINE" && delta > 30) {
-        scrollLocked = true;
-        setCurrentSection("GALLERY");
+            if (currentSection === "VITRINE" && delta > 30) {
+                scrollLocked = true;
+                setCurrentSection("GALLERY");
 
-        setTimeout(() => {
-          scrollLocked = false;
-          window.scrollTo({ top: 0 }); // Remet en haut proprement
-        }, 1000); // Bloque pendant 1 seconde pour éviter double scroll
-      }
+                setTimeout(() => {
+                    scrollLocked = false;
+                    window.scrollTo({ top: 0 }); // Remet en haut proprement
+                }, 1000); // Bloque pendant 1 seconde pour éviter double scroll
+            }
 
-      if (currentSection === "GALLERY" && delta < -30) {
-        scrollLocked = true;
-        setCurrentSection("VITRINE");
+            if (currentSection === "GALLERY" && delta < -30) {
+                scrollLocked = true;
+                setCurrentSection("VITRINE");
 
-        setTimeout(() => {
-          scrollLocked = false;
-          window.scrollTo({ top: 0 });
-        }, 1000);
-      }
-    };
+                setTimeout(() => {
+                    scrollLocked = false;
+                    window.scrollTo({ top: 0 });
+                }, 1000);
+            }
+        };
 
-    window.addEventListener("wheel", handleWheel, { passive: true });
-    return () => window.removeEventListener("wheel", handleWheel);
-  }, [currentSection]);
+        window.addEventListener("wheel", handleWheel, { passive: true });
+        return () => window.removeEventListener("wheel", handleWheel);
+    }, [currentSection]);
 
-    const { basket, addBasket, removeBasket } = useBasket();
+    const { basket, addBasket, removeBasket, removeBasketSize } = useBasket();
 
     // Define default app state
     const [state, setState] = useState("HOME");
@@ -188,7 +208,7 @@ useEffect(() => {
     function aboutState() {
         setButtonDisplay("RETOUR");
         setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
-        setState("ABOUT");
+        setState("ACKNOWLEDGMENT");
     };
 
     function acknowledgmentState() {
@@ -241,33 +261,25 @@ useEffect(() => {
 
     const content = (
         <div className="App">
-            <Header name={buttonDisplay} basket={basket} homeFn={homeState} clickFn={updateState}/>
-            <Section name={section.name} image={section.image}/>
+            <Header name={buttonDisplay} basket={basket} homeFn={homeState} aboutFn={aboutState} basketFn={updateState}/>
+            {/*<Section name={section.name} image={section.image}/>*/}
 
-            {/* {(state === "HOME") && <Item id="quelconque" galleryIds={["quelconque", "quelconque", "quelconque", "quelconque"]} add={addBasket} goto={basketState}/>}
-             */}
-
-            {state === "HOME" && (
-            <>
-                {currentSection === "VITRINE" && (
-                    <Vitrine id="quelconque" add={addBasket} goto={basketState} />
-                )}
-
+            {state === "HOME" && (<>
+                {currentSection === "VITRINE" && (<Vitrine id="quelconque" add={addBasket} goto={basketState} />)}
                 {currentSection === "GALLERY" && (
                     <div ref={galleryRef}>
-                        <Gallery ids={["quelconque", "quelconque", "quelconque", "quelconque"]} onItemClick={(id) => setPopupId(id)} />
+                        <Gallery ids={["quelconque", "stairs_white_shirt", "frog_poster"]} onItemClick={(id) => setPopupId(id)} />
                     </div>
                 )}
-            </>
-            )}
+            </>)}
 
-            {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} next={paymentState}/>}
-            {(state === "PAYMENT") && <Payment basket={basket} goto={acknowledgmentState}/>}
+            {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} del={removeBasketSize} next={paymentState} />}
+            {(state === "PAYMENT") && <Payment basket={basket} goto={acknowledgmentState} />}
 
             {(state === "ABOUT") && <About />}
             {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
 
-            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />}
+            {/*((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />*/}
 
             {popupItem && popupId && (
                 <PopupItem
@@ -284,9 +296,7 @@ useEffect(() => {
 
     return (
         // <Logo content={content} />
-        <CustomCursor targetClass="custom-target">
-            {content}
-        </CustomCursor>
+        <>{content}</>
     );
 
 } export default App;

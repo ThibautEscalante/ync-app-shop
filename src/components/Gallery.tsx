@@ -1,52 +1,43 @@
 import { useContext, useEffect, useState, forwardRef } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
+import Section from "./Section";
 
-const Gallery = forwardRef(function Gallery({ ids, onItemClick }, ref) {
+function GalleryItem({ id, onItemClick }) {
     const { fetchItem } = useContext(ShopAPIContext);
-    const [images, setImages] = useState([]);
+    const [item, setItem] = useState(undefined);
 
     useEffect(() => {
-        (async () => {
-            const data = await Promise.all(ids.map(async id => {
-                try {
-                    const item = await fetchItem(id);
-                    return (item && item.image) ? { id, src: item.image } : null;
-                } catch (e) {
-                    console.error(`[Gallery] ${id}: ${e.message}`);
-                    return null;
-                }
-            }));
+        fetchItem(id)
+            .then(data => setItem(data))
+            .catch(e => console.error(`[GalleryItem] ${e.message}`));
+    }, []);
 
-            const validImages = data.filter(image => image !== null);
-            setImages(validImages);
-        })();
-    }, [ids]);
+    return (item === undefined ? <></> :
+        <div key={item.id} className="gallery-thumbnail" onClick={() => onItemClick(item.id)}>
+            <div className="gallery-thumbnail">
+                <div className="image-wrapper">
+                    <img className="gallery-image" src={item.images[0]} alt="Article"/>
+                </div>
+                <div className="description-wrapper">
+                    <div className="gallery-title">{item.title}</div>
+                    <div className="gallery-description">{item.subtitle}</div>
+                    <div className="gallery-note">{item.quote}</div>
+                    <div className="gallery-price">{item.price}</div>
+                </div>
+            </div>
+        </div>
+    );
+}
 
-    if (images.length === 0) return null;
 
-    return (
+function GalleryPage({ ids, onItemClick }, ref) {
+    return (<>
+        <Section name="Gallerie" image="assets/home_icon.svg"/>
         <div className="gallery" ref={ref}> {/* GALLERY */}
 
             <div className="gallery-container">
                 <div className="gallery-thumbnails">
-                    {images.map(({ id, src }) => (
-                        <div key={id} className="gallery-thumbnail">
-                            <div className="image-wrapper">
-                                <img
-                                    src={src}
-                                    alt={`Article ${id}`}
-                                    className="gallery-image"
-                                    onClick={() => onItemClick(id)}
-                                />
-                            </div>
-                            <div className="description-wrapper">
-                                <div className="gallery-title">STAIRS Tee</div>
-                                <div className="gallery-description">Black on White • Unisex</div>
-                                <div className="gallery-note">“Create or consume.”</div>
-                                <div className="gallery-label">AAA</div>
-                            </div>
-                        </div>
-                    ))}
+                    {ids.map(id => <GalleryItem id={id} onItemClick={onItemClick} />)}
                 </div>
             </div>
 
@@ -59,9 +50,11 @@ const Gallery = forwardRef(function Gallery({ ids, onItemClick }, ref) {
             <div className="gallery-text">
                 <p>
                     Nous préparons de nouveaux articles et designs exclusifs.
-                    <br />
+                    <br/>
                     Restes connecté — notre équipe adore explorer de nouveaux concepts, tester des idées folles,
                     pour enrichir notre univers avec de nouvelles pièces.
+                    <br/>
+                    Nous contacter: <a href="mailto:yng.corporation@zohomail.eu">yng.corporation@zohomail.eu</a>
                 </p>
                 <p>
                     © 2025 Young New Corporation. L’univers est en expansion – nous aussi.
@@ -69,7 +62,9 @@ const Gallery = forwardRef(function Gallery({ ids, onItemClick }, ref) {
             </div>
 
         </div>
-    );
-});
+    </>);
+}
+
+const Gallery = forwardRef(GalleryPage);
 
 export default Gallery;
