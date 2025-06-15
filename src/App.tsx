@@ -208,7 +208,7 @@ function App() {
     function aboutState() {
         setButtonDisplay("RETOUR");
         setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
-        setState("ABOUT");
+        setState("ACKNOWLEDGMENT");
     };
 
     function acknowledgmentState() {
@@ -261,8 +261,8 @@ function App() {
 
     const content = (
         <div className="App">
-            <Header name={buttonDisplay} basket={basket} homeFn={homeState} clickFn={updateState}/>
-            <Section name={section.name} image={section.image}/>
+            <Header name={buttonDisplay} basket={basket} homeFn={homeState} aboutFn={aboutState} basketFn={updateState}/>
+            {/*<Section name={section.name} image={section.image}/>*/}
 
             {state === "HOME" && (<>
                 {currentSection === "VITRINE" && (<Vitrine id="quelconque" add={addBasket} goto={basketState} />)}
@@ -279,7 +279,7 @@ function App() {
             {(state === "ABOUT") && <About />}
             {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
 
-            {((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />}
+            {/*((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />*/}
 
             {popupItem && popupId && (
                 <PopupItem

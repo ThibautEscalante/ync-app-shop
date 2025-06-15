@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
+import Section from "./Section";
 
 function Vitrine({ id, add, goto }) {
     const [item, setItem] = useState(null);
@@ -16,8 +17,9 @@ function Vitrine({ id, add, goto }) {
         goto();
     };
 
-    return (
-        <section className="showcase"> {/* SHOWCASE */}
+    return (<>
+        <Section name="Quelconque" image="assets/home_icon.svg"/>
+        <div className="showcase"> {/* SHOWCASE */}
 
             {/* ITEM */}
             <div className="item">
@@ -45,8 +47,8 @@ function Vitrine({ id, add, goto }) {
 
             </div>
 
-        </section>
-    );
+        </div>
+    </>);
 }
 
 export default Vitrine;

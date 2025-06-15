@@ -1,4 +1,5 @@
 import { useState, useId } from 'react';
+import Section from './Section';
 
 function FoldoutSection({ title, content }) {
     const [display, setDisplay] = useState(false);
@@ -23,7 +24,8 @@ function PopupItem({ item, quantity, onClose, add }) {
 
     if (!item) return null;
 
-    return (
+    return (<>
+        <Section name={item.title} image="assets/home_icon.svg" />
         <div className="popup-page" onClick={onClose}>
             <div className="model" onClick={(e) => e.stopPropagation()}>
 
@@ -67,7 +69,7 @@ function PopupItem({ item, quantity, onClose, add }) {
                 </div>
             </div>
         </div>
-    );
+    </>);
 }
 
 export default PopupItem;

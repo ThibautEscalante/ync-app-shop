@@ -153,6 +153,7 @@ body::-webkit-scrollbar-track {
     align-items: center;
 }
 
+/*
 @keyframes fadeInUpApp {
     0% {
         opacity: 0;
@@ -161,6 +162,7 @@ body::-webkit-scrollbar-track {
         opacity: 1;
     }
 }
+*/
 
 /* ================================
     FOOTER FIXE : .footer

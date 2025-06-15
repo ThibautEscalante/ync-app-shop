@@ -1,5 +1,6 @@
 import {useContext, useEffect, useState, useCallback } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
+import Section from './Section';
 
 function BasketArticle({ item, size, quantity, compact, add, rm, del }) {
     return (item &&
@@ -130,8 +131,9 @@ function Basket({ basket, compact=true, add=undefined, rm=undefined, del=undefin
     // const isEmpty = !basket || Object.keys(basket).length === 0;
     const isEmpty = !basket || Object.entries(basket).every(([_, quantity]) => quantity <= 0);
 
-    return (
-        isEmpty
+    return (<>
+        <Section name="Panier" image="assets/basket_icon.svg" />
+        {isEmpty
             ? (<div className="empty-basket-wrapper"> {/* NO BASKET */}
 
                 <p className="empty-basket">&lt; No item in your cute lil basket &gt;</p>
@@ -150,8 +152,8 @@ function Basket({ basket, compact=true, add=undefined, rm=undefined, del=undefin
                 {/* ORDER SUMMARY */}
                 <BasketPrice basket={basket} compact={compact} next={next}/>
 
-            </div>)
+            </div>)}
 
-    );
+    </>);
 
 } export default Basket;

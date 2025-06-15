@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState, forwardRef } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
+import Section from "./Section";
 
 function GalleryItem({ id, onItemClick }) {
     const { fetchItem } = useContext(ShopAPIContext);
@@ -30,7 +31,8 @@ function GalleryItem({ id, onItemClick }) {
 
 
 function GalleryPage({ ids, onItemClick }, ref) {
-    return (
+    return (<>
+        <Section name="Gallerie" image="assets/home_icon.svg"/>
         <div className="gallery" ref={ref}> {/* GALLERY */}
 
             <div className="gallery-container">
@@ -51,6 +53,8 @@ function GalleryPage({ ids, onItemClick }, ref) {
                     <br/>
                     Restes connecté — notre équipe adore explorer de nouveaux concepts, tester des idées folles,
                     pour enrichir notre univers avec de nouvelles pièces.
+                    <br/>
+                    Nous contacter: <a href="mailto:yng.corporation@zohomail.eu">yng.corporation@zohomail.eu</a>
                 </p>
                 <p>
                     © 2025 Young New Corporation. L’univers est en expansion – nous aussi.
@@ -58,7 +62,7 @@ function GalleryPage({ ids, onItemClick }, ref) {
             </div>
 
         </div>
-    );
+    </>);
 }
 
 const Gallery = forwardRef(GalleryPage);

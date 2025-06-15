@@ -5,7 +5,7 @@
  * @param clickFn: the onClick handler for the top right button
  * @return: the top menu component of the website page
  */
-function Header({name, basket, homeFn, clickFn}) {
+function Header({name, basket, homeFn, aboutFn, basketFn}) {
 
     // If top right button is "PANIER" then display the number of items in basket next to it
     // let item_count = Object.values(basket).reduce((a, b) => a + b, 0);
@@ -22,7 +22,8 @@ function Header({name, basket, homeFn, clickFn}) {
         <div className="header-mask">
             <div className="header">
                 <button className="header-left" onClick={homeFn}>YNC SHOP</button>
-                <button className="header-right" onClick={clickFn}>{display_name}</button>
+                <button className="header-right" onClick={aboutFn}>À PROPOS</button>
+                <button className="header-right" onClick={basketFn}>{display_name}</button>
             </div>
         </div>
     );
