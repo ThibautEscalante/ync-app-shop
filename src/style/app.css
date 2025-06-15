@@ -121,41 +121,42 @@ body::-webkit-scrollbar-track {
 ================================ */
 
 .section {
-    display: flex;
     position: fixed;
+    display: flex;
     flex-direction: row;
+    align-items: center;
     z-index: 100;
     width: 100%;
-    height: 100px;
-    margin-top: calc( 42px + 15px );
-    padding-top: 30px;
-    padding-left: 30px;
+    height: 10%;
+    margin-top: 2.5%;
+    padding-top: 3%;
+    padding-left: 1.5%;
     background-color: #f8f8f8;
     animation: fadeInUpApp 1.9s ease both;
     animation-delay: 3s;
 }
-
+  
 /* Logo */
 .section-image {
-    width: 51px;
-    height: 65px;
-    margin: 0 10px;
+    width: 2.66vw;
+    height: 7.35vh;
+    margin: 0 0.52%;
     object-fit: contain;
     flex-shrink: 0;
 }
-
+  
 /* Titre */
 .section-title {
-    height: calc(100% - 12px);
+    height: calc(100% - 1.1%);
     margin: 0;
-    padding-top: 4px;
-    padding-left: 35px;
+    padding-top: 0.37%;
+    padding-left: 1.8%;
     color: #0d0d0d;
-    font-size: 40px;
+    font-size: 2.08vw;
+    display: flex;
     align-items: center;
 }
 
-/*
 @keyframes fadeInUpApp {
     0% {
         opacity: 0;
@@ -164,14 +165,15 @@ body::-webkit-scrollbar-track {
         opacity: 1;
     }
 }
-*/
+  
+
 
 /* ================================
     FOOTER FIXE : .footer
     Bas de page avec bouton
 ================================ */
 
-.footer {
+/* .footer {
     display: flex;
     position: fixed;
     bottom: 0;
@@ -199,7 +201,7 @@ body::-webkit-scrollbar-track {
 .footer-title:hover {
     transform: translateY(-1.6px) scale(1.12);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
+} */
 
 /* ================================
     DEBUG :

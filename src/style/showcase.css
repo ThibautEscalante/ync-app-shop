@@ -5,9 +5,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1;
     width: 100%;
-    padding-top: 190px;
+    padding-top: 15%;
+    height: calc(100vh - 15%);
 }
 
 /* ================================
@@ -19,8 +19,8 @@
     align-items: center;
     position: relative;
     width: 100%;
-    max-width: 1290px;
-    height: 527px;
+    max-width: 67%;
+    aspect-ratio: 1290 / 527;
     overflow: visible;
     transition: all 0.1s ease;
 }
@@ -29,59 +29,62 @@
     IMAGE VITRINE : .shadow-image
 ================================ */
 .shadow-image {
-    display: inline-block;
     position: relative;
     perspective: 1000px;
     transform-origin: center;
-    filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.13));
+    filter: drop-shadow(1% 1% 2% rgba(0, 0, 0, 0.13));
     transition: transform 0.2s ease-out;
+    max-width: 25%;
 }
 
-.item img {
-    width: 328px;
-    height: 437px;
+.shadow-image img {
+    width: 100%;
+    height: auto;
     object-fit: cover;
-    border: none;
     opacity: 0;
     clip-path: inset(0 0 100% 0);
-    transform: translateY(30px) scale(0.95);
-    filter: blur(15px);
-    animation:
-        fadeInImage 1.2s ease-out forwards,
-        revealClip 1.5s ease-out forwards,
-        clearBlur 1.2s ease-out forwards;
+    transform: translateY(1.5%) scale(0.95);
+    filter: blur(0.8%);
+    animation: fadeInImage 1.2s ease-out forwards,
+                revealClip 1.5s ease-out forwards,
+                clearBlur 1.2s ease-out forwards;
     transition: clip-path 1.5s ease-out;
+}
+
+.zoom-box {
+    display: flex;
+    justify-content: center;
 }
 
 /* ================================
     BOUTON AJOUT PANIER : .item-button
 ================================ */
 .item-button {
-    width: 200px;
-    height: 50px;
-    margin-top: 40px;
+    width: 12%;
+    height: 3.2em; 
+    margin-top: 2%;
     border: none;
     background-color: #c14bff;
     color: white;
-    font-size: 16px;
+    font-size: 0.83vw;
     font-family: "Necto Mono", monospace;
     cursor: pointer;
     clip-path: inset(0 0 100% 0);
     animation: revealClipButton 1.25s 1.5s forwards;
     transition: transform 0.1s ease;
 }
-
+  
 .item-button::before {
     content: "J'AIME BIEN!";
 }
-
+  
 .item-button:hover {
     background-color: white;
     color: #c14bff;
     border: 1px solid #c14bff;
     transform: scale(1.05);
 }
-
+  
 .item-button:hover::before {
     content: attr(price);
     transition: all 0.6s ease;
@@ -94,7 +97,7 @@
     width: 0;
     position: absolute;
     top: 0;
-    left: 809px;
+    left: 42vw; /* left: 809px; */
     border-top: 1px solid black;
     animation: drawBorder 1.25s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
     animation-delay: 1.25s;
@@ -102,9 +105,9 @@
 }
 
 .item-description {
-    width: calc(500px - 8px - 26px);
-    padding: 0px 0px 0px 20px;
-    font-size: 16px;
+    width: 100%; /* width: calc(500px - 8px - 26px); */
+    padding-left: 1%;
+    font-size: 0.83vw;
 }
 
 .item-description p {
@@ -160,7 +163,7 @@
         width: 0;
     }
     to {
-        width: 481px;
+        width: 25.05vw;
     }
 }
 
