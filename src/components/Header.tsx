@@ -8,7 +8,14 @@
 function Header({name, basket, homeFn, clickFn}) {
 
     // If top right button is "PANIER" then display the number of items in basket next to it
-    let item_count = Object.values(basket).reduce((a, b) => a + b, 0);
+    // let item_count = Object.values(basket).reduce((a, b) => a + b, 0);
+
+    const item_count = Object.values(basket).reduce((a, b) => {
+        const count_a = Object.values(a).reduce((a,b) => a+b, 0);
+        const count_b = Object.values(b).reduce((a,b) => a+b, 0);
+        return count_a + count_b;
+    }, 0);
+
     let display_name = (name === "PANIER") ? `${name}[${item_count}]` : name;
 
     return (

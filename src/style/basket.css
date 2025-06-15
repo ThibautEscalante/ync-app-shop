@@ -141,6 +141,19 @@
     cursor: pointer;
 }
 
+.article-delete {
+    border: none;
+    background: none;
+    width: min-content;
+    position: absolute;
+    top: 1%;
+    right: 0.2%;
+    margin: 0;
+    text-align: right;
+    font-size: 23px;
+    font-weight: 400;
+}
+
 /* Prix */
 .article-price {
     width: min-content;

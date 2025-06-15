@@ -12,7 +12,7 @@ function Vitrine({ id, add, goto }) {
     }, [id]);
 
     const handleClick = () => {
-        add(id);
+        add(id, item.sizes[0]);
         goto();
     };
 
@@ -21,11 +21,11 @@ function Vitrine({ id, add, goto }) {
 
             {/* ITEM */}
             <div className="item">
-                
+
                 <div className="zoom-box">
 
                     <div className="shadow-image">
-                        <img src={item?.image || "??"} alt="" />
+                        <img src={item?.images[0] || "??"} alt="" />
                     </div>
 
                     <div className="item-description-border">
@@ -42,9 +42,9 @@ function Vitrine({ id, add, goto }) {
                     onClick={handleClick}
                     price={item?.price}
                 />
-            
+
             </div>
-        
+
         </section>
     );
 }
