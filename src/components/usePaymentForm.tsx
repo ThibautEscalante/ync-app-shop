@@ -37,53 +37,65 @@ register('telephone', function (value) {
     return /^0\d{9}$/.test(value);
   });
 
+  
+
 
 // Ajout de la regle personnalisée pour la verification d'adresse, de ville, de code postal et de pays/region + passage simplebodyvalidator
-register('address_api_check', async function (addressValue: string) {
+  register('address_api_check', async function (addressValue) {
 
-  if (!addressValue) {
-      return true;
-  }
+    if (!addressValue || addressValue.length < 3) {
+        return false; // L'adresse est vide ou trop courte, la validation échoue
+    }
 
-  const apiAddress = await searchFrenchAddress(addressValue);
+    const apiAddress = await searchFrenchAddress(addressValue);
 
-  if (!apiAddress) {
-      return false;
-  }
+    if (!apiAddress) {
+        return false; // L'API n'a pas trouvé l'adresse, la validation échoue
+    }
 
+     // Convertir en minuscules et supprimer les espaces
+    const formData = this.data; // // this.data accede à toutes les données de l'objet qu'on a donné au make de validator
 
-  // Convertir en minuscules et supprimer les espaces
-  const formCity = (this.data as any)?.city?.toLowerCase().trim(); // this.data accede à toutes les données de l'objet qu'on a donné au make de validator
-  const formPostalCode = (this.data as any)?.postal_code?.trim();
-  const formRegion = (this.data as any)?.region?.toLowerCase().trim();
+    const formCity = formData?.city?.toLowerCase().trim();
+    const formPostalCode = formData?.postal_code?.trim();
+    const formRegion = formData?.region?.toLowerCase().trim();
 
-  const apiCity = apiAddress.properties.city?.toLowerCase().trim();
-  const apiPostalCode = apiAddress.properties.postcode?.trim();
-  const apiContext = apiAddress.properties.context?.toLowerCase();
+    const apiCity = apiAddress.properties.city?.toLowerCase().trim();
+    const apiPostalCode = apiAddress.properties.postcode?.trim();
+    const apiContext = apiAddress.properties.context?.toLowerCase();
 
-  let isValidMatch = true;
+    let isValidMatch = true;
 
-  // Verification
-  if (formCity && apiCity && formCity !== apiCity) {
-      console.log(`Mismatch Ville: Form='${formCity}', API='${apiCity}'`);
-      isValidMatch = false;
-  }
+    // Vérification de la correspondance Ville
+    if (formCity && apiCity && formCity !== apiCity) {
+        console.log(`Mismatch Ville: Form='${formCity}', API='${apiCity}'`);
+        isValidMatch = false;
+    }
 
-  if (formPostalCode && apiPostalCode && formPostalCode !== apiPostalCode) {
-      console.log(`Mismatch Code Postal: Form='${formPostalCode}', API='${apiPostalCode}'`);
-      isValidMatch = false;
-  }
+    // Vérification de la correspondance Code Postal
+    if (formPostalCode && apiPostalCode && formPostalCode !== apiPostalCode) {
+        console.log(`Mismatch Code Postal: Form='${formPostalCode}', API='${apiPostalCode}'`);
+        isValidMatch = false;
+    }
 
-  if (formRegion && apiContext) {
-      const regionFoundInContext = apiContext.includes(formRegion.replace(/-/g, ' ')); //  /-/g  regex : tout les tirets '-' par' ' 
-      if (!regionFoundInContext) {
-          console.log(`Mismatch Région: Form='${formRegion}', API Context='${apiContext}'`);
-          isValidMatch = false;
-      }
-  }
+    // Vérification de la correspondance Région
+    if (formRegion && apiContext) {
+        const regionSearchTerm = formRegion.replace(/-/g, ' '); //  /-/g  regex :  les tirets '-' par ' ' 
+        const regionFoundInContext = apiContext.includes(regionSearchTerm); 
+        if (!regionFoundInContext) {
+            console.log(`Mismatch Région: Form='${formRegion}', API Context='${apiContext}'`);
+            isValidMatch = false;
+        }
+    }
 
-  return isValidMatch;
+    return isValidMatch;
+}, function (message, parameters, data) {
+    if (!data || !data.value || data.value.length < 3) {
+        return 'L\'adresse est trop courte pour être vérifiée ou est vide.';
+    }
+    return 'Cette adresse ne semble pas valide. Veuillez en choisir une depuis les suggestions si possible.';
 });
+
 
 
 // Doit être appelé une seule fois si pref au chargement de l'application
@@ -97,19 +109,6 @@ fr: {
   address_api_check: 'Adresse introuvable ou les informations (ville, code postal, région) ne correspondent pas.',
 }
 });
-
-
-// Doit être appelé une seule fois si pref au chargement de l'application
-// setTranslationObject({
-//   en: {
-//       telephone: 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.',
-//   },
-//   fr: {
-//     telephone: 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.',
-//   }
-// });
-
-const rules = { phone: 'nullable|telephone' };
 
 // Typage Order et Rules
 type Order = {
@@ -142,37 +141,43 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
     }));
   };
 
+
+  const [isCheckingAddress, setIsCheckingAddress] = useState(false);
+
   // Gestion du blur
-//   const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
-//     const { name, value } = e.target;
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
 
-//     // Validation générique avec simple-body-validator
-//     const singleFieldData = { [name]: value };
-//     const singleRule = { [name]: rules[name as keyof Rules] };
+    // Validation avec simple-body-validator
+    const singleFieldData = { [name]: value };
+    const singleRule = { [name]: rules[name as keyof Rules] };
 
-//     const validator = make(singleFieldData, singleRule);
-//     if (!validator.validate()) {
-//       const fieldError = validator.errors().first(name);
-//       setErrors((prev) => ({
-//         ...prev,
-//         [name]: fieldError,
-//       }));
-//     } else {
-//       setErrors((prev) => ({
-//         ...prev,
-//         [name]: undefined,
-//       }));
-//     }
-//   };
+    const validator = make(singleFieldData, singleRule);
+    if (!validator.validate()) {
+      const fieldError = validator.errors().first(name);
+      setErrors((prev) => ({
+        ...prev,
+        [name]: fieldError,
+      }));
+    } else {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }));
+    }
+  };
 
 
   // Gestion du blur (asynchrone)
-  const handleBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleBlurAsync = async (e: React.FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+
+    setIsCheckingAddress(true);
 
     const currentOrderState = { ...order, [name]: value };
     const validator = make(currentOrderState, { [name]: rules[name as keyof Rules] });
-    const isValid = await validator.validate();
+    const isValid = await validator.validateAsync();
+    ;
 
     if (!isValid) {
       const fieldError = validator.errors().first(name);
@@ -187,6 +192,8 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
         return newErrors;
       });
     }
+
+    setIsCheckingAddress(false);
   };
 
 
@@ -209,17 +216,18 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
     });
 
 
-    const isValid = !hasErrors && allRequiredFilled;
+    const isValid = !hasErrors && allRequiredFilled && !isCheckingAddress;
     // logs pour débugger
     console.log('------');
     console.log('Current errors state:', errors);
     console.log('hasErrors:', hasErrors);
     console.log('allRequiredFilled:', allRequiredFilled);
+    console.log('isCheckingAddress:', isCheckingAddress);
     console.log('formValid (result):', isValid);
     console.log('------');
 
     return isValid;
-  }, [errors, order, rules]);
+  }, [errors, order, rules, isCheckingAddress]);
 
-  return { order, errors, handleChange, handleBlur, formValid, setOrder, setErrors };
+  return { order, errors, handleChange, handleBlur, handleBlurAsync, formValid, setOrder, setErrors };
 }
