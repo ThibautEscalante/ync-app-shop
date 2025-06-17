@@ -22,30 +22,27 @@ function useValidators() {
             return result;
         } catch (e) {
             console.error(`[useValidators;requestAddress] ${e.message}`);
+            return undefined;
         }
     };
 
     register('address', function (value) {
-        let address = requestAddress(value, 1)[0];
-        address = address.split(' ');
-        address.splice(address.length - 2, 2);
-        address.join(' ');
-        console.log('Validate:', address, value);
-        return address === value;
+        let result = false;
+        requestAddress(value, 5)
+            .then(data => {
+                Object.values(data).map(val => {
+                    let elements = val.split(' ');
+                    elements.splice(elements.length - 2, 2);
+                    let adr = elements.join(' ');
+                    console.log(adr);
+                    if (adr === value) result = true;
+                });
+            })
+            .catch(e => `[simple-body-validator;address] ${e.message}`);
+        return result;
     });
 
-    setTranslationObject({
-        en: {
-            telephone: 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.',
-            address: 'Adresse introuvable ou les informations (ville, code postal, région) ne correspondent pas.',
-        },
-        fr: {
-            telephone: 'Le numéro de téléphone est invalide, il doit commencer par 0 et contenir 10 chiffres.',
-            address: 'Adresse introuvable ou les informations (ville, code postal, région) ne correspondent pas.',
-        }
-    });
-
-    const getAddressSuggestions = (value) => requestAddress(value, 5);
+    const getAddressSuggestions = (value) => requestAddress(value, 7);
 
     const rules = {
         first_name: 'required|alpha',
@@ -74,10 +71,10 @@ function useValidators() {
     const isFormValid = (order) => {
         const validator = make(order, rules);
         const isValid = validator.validate();
-        console.log(isValid);
         let errors = validator.errors().all();
         Object.entries(errors).map(el => {
-            console.log(el);
+            const field = el[0], msg = el[1][0];
+            errors[field] = msg;
         });
 
         return {valid:isValid, error:errors};

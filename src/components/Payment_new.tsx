@@ -25,7 +25,7 @@ function Payment({ basket }) {
     const setErrorsField = (field, value) => setErrors(errors => { return {...errors, [field]: value}; });
 
     const time2pay = () => {
-        const result = isFormValid();
+        const result = isFormValid(order);
         if (!result.valid) setErrors(result.error);
         console.log(result);
     }
