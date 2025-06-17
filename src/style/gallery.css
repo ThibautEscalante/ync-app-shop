@@ -18,8 +18,8 @@
     --gallery-info-padding: 1.5vh 2vw;
     
     /* Dimensions galerie */
-    --gallery-thumbnails-width: 96vw;
-    --gallery-thumbnail-width: 24%;
+    --gallery-thumbnails-width: 100vw;
+    --gallery-thumbnail-width: 25%;
     --gallery-thumbnail-aspect: 4/5;
     
     /* Bordures */
@@ -45,7 +45,7 @@
     --opacity-muted: 0.6;
     
     /* Dimensions calculées */
-    --content-width: 96vw;
+    --content-width: 100vw;
     --content-height: calc(100vh - var(--spacing-lg));
     --margin-height: var(--spacing-lg);
   }
