@@ -1,186 +1,202 @@
 /* ================================
-    VITRINE : .showcase
+   VITRINE : .showcase
+   Utilise les variables globales
 ================================ */
+
 .showcase {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex: 1;
-    width: 100%;
-    padding-top: 190px;
-}
-
-/* ================================
-    ITEM VITRINE : .item
-================================ */
-.item {
+    width: var(--content-width);
+    height: var(--content-height);
+    background: var(--white);
+    margin-top: var(--margin-height);
+  }
+  
+  /* ================================
+     ITEM VITRINE : .item
+  ================================ */
+  
+  .item {
     display: flex;
     flex-direction: column;
     align-items: center;
     position: relative;
     width: 100%;
-    max-width: 1290px;
-    height: 527px;
+    max-width: 67%;
+    aspect-ratio: 1290 / 527;
     overflow: visible;
     transition: all 0.1s ease;
-}
-
-/* ================================
-    IMAGE VITRINE : .shadow-image
-================================ */
-.shadow-image {
-    display: inline-block;
+  }
+  
+  /* ================================
+     IMAGE VITRINE : .shadow-image
+  ================================ */
+  
+  .shadow-image {
     position: relative;
     perspective: 1000px;
     transform-origin: center;
-    filter: drop-shadow(10px 10px 30px rgba(0, 0, 0, 0.13));
+    filter: drop-shadow(1% 1% 2% rgba(0, 0, 0, 0.13));
     transition: transform 0.2s ease-out;
-}
-
-.item img {
-    width: 328px;
-    height: 437px;
+    max-width: 25%;
+  }
+  
+  .shadow-image img {
+    width: 100%;
+    height: auto;
     object-fit: cover;
-    border: none;
     opacity: 0;
     clip-path: inset(0 0 100% 0);
-    transform: translateY(30px) scale(0.95);
-    filter: blur(15px);
-    animation:
-        fadeInImage 1.2s ease-out forwards,
-        revealClip 1.5s ease-out forwards,
-        clearBlur 1.2s ease-out forwards;
-    transition: clip-path 1.5s ease-out;
-}
-
-/* ================================
-    BOUTON AJOUT PANIER : .item-button
-================================ */
-.item-button {
-    width: 200px;
-    height: 50px;
-    margin-top: 40px;
+    transform: translateY(1.5%) scale(0.95);
+    filter: blur(0.8%);
+    animation: fadeInImage 1.2s ease-out forwards,
+               revealClip 1.5s ease-out forwards,
+               clearBlur 1.2s ease-out forwards;
+  }
+  
+  /* ================================
+     ZOOM BOX
+  ================================ */
+  
+  .zoom-box {
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* ================================
+     BOUTON VITRINE : .item-button
+  ================================ */
+  
+  .item-button {
+    width: auto;
+    height: auto;
+    padding: clamp(8px, 0.6vw, 12px) clamp(20px, 1.2vw, 28px);
+    margin-top: 2%;
     border: none;
-    background-color: #c14bff;
-    color: white;
-    font-size: 16px;
-    font-family: "Necto Mono", monospace;
+    background-color: var(--primary-color);
+    color: var(--white);
+    font-size: var(--font-size-content);
+    font-family: var(--font-family);
     cursor: pointer;
     clip-path: inset(0 0 100% 0);
     animation: revealClipButton 1.25s 1.5s forwards;
     transition: transform 0.1s ease;
-}
-
-.item-button::before {
+  }
+  
+  .item-button::before {
     content: "J'AIME BIEN!";
-}
-
-.item-button:hover {
-    background-color: white;
-    color: #c14bff;
-    border: 1px solid #c14bff;
+  }
+  
+  .item-button:hover {
+    background-color: var(--white);
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
     transform: scale(1.05);
-}
-
-.item-button:hover::before {
+  }
+  
+  .item-button:hover::before {
     content: attr(price);
     transition: all 0.6s ease;
-}
-
-/* ================================
-    DESCRIPTION VITRINE : .item-description
-================================ */
-.item-description-border {
+  }
+  
+  /* ================================
+     DESCRIPTION VITRINE : .item-description
+  ================================ */
+  
+  .item-description-border {
     width: 0;
     position: absolute;
     top: 0;
-    left: 809px;
-    border-top: 1px solid black;
+    left: 42vw;
+    border-top: 1px solid var(--font-color);
     animation: drawBorder 1.25s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
     animation-delay: 1.25s;
     transition: transform 0.2s ease-out;
-}
-
-.item-description {
-    width: calc(500px - 8px - 26px);
-    padding: 0px 0px 0px 20px;
-    font-size: 16px;
-}
-
-.item-description p {
+  }
+  
+  .item-description {
+    max-width: clamp(300px, 26%, 500px);
+    padding-left: 1%;
+    font-size: var(--font-size-content);
+  }
+  
+  .item-description p {
     width: 100%;
     text-align: left;
     line-height: 1.25;
     opacity: 0;
     font-style: normal;
     animation: slideIn 0.75s ease 2s forwards;
-}
-
-/* ================================
-    ANIMATIONS VITRINE
-================================ */
-@keyframes fadeInImage {
+  }
+  
+  /* ================================
+     ANIMATIONS VITRINE
+  ================================ */
+  
+  @keyframes fadeInImage {
     to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+      opacity: 1;
+      transform: translateY(0) scale(1);
     }
-}
-
-@keyframes revealClip {
+  }
+  
+  @keyframes revealClip {
     0% {
-        clip-path: inset(0 0 100% 0);
+      clip-path: inset(0 0 100% 0);
     }
     100% {
-        clip-path: inset(0 0 0 0);
+      clip-path: inset(0 0 0 0);
     }
-}
-
-@keyframes clearBlur {
+  }
+  
+  @keyframes clearBlur {
     from {
-        filter: blur(15px);
+      filter: blur(15px);
     }
     to {
-        filter: blur(0);
+      filter: blur(0);
     }
-}
-
-@keyframes revealClipButton {
+  }
+  
+  @keyframes revealClipButton {
     from {
-        clip-path: inset(0 0 100% 0);
-        opacity: 0;
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
     }
     to {
-        clip-path: inset(0 0 0 0);
-        opacity: 1;
+      clip-path: inset(0 0 0 0);
+      opacity: 1;
     }
-}
-
-@keyframes drawBorder {
+  }
+  
+  @keyframes drawBorder {
     from {
-        width: 0;
+      width: 0;
     }
     to {
-        width: 481px;
+      width: clamp(300px, 25vw, 480px);
     }
-}
-
-@keyframes slideIn {
+  }
+  
+  @keyframes slideIn {
     from {
-        opacity: 0;
+      opacity: 0;
     }
     to {
-        opacity: 1;
+      opacity: 1;
     }
-}
-
-/* ================================
-    SURVOL SYNCHRO VITRINE
-================================ */
-.zoom-box:hover .shadow-image,
-.zoom-box:hover .item-description-border {
+  }
+  
+  /* ================================
+     SURVOL SYNCHRONISÉ VITRINE
+  ================================ */
+  
+  .zoom-box:hover .shadow-image,
+  .zoom-box:hover .item-description-border {
     transform: translateY(-3.4px);
-}
-
-.zoom-box:hover .item-description {
+  }
+  
+  .zoom-box:hover .item-description {
     transform: translateX(0);
-}
+  }  

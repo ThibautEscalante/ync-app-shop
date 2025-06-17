@@ -1,218 +1,268 @@
 /* ================================
-    PAGE GLOBALE : HTML & BODY
-    Scrollbar masquée + structure de base
+    ROOT VARIABLES
 ================================ */
 
-html {
+:root {
+    /* Résolution écran */
+    --screen-width: 100vw;
+    --screen-height: 100vh;
+  
+    /* Dimensions globales (ratio sur vh/vw) */
+    --header-height: 5vh;
+    --section-height: 10vh;
+    --margin-height: calc(var(--header-height) + var(--section-height));
+    --content-height: calc(100vh - var(--margin-height));
+
+    --content-paddingtop: 15vh;
+  
+    --header-width: 100vw;
+    --section-width: 100vw;
+    --content-width: 100vw;
+  
+    /* Fonts */
+    --font-family: "Necto Mono", monospace;
+    --font-color: #0d0d0d;
+    --font-size-header: clamp(14px, 1vw, 18px);
+    --font-size-section: clamp(20px, 2vw, 42px);
+    --font-size-content: clamp(14px, 1vw, 18px);
+    --font-size-title-content: clamp(24px, 2.5vw, 48px);
+    --font-size-subtitle-content: clamp(18px, 1.5vw, 32px);
+  
+    /* Couleurs */
+    --primary-color: #c14bff;
+    --background-color: #f8f8f8;
+    --white: #ffffff;
+
+    --gallery-columns: 4;
+    --gallery-thumbnails-width: 100%;
+    --gallery-thumbnail-width: calc(100% / var(--gallery-columns));
+    --gallery-thumbnail-aspect: 1 / 1;
+    --gallery-image-width: 100%;
+    --gallery-image-height: auto;
+    --gallery-info-height: 20%;
+    --gallery-info-padding: 1vh 1.2vw;
+    --gallery-thumbnail-height: 30vh;
+  }
+  
+  /* ================================
+      PAGE GLOBALE : HTML & BODY
+  ================================ */
+  
+  html {
     scroll-behavior: smooth;
-}  
-
-html, body {
+  }
+  
+  html, body {
     width: 100%;
-    /* overflow-x: hidden; */
     max-width: 100vw;
-    overflow-x: clip; /* Moins de bug que hidden godbless */
-
-    /* Masquer les scrollbars */
-    scrollbar-width: none;        /* Firefox */
-    -ms-overflow-style: none;     /* IE & Edge */
-}
-
-body{
+    overflow-x: clip;
     margin: 0;
     padding: 0;
-}
-
-body::-webkit-scrollbar {
+  
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE & Edge */
+  }
+  
+  body::-webkit-scrollbar {
     width: 0px;
-}
-
-body::-webkit-scrollbar-thumb,
-body::-webkit-scrollbar-track {
+  }
+  
+  body::-webkit-scrollbar-thumb,
+  body::-webkit-scrollbar-track {
     background-color: transparent;
-}  
-
-/* ================================
-    FONT PERSONNALISE
-================================ */
-
-@font-face {
-    font-family : Necto Mono;
-    src: url(fonts/NectoMono-Regular.otf);
-}
-
-/* ================================
-    STRUCTURE PRINCIPALE : .App
-    Application React Squid Head
-================================ */
-
-.App {
+  }
+  
+  body {
+    font-family: var(--font-family);
+    color: var(--font-color);
+  }
+  
+  /* ================================
+      STRUCTURE PRINCIPALE : .App
+  ================================ */
+  
+  .App {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    font-family: "Necto Mono", monospace;
-}
-
-/* ================================
-    HEADER FIXE : .header
-    Menu sticky avec boutons
-================================ */
-
-.header-mask {
+    width: var(--screen-width);
+    min-height: var(--screen-height);
+    background-color: var(--background-color);
+  }
+  
+  /* ================================
+      HEADER FIXE : .header
+  ================================ */
+  
+  .header-mask {
     display: flex;
     position: fixed;
-    width: 100%;
-    height: 55px;
+    width: var(--header-width);
+    height: var(--header-height);
     z-index: 99;
-    background-color: white;
-}
-
-.header {
+    background-color: var(--white);
+  }
+  
+  .header {
     display: flex;
     position: fixed;
     top: 0;
     z-index: 100;
-    width: calc(100% - 30px);
-    height: 40px;
-    padding: 0 5px;
-    margin: 15px;
-    background-color: #f8f8f8;
+    width: calc(100% - 2vw);
+    height: calc(var(--header-height) * 0.75);
+    padding: 0 1vw;
+    margin: calc(var(--header-height) * 0.2) 1vw;
+    background-color: var(--background-color);
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
-
+  
     animation: fadeInUpApp 1.9s ease both;
     animation-delay: 3s;
-}
-
-/* Boutons du header */
-.header button {
+  }
+  
+  .header button {
     margin: 0;
-    padding: 7px 6.5px;
+    padding: 0.5em 1em;
+    height: calc(var(--header-height) * 0.75);
     border: none;
     background: none;
-    font-size: 16px;
+    font-size: var(--font-size-header);
     transition: all 0.1s ease;
-    font-family: "Necto Mono", monospace;
-}
-
-.header-left {
-    text-align: left;
-}
-
-.header-right {
+    font-family: var(--font-family);
     cursor: pointer;
+  }
+  
+  .header-left {
+    text-align: left;
+  }
+  
+  .header-right {
     text-align: right;
-    color: #c14bff;
-}
-
-.header-right:hover {
-    border: 1px solid #c14bff;
+    color: var(--primary-color);
+  }
+  
+  .header-right:hover {
+    border: 1px solid var(--primary-color);
     background-color: transparent;
     transform: scale(1.025);
-}
-
-/* ================================
-    SECTION : .section
-    Logo + Titre de page
-================================ */
-
-.section {
-    display: flex;
+  }
+  
+  /* ================================
+      SECTION : .section
+  ================================ */
+  
+  .section {
     position: fixed;
+    top: var(--header-height);
+    display: flex;
     flex-direction: row;
-    z-index: 100;
-    width: 100%;
-    height: 100px;
-    margin-top: calc( 42px + 15px );
-    padding-top: 30px;
-    padding-left: 30px;
-    background-color: #f8f8f8;
+    align-items: center;
+    z-index: 98;
+    width: var(--section-width);
+    height: var(--section-height);
+    padding-left: 2%;
+    background-color: var(--background-color);
+  
     animation: fadeInUpApp 1.9s ease both;
     animation-delay: 3s;
-}
-
-/* Logo */
-.section-image {
-    width: 51px;
-    height: 65px;
-    margin: 0 10px;
+  }
+  
+  .section-image {
+    width: 3vw;
+    height: calc(var(--section-height) * 0.8);
+    margin: 0 1%;
     object-fit: contain;
-    flex-shrink: 0;
-}
-
-/* Titre */
-.section-title {
-    height: calc(100% - 12px);
+  }
+  
+  .section-title {
     margin: 0;
-    padding-top: 4px;
-    padding-left: 35px;
-    color: #0d0d0d;
-    font-size: 40px;
+    padding-left: 2%;
+    color: var(--font-color);
+    font-size: var(--font-size-section);
+    display: flex;
     align-items: center;
-}
-
-/*
-@keyframes fadeInUpApp {
+  }
+  
+  /* ================================
+      CONTENU PRINCIPAL : .content
+  ================================ */
+  
+  .content {
+    position: relative;
+    top: calc(var(--header-height) + var(--section-height));
+    width: var(--content-width);
+    height: var(--content-height);
+    background: var(--white);
+    margin-top: var(--margin-height);
+  }
+  
+  /* ================================
+      CLASSES UTILITAIRES
+  ================================ */
+  
+  /* Centrer enfants en colonne */
+  .element-centred-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Centrer enfants en ligne */
+  .element-centred-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Alignement alterné gauche-droite */
+  .element-item-bordered-left {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .element-item-bordered-left > :nth-child(odd) {
+    margin-right: auto;
+  }
+  
+  .element-item-bordered-left > :nth-child(even) {
+    margin-left: auto;
+  }
+  
+  /* Alignement alterné droite-gauche */
+  .element-item-bordered-right {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  
+  .element-item-bordered-right > :nth-child(odd) {
+    margin-left: auto;
+  }
+  
+  .element-item-bordered-right > :nth-child(even) {
+    margin-right: auto;
+  }
+  
+  /* ================================
+      ANIMATIONS
+  ================================ */
+  
+  @keyframes fadeInUpApp {
     0% {
-        opacity: 0;
+      opacity: 0;
     }
     100% {
-        opacity: 1;
+      opacity: 1;
     }
-}
-*/
-
-/* ================================
-    FOOTER FIXE : .footer
-    Bas de page avec bouton
-================================ */
-
-.footer {
-    display: flex;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 100;
-    justify-content: flex-end;
-    padding: 0;
-
-    animation: fadeInUpApp 1.9s ease both;
-    animation-delay: 3s;
-}
-
-.footer-title {
-    background-color: #c14bff;
-    color: white;
-    border: none;
-    padding: 5px 25px;
-    font-size: 9px;
-    font-weight: 300;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.footer-title:hover {
-    transform: translateY(-1.6px) scale(1.12);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* ================================
-    DEBUG :
-================================ */
-
-* {
+  }
+  
+  /* ================================
+      DEBUG
+  ================================ */
+  
+  * {
     outline: 1px solid red;
-}
-
-/* * {
-    background-color: rgba(0, 128, 255, 0.05);
-} */
-
-/* div       { background: rgba(255, 0, 0, 0.05); } */
-/* section   { background: rgba(0, 255, 0, 0.05); } */
-/* header    { background: rgba(0, 0, 255, 0.05); } */
-/* footer    { background: rgba(255, 255, 0, 0.05); } */
-/* main      { background: rgba(255, 0, 255, 0.05); } */
+  }  
