@@ -26,7 +26,12 @@ function useValidators() {
     };
 
     register('address', function (value) {
-        return requestAddress(value, 1)[0] === value;
+        let address = requestAddress(value, 1)[0];
+        address = address.split(' ');
+        address.splice(address.length - 2, 2);
+        address.join(' ');
+        console.log('Validate:', address, value);
+        return address === value;
     });
 
     setTranslationObject({
@@ -42,21 +47,23 @@ function useValidators() {
 
     const getAddressSuggestions = (value) => requestAddress(value, 5);
 
-    const isFieldValid = (field, value) => {
-        const rules = {
-            first_name: 'required|alpha',
-            name: 'required|alpha',
-            phone: 'nullable|telephone',
-            mail: 'required|email',
-            address: 'required|address',
-            postal_code: 'required|string',
-            city: 'required|string',
-            country: 'required|string',
-            gtc: 'accepted'
-        };
+    const rules = {
+        first_name: 'required|alpha',
+        name: 'required|alpha',
+        phone: 'nullable|telephone',
+        mail: 'required|email',
+        address: 'required|address',
+        postal_code: 'required|string',
+        city: 'required|string',
+        country: 'required|string',
+        newsletter: 'strict|boolean',
+        gtc: 'strict|boolean|accepted'
+    };
 
+    const isFieldValid = (field, value) => {
         const validator = make({[field]: value}, {[field]: rules[field]});
-        if (validator.validate()) {
+        const isValid = validator.validate();
+        if (isValid) {
             return { valid:true, error:undefined };
         } else {
             const err = validator.errors().first(field);
@@ -66,7 +73,14 @@ function useValidators() {
 
     const isFormValid = (order) => {
         const validator = make(order, rules);
-        return validator.validate();
+        const isValid = validator.validate();
+        console.log(isValid);
+        let errors = validator.errors().all();
+        Object.entries(errors).map(el => {
+            console.log(el);
+        });
+
+        return {valid:isValid, error:errors};
     }
 
     return { getAddressSuggestions, isFieldValid, isFormValid };

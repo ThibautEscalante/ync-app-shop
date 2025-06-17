@@ -2,20 +2,15 @@ import { useState } from 'react';
 import { make, register } from 'simple-body-validator';
 import useValidators from './useValidators';
 
-function PaymentForm({ order, setOrderField }) {
-    const [errors, setErrors] = useState({
-        first_name: '', name: '', phone: '',
-        mail: '', address: '',
-        postal_code: '', city: '', country: '',
-        gtc: ''
-    });
-
+function PaymentForm({ order, setOrderField, errors, setErrorsField }) {
     const [suggestions, setSuggestions] = useState([]);
 
     const { getAddressSuggestions, isFieldValid } = useValidators();
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+
+        if (name === 'newsletter' || name === 'gtc') value = !order[name];
 
         if (name === 'address' && value.length > 5) {
             getAddressSuggestions(value)
@@ -23,7 +18,7 @@ function PaymentForm({ order, setOrderField }) {
                 .catch(e => console.error(`[PaymentForm;handleChange] ${e.message}`));
         } else if (name !== 'address') {
             const result = isFieldValid(name, value);
-            setErrors({...errors, [name]: (result.error === undefined) ? '' : result.error});
+            setErrorsField(name, result.error);
         }
 
         setOrderField(name, value);
@@ -177,7 +172,7 @@ function PaymentForm({ order, setOrderField }) {
                     onChange={handleChange}
                 />
                 <label htmlFor="gtc">J'ai lu et j'accepte les conditions générales de vente.</label>
-                {errors.gtc && <p className="error-message">Vous devez accepter les CGV.</p>}
+                {errors.gtc && <p className="error-message">{errors.gtc}</p>}
             </div>
 
         </div>
