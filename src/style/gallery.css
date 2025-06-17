@@ -1,10 +1,62 @@
 /* ================================
-   GALERIE : .gallery
+   VARIABLES CSS GLOBALES
 ================================ */
-.gallery {
+:root {
+    /* Dimensions de base */
+    --base-viewport-width: 1920px;
+    --base-zoom: 0.8;
+    
+    /* Espacements */
+    --spacing-xs: 0.5vh;
+    --spacing-sm: 1vh;
+    --spacing-md: 2vh;
+    --spacing-lg: 10vh;
+    --spacing-xl: 20vh;
+    
+    /* Marges et paddings */
+    --container-margin-x: 2vw;
+    --gallery-info-padding: 1.5vh 2vw;
+    
+    /* Dimensions galerie */
+    --gallery-thumbnails-width: 96vw;
+    --gallery-thumbnail-width: 24%;
+    --gallery-thumbnail-aspect: 4/5;
+    
+    /* Bordures */
+    --border-width: 0.1vw;
+    --border-color: #e2e2e2;
+    
+    /* Couleurs */
+    --white: #ffffff;
+    --font-color: #333333;
+    --background-secondary: #dededec8;
+    
+    /* Typographie */
+    --font-family: Arial, sans-serif;
+    --font-size-content: clamp(0.8rem, 1.4vw, 1.2rem);
+    --font-size-title-content: clamp(1rem, 1.6vw, 1.4rem);
+    --font-size-note: clamp(0.7rem, 1.2vw, 1rem);
+    
+    /* Transitions */
+    --transition-standard: 0.3s ease;
+    --transition-slow: 0.8s ease;
+    
+    /* Opacité */
+    --opacity-muted: 0.6;
+    
+    /* Dimensions calculées */
+    --content-width: 96vw;
+    --content-height: calc(100vh - var(--spacing-lg));
+    --margin-height: var(--spacing-lg);
+  }
+  
+  /* ================================
+     GALERIE PRINCIPALE
+  ================================ */
+  .gallery {
     opacity: 1;
     transform: translateY(2vh);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition: opacity var(--transition-slow), transform var(--transition-slow);
     animation: fadeInUpGallery 1.25s ease both;
     animation-delay: 1s;
     height: var(--content-height);
@@ -12,17 +64,17 @@
   }
   
   .gallery-container {
-    margin: 0 2vw;
-    margin-top: 10vh;
+    margin: 0 var(--container-margin-x);
+    margin-top: var(--spacing-lg);
     width: var(--gallery-thumbnails-width);
   }
   
-
   .gallery-thumbnails {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-start;
     width: var(--gallery-thumbnails-width);
+    gap: 0;
   }
   
   .gallery-thumbnail {
@@ -31,10 +83,13 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    border: 0.1vw solid #e2e2e2;
+    border: var(--border-width) solid var(--border-color);
     overflow: hidden;
   }
   
+  /* ================================
+     CONTENU DES THUMBNAILS
+  ================================ */
   .image-wrapper {
     flex: 1 1 auto;
     position: relative;
@@ -60,14 +115,16 @@
     text-align: left;
   }
   
-  
+  /* ================================
+     TYPOGRAPHIE GALERIE
+  ================================ */
   .gallery-title {
-    margin-top: 1vh;
+    margin-top: var(--spacing-sm);
     font-size: var(--font-size-title-content);
     color: var(--font-color);
     width: 100%;
     display: block;
-    transition: color 0.3s ease;
+    transition: color var(--transition-standard);
     font-weight: bold;
   }
   
@@ -75,13 +132,13 @@
     font-family: var(--font-family);
     font-size: var(--font-size-content);
     color: var(--font-color);
-    margin-bottom: 1vh;
+    margin-bottom: var(--spacing-sm);
   }
   
   .gallery-note {
     font-family: 'Bodoni Moda', serif;
     font-style: italic;
-    font-size: clamp(0.7rem, 1.2vw, 1rem);
+    font-size: var(--font-size-note);
     color: var(--font-color);
   }
   
@@ -89,16 +146,16 @@
     font-family: var(--font-family);
     font-size: var(--font-size-content);
     color: var(--font-color);
-    padding-top: 0.8vh;
+    padding-top: var(--spacing-xs);
   }
   
   /* ================================
-     LOGO : .gallery-logo
+     LOGO SECTION
   ================================ */
   .gallery-logo {
-    margin-top: 10vh;
+    margin-top: var(--spacing-lg);
     width: var(--content-width);
-    height: 20vh;
+    height: var(--spacing-xl);
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -114,7 +171,7 @@
   }
   
   /* ================================
-     BAS DE PAGE : .gallery-text
+     SECTIONS FOOTER
   ================================ */
   .gallery-phrase,
   .gallery-text {
@@ -130,28 +187,59 @@
     background-color: var(--white);
   }
   
+  .gallery-text {
+    background-color: var(--background-secondary);
+  }
+  
   .gallery-phrase p,
   .gallery-text p {
     font-size: var(--font-size-content);
     color: var(--font-color);
-    margin: 1vh 0;
+    margin: var(--spacing-sm) 0;
     line-height: 1.6;
     max-width: 90vw;
-    opacity: 0.6;
-  }
-  
-  .gallery-text {
-    background-color: #dededec8;
+    opacity: var(--opacity-muted);
   }
   
   .gallery-text-image {
     width: 8vw;
     height: auto;
-    margin: 2vh 0;
+    margin: var(--spacing-md) 0;
   }
   
   /* ================================
-     ANIMATIONS GALERIE
+     RESPONSIVE DESIGN
+  ================================ */
+  @media (max-width: 1200px) {
+    :root {
+      --gallery-thumbnail-width: 32%;
+      --container-margin-x: 3vw;
+      --gallery-thumbnails-width: 94vw;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    :root {
+      --gallery-thumbnail-width: 48%;
+      --container-margin-x: 4vw;
+      --gallery-thumbnails-width: 92vw;
+      --spacing-lg: 6vh;
+      --gallery-info-padding: 1vh 1.5vw;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    :root {
+      --gallery-thumbnail-width: 100%;
+      --container-margin-x: 5vw;
+      --gallery-thumbnails-width: 90vw;
+      --spacing-lg: 4vh;
+      --gallery-info-padding: 0.8vh 1vw;
+    }
+  }
+  
+  /* ================================
+     ANIMATIONS
   ================================ */
   @keyframes fadeInUpGallery {
     from {
@@ -162,4 +250,4 @@
       opacity: 1;
       transform: translateY(0);
     }
-  }  
+  }
