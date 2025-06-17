@@ -18,7 +18,7 @@ import PopupItem from "./components/PopupItem";
 import Basket from "./components/Basket";
 
 // import Payment from "./components/Payment";
-import Payment from "./components/Payment";
+import Payment from "./components/Payment_new";
 
 import About from "./components/About";
 import Acknowledgment from "./components/Acknowledgment";
