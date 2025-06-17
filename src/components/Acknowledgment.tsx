@@ -7,7 +7,6 @@ function Acknowledgment() {
         <div className="acknowledgment">
 
             <img src="/assets/acknowledgment/acknowledgment2.png" alt="Confirmation de commande YNC"/>
-            <h3>Merci !</h3>
             <p>
                 Merci !
                 <br/>

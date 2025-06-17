@@ -1,9 +1,6 @@
 import { useState, useMemo } from 'react';
 import { make, register, setTranslationObject } from 'simple-body-validator';
 
-
-
-
 const searchFrenchAddress = async (query: string) => {
   if (!query || query.length < 3) {
       return null;
@@ -35,17 +32,16 @@ const searchFrenchAddress = async (query: string) => {
 register('telephone', function (value) {
     if (!value) return true;
     return /^0\d{9}$/.test(value);
-  });
-
-  
-
+});
 
 // Ajout de la regle personnalisée pour la verification d'adresse, de ville, de code postal et de pays/region + passage simplebodyvalidator
-  register('address_api_check', async function (addressValue) {
+register('address_api_check', async function (addressValue) {
 
+    /*
     if (!addressValue || addressValue.length < 3) {
         return false; // L'adresse est vide ou trop courte, la validation échoue
     }
+    */
 
     const apiAddress = await searchFrenchAddress(addressValue);
 
@@ -55,6 +51,7 @@ register('telephone', function (value) {
 
      // Convertir en minuscules et supprimer les espaces
     const formData = this.data; // // this.data accede à toutes les données de l'objet qu'on a donné au make de validator
+  console.log(formData, this.data);
 
     const formCity = formData?.city?.toLowerCase().trim();
     const formPostalCode = formData?.postal_code?.trim();
@@ -141,7 +138,6 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
     }));
   };
 
-
   const [isCheckingAddress, setIsCheckingAddress] = useState(false);
 
   // Gestion du blur
@@ -166,7 +162,6 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
       }));
     }
   };
-
 
   // Gestion du blur (asynchrone)
   const handleBlurAsync = async (e: React.FocusEvent<HTMLInputElement>) => {
@@ -195,9 +190,6 @@ export function usePaymentForm(initialOrder: Order, rules: Rules) {
 
     setIsCheckingAddress(false);
   };
-
-
-
 
   // Validation globale du formulaire
   const formValid = useMemo(() => {

@@ -30,11 +30,11 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
             setSuggestions([]);
             return;
           }
-          
+
         try {
             const response = await fetch(`https://api-adresse.data.gouv.fr/search/?q=${encodeURIComponent(query)}&limit=5`);
             const data = await response.json();
-    
+
             if (Array.isArray(data.features)) {
                 setSuggestions(data.features);
             } else {
@@ -45,7 +45,7 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
             setSuggestions([]);
         }
     };
-    
+
         // {
         //     "features": [
         //       {
@@ -65,26 +65,26 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
         //       ...
         //     ]
         //   }
-          
+
     const handleAddressChange = (e) => {
         const value = e.target.value;
         setAddressInput(value);
-        
+
         if (value.length > 2) {  // Longueur de la recherche dès +2 caractères
             fetchSuggestions(value);
         } else {
             setSuggestions([]);
         }
-        
+
         handleChange(e);
     };
-    
+
     const handleSuggestionClick = (suggestion) => {
         const label = suggestion.properties.label;
         setAddressInput(label);
         setSelectedSuggestion(suggestion);
         setSuggestions([]);
-        
+
         // Mise à jour du champ adresse
         handleChange({
           target: {
@@ -92,14 +92,14 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
             value: label,
           }
         });
-      
+
         // Mise à jour des autres champs
         if (suggestion) {
           const { city, postcode, context } = suggestion.properties;
-      
+
           handleChange({ target: { name: "city", value: city || "" } });
           handleChange({ target: { name: "postal_code", value: postcode || "" } });
-      
+
           if (context) {
             const parts = context.split(',').map((part) => part.trim());
             const region = parts.length >= 3 ? parts[2] : parts[1] || "";
@@ -108,9 +108,7 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
         }
 
         handleBlurAsync({ target: {name: "address",value: label,}});
-
       };
-      
 
     return (
         <div className="form">
@@ -149,9 +147,9 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
 
 
                     <div className="shipping">
-                
+
                         <h1>Livraison</h1>
-                        
+
                         <div className="name-fields">
 
                             <input type="text" name="first_name" placeholder="Prénom"
@@ -159,13 +157,13 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
                                 onChange={handleChange} 
                                 onBlur={handleBlur} 
                                 required className={errors.first_name ? 'error-border' : ''}/>
-                            
+
                             <input type="text" name="name" placeholder="Nom"
                                 value={order.name}
                                 onChange={handleChange} 
                                 onBlur={handleBlur} 
                                 required className={errors.name ? 'error-border' : ''}/>
-                
+
                         </div>
 
                         {errors.first_name && <p className="error-message">{errors.first_name}</p>}
@@ -210,13 +208,13 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
                                 onChange={handleChange} 
                                 onBlur={handleBlur} 
                                 required className={errors.postal_code ? 'error-border' : ''}/>
-                            
+
                             <input type="text" name="city" placeholder="Ville"
                                 value={order.city || ""}
                                 onChange={handleChange} 
                                 onBlur={handleBlur} 
                                 required className={errors.city ? 'error-border' : ''}/>
-    
+
                         </div>
 
                         {errors.postal_code && <p className="error-message">{errors.postal_code}</p>}
@@ -229,7 +227,7 @@ function PaymentForm({ basket, handleChange, rules, order, handleBlur, handleBlu
                             className={errors.phone ? 'error-border' : ''}/>
 
                         {errors.phone && <p className="error-message">{errors.phone}</p>}
-                
+
                     </div>
 
 
@@ -263,7 +261,7 @@ function PaymentRow({ basket, id }) {
           // basket[id] { taille: quantité,  }
     return (
         <div className="payment-product">
-                        
+
                         <div className="payment-product-image">
 
                             <div className="payment-product-icon" >
@@ -306,7 +304,7 @@ function PaymentPrice({ basket, time2Pay, formValid}){
     //     let new_fee = 0, new_amount = 0;
     //     for (const item in basket) {
     //         fetchItem(item).then((data) => {
-                
+
     //             new_fee += .01 * basket[item];
     //             new_amount += basket[item] * parseFloat(data.price);
     //             setPrice( p => ({...p, amount: new_amount, fee: new_fee}) );
@@ -319,10 +317,10 @@ function PaymentPrice({ basket, time2Pay, formValid}){
         async function calculatePrice() {
           let new_fee = 0;
           let new_amount = 0;
-      
+
           // On lance toutes les requêtes fetchItem en parallèle
           const itemsData = await Promise.all(Object.keys(basket).map(item => fetchItem(item)));
-      
+
           // Une fois toutes les réponses reçues, on calcule le total
           itemsData.forEach((data, index) => {
             // const quantity = basket[Object.keys(basket)[index]];
@@ -334,14 +332,13 @@ function PaymentPrice({ basket, time2Pay, formValid}){
             new_fee += 0.01 * totalQty;
             new_amount += totalQty * parseFloat(data.price);
           });
-      
+
           // Mise à jour une seule foiss de l'état
           setPrice({ amount: new_amount, fee: new_fee });
         }
-      
+
         calculatePrice();
       }, [basket]);
-      
 
     return (
         <div className="payment-basket">
@@ -351,9 +348,9 @@ function PaymentPrice({ basket, time2Pay, formValid}){
                 </div>
 
                 <div className="basket-summary">
-                
+
                 <PaymentRows basket={basket}/>
-                
+
 
                     <div className="basket-price-compact">
                         <div className="price-details-compact">
@@ -378,10 +375,6 @@ function PaymentPrice({ basket, time2Pay, formValid}){
                     <div className="payment-note">
                     Tu seras redirigé vers PayPal, notre unique moyen de paiement pour le moment. (Désolé D'avance :/)
                     </div>
-
-                
-                
-                
             </div>
     );
 }
@@ -402,18 +395,17 @@ function Payment({ basket, goto }) {
         gtc: 'accepted'
     };
 
-    const { order, errors, handleChange, handleBlur, formValid, setOrder, setErrors } = usePaymentForm({
+    const { order, errors, handleChange, handleBlur, handleBlurAsync, formValid, setOrder, setErrors } = usePaymentForm({
         first_name: '', name: '', phone: '', mail: '',
         address: '', postal_code: '', city: '', region: '',
         newsletter: false, gtc: false
     }, rules);
-    
-    
+
     const [approved, setApproved] = useState('');
     const [message, setMessage] = useState('');
 
     const time2Pay = async () => {
-  
+
         const validator = make(order, rules);
 
         if (!validator.validate()) {
@@ -437,7 +429,7 @@ function Payment({ basket, goto }) {
             return;
 
         } else {
-    
+
             // Si la validation globale réussit, on efface toutes les erreurs
             setErrors({});
 
@@ -450,7 +442,7 @@ function Payment({ basket, goto }) {
                     .then(data => price += (parseFloat(data.price) * basket[item]))
                     .catch(e => console.error(`[Payment;time2pay | fetchItem] ${e.message} (${e.status})`));
             }
-    
+
             let res = await postOrder({...order, items: basket, price: price});
             await paypalPage(res, fetchOrder, captureOrder).then((paypalResult) => {
                 setApproved(paypalResult.status);
@@ -474,21 +466,24 @@ function Payment({ basket, goto }) {
                     errors={errors}
                     handleChange={handleChange}
                     handleBlur={handleBlur}
+                    handleBlurAsync={handleBlurAsync}
                     rules={rules}
                     basket={basket}
-                />            
+                />
 
                 {/* PARTIE DROITE */}
                 <PaymentPrice basket={basket} time2Pay={time2Pay} formValid={formValid}/>
-                
+
                 {/* Message conditionnel si le paiement est approuvé */}
                 {(approved !== '') && (
                     <div className="payment-message">
                     {message}
                     </div>
                 )}
-            
+
             </div>
 
             </>);
-} export default Payment;
+}
+
+export default Payment;

@@ -17,6 +17,7 @@ import PopupItem from "./components/PopupItem";
 
 import Basket from "./components/Basket";
 
+// import Payment from "./components/Payment";
 import Payment from "./components/Payment";
 
 import About from "./components/About";
@@ -33,7 +34,7 @@ import "./style/showcase.css";
 import "./style/gallery.css";
 import "./style/basket.css";
 import "./style/payment.css";
-// import "./style/about.css";
+import "./style/about.css";
 import "./style/acknowledgment.css";
 import "./style/popup_item.css";
 
@@ -189,35 +190,29 @@ function App() {
 
     function homeState() {
         setButtonDisplay("PANIER");
-        setSection({name: "Quelconque", image: "assets/home_icon.svg"})
         setState("HOME");
     };
 
     function paymentState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Payment", image: "assets/payment_icon.svg"})
         setState("PAYMENT");
     };
 
     function basketState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Panier", image: "assets/basket_icon.svg"})
         setState("BASKET");
     };
 
     function aboutState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Plongez dans l'Univers YNC", image: "assets/home_icon.svg"})
-        setState("ACKNOWLEDGMENT");
+        setState("ABOUT");
     };
 
     function acknowledgmentState() {
         setButtonDisplay("RETOUR");
-        setSection({name: "Nous te remercions", image: "assets/acknowledgment/acknowledgment_icon.svg"})
         setState("ACKNOWLEDGMENT");
     };
 
-    // onClick top right button
     const updateState = () => {
         if (state === "HOME" || state === "PAYMENT" || state === "VITRINE" || state === "GALLERY") {
             basketState();
@@ -244,13 +239,13 @@ function App() {
     useEffect(() => {
         if (popupId) {
             fetchItem(popupId)
-                .then(setPopupItem)
+                .then(data => setPopupItem(data))
                 .catch(e => {
                     console.error(`[PopupItem] ${e.message}`);
                     setPopupItem(null);
                 });
             fetchQuantity(popupId)
-                .then(setPopupQuantity)
+                .then(data => setPopupQuantity(data.sizes))
                 .catch(e => {
                     console.error(`[PopupItem] ${e.message}`);
                     setPopupQuantity(null);

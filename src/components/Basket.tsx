@@ -2,12 +2,14 @@ import {useContext, useEffect, useState, useCallback } from "react";
 import ShopAPIContext from "../context/ShopAPIProvider";
 import Section from './Section';
 
-function BasketArticle({ item, size, quantity, compact, add, rm, del }) {
+function BasketArticle({ item, size, quantity, max_qtty, compact, add, rm, del }) {
+    useEffect(() => {}, [max_qtty]);
+
     return (item &&
         <div className="article"> {/* ARTICLE */}
 
             {!compact && <>
-                {/* IMAGE */}
+                {/*
                 <div className="article-image">
 
                     <img className="image" src={(!item) ? "" : item.images[0]}/>
@@ -15,11 +17,12 @@ function BasketArticle({ item, size, quantity, compact, add, rm, del }) {
                     <p className="image-price">{!item ? 0 : item.price}€</p>
 
                 </div>
+                */}
 
                 {/* INFOS */}
                 <div className="article-information">
 
-                    <h3 className="article-title">{(!item) ? "?" : item.display_name}</h3>
+                    <h3 className="article-title">{(!item) ? "?" : item.title} (<b>{size}</b>)</h3>
                     <p className="article-delivery-description">{(!item) ? "?" : item.basket_description}</p>
 
                     <div className="article-icon">
@@ -34,10 +37,13 @@ function BasketArticle({ item, size, quantity, compact, add, rm, del }) {
                             <button id={item.id} className="article-remove" onClick={() => rm(item.id, size)}>-</button>
                             : <button id={item.id} className="article-remove" onClick={() => rm(item.id, size)} disabled>-</button>
                         }
-                        <button id={item.id} className="article-add" onClick={() => add(item.id, size)}>+</button>
+                        {quantity < max_qtty ?
+                            <button id={item.id} className="article-add" onClick={() => add(item.id, size)}>+</button>
+                            : <button id={item.id} className="article-add" onClick={() => add(item.id, size)} disabled>+</button>
+                        }
                     </div>
 
-                    <p className="article-price">{(!item) ? "?" : item.price * quantity}€</p>
+                    <p className="article-price">{(!item) ? "?" : (item.price * quantity).toFixed(2)}€</p>
                     <button id={item.id} className="article-delete" onClick={() => del(item.id, size)}>X</button>
 
                 </div>
@@ -50,17 +56,28 @@ function BasketArticle({ item, size, quantity, compact, add, rm, del }) {
 
 function BasketItem({ basket, id, compact, add, rm, del }) {
 
-    const { fetchItem } = useContext(ShopAPIContext);
-    const [item, setItem] = useState(null);
+    const { fetchItem, fetchQuantity } = useContext(ShopAPIContext);
+    const [item, setItem] = useState(undefined);
+    const [quantity, setQuantity] = useState(undefined);
 
     useEffect(() => {
         fetchItem(id)
             .then(data => setItem(data))
-            .catch(e => console.error(`[BasketItem;useEffect] ${e.message}`));
+            .catch(e => console.error(`[BasketItem;fetchItem] ${e.message}`));
+        fetchQuantity(id)
+            .then(data => setQuantity(data.sizes))
+            .catch(e => console.error(`[BasketItem;fetchQuantity] ${e.message}`));
     }, [basket]);
 
     return (<>
-        {Object.entries(basket[id]).map(el => <BasketArticle item={item} size={el[0]} quantity={basket[id][el[0]]} compact={compact} add={add} rm={rm} del={del}/>)}
+        {Object.entries(basket[id]).map(el => {
+            const size = el[0];
+            // console.log(size, quantity);
+            return (<BasketArticle key={size} item={item} size={size}
+                quantity={basket[id][size]} max_qtty={quantity?.[size]}
+                compact={compact} add={add} rm={rm} del={del}
+            />);
+        })}
     </>);
 }
 
@@ -99,17 +116,17 @@ function BasketPrice({ basket, compact, next }) {
 
                 <div className="amount-row">
                     <div className="label">Montant</div>
-                    <div className="value">{price.amount} €</div>
+                    <div className="value">{(price.amount).toFixed(2)} €</div>
                 </div>
 
                 <div className="delivery-row">
                     <div className="label">Livraison</div>
-                    <div className="value">{price.fee} €</div>
+                    <div className="value">{(price.fee).toFixed(2)} €</div>
                 </div>
 
                 <div className="total-row">
                     <div className="label">TOTAL</div>
-                    <div className="total-value">{price.amount + price.fee} €</div>
+                    <div className="total-value">{(price.amount + price.fee).toFixed(2)} €</div>
                 </div>
 
             </div>

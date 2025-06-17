@@ -17,7 +17,7 @@ export const PAYMENT_STATES = {
     INVALID_RESPONSE: 'INVALID_RESPONSE',
     CAPTURE_FAILED: 'CAPTURE_FAILED',
   };
-  
+
   export async function openPaypalPopup(order: any) {
     const popup = window.open(order.links[1].href, "paypalCheckout", "left=100,top=100,width=600,height=800");
     if (!popup || popup.closed || typeof popup.closed === "undefined") {
@@ -28,7 +28,7 @@ export const PAYMENT_STATES = {
     }
     return popup;
   }
-  
+
   export function waitForPopupClose(popup: Window) {
     return new Promise<{ status: string; message: string }>(resolve => {
       const interval = setInterval(() => {
@@ -42,10 +42,10 @@ export const PAYMENT_STATES = {
       }, 500);
     });
   }
-  
+
   export async function pollPaypalStatus(order: any, fetchOrder: (id: string) => Promise<any>, captureOrder: (order: any) => Promise<any>, maxAttempts = 60) {
     let attempts = 0;
-  
+
     while (attempts < maxAttempts) {
       let res;
       try {
@@ -57,7 +57,7 @@ export const PAYMENT_STATES = {
           error,
         };
       }
-  
+
       if (!res || typeof res.status !== "string") {
         throw {
           status: PAYMENT_STATES.INVALID_RESPONSE,
@@ -65,7 +65,7 @@ export const PAYMENT_STATES = {
           raw: res,
         };
       }
-  
+
       if (res.status === PAYMENT_STATES.APPROVED || res.status === PAYMENT_STATES.COMPLETED) {
         try {
           await captureOrder({ id: order.id, uuid: order.uuid });
@@ -78,28 +78,28 @@ export const PAYMENT_STATES = {
           };
         }
       }
-  
+
       await new Promise(resolve => setTimeout(resolve, 1000));
       attempts++;
     }
-  
+
     throw {
       status: PAYMENT_STATES.TIMEOUT,
       message: "Le délai de validation du paiement a expiré",
     };
   }
-  
+
   export async function paypalPage(order: any, fetchOrder: (id: string) => Promise<any>, captureOrder: (order: any) => Promise<any>) {
     try {
       const popup = await openPaypalPopup(order);
       const popupClosed = waitForPopupClose(popup);
       const polling = pollPaypalStatus(order, fetchOrder, captureOrder);
       const result = await Promise.race([popupClosed, polling]);
-  
+
       if (popup && !popup.closed) {
         popup.close();
       }
-  
+
       return result;
     } catch (error) {
       return {
@@ -108,4 +108,4 @@ export const PAYMENT_STATES = {
         error,
       };
     }
-  }  
+  }

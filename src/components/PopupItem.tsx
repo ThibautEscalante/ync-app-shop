@@ -67,7 +67,7 @@ function PopupItem({ item, quantity, onClose, add }) {
                         </select>
                     </div>
 
-                    <button className="popup-add" onClick={() => console.log(selectedSize)}>AJOUTER AU PANIER</button>
+                    <button className="popup-add" onClick={() => add(item.id, selectedSize)}>AJOUTER AU PANIER</button>
 
                     <FoldoutSection title="HISTOIRE DU PRODUIT" content={item.details}/>
                     <FoldoutSection title="DETAILS DU PRODUIT" content={item.spec}/>
