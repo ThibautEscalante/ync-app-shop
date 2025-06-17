@@ -16,7 +16,7 @@ function PaymentItem({ item, size, quantity }) {
     </div>);
 }
 
-function PaymentSummary({ basket, valid, payment }) {
+function PaymentSummary({ basket, payment }) {
     const { fetchItem } = useContext(ShopAPIContext);
     const [items, setItems] = useState({});
     const [price, setPrice] = useState({amout: 0, fee: 0});
@@ -65,7 +65,7 @@ function PaymentSummary({ basket, valid, payment }) {
                             <span className="total-value-compact">{price.amount + price.fee} €</span>
                         </div>
                     </div>
-                    <button className="finalisation-button" onClick={payment} disabled={!valid}>Je finalise mon achat</button>
+                    <button className="finalisation-button" onClick={payment}>Je finalise mon achat</button>
                 </div>
             </div>
 

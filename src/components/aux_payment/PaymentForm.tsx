@@ -1,8 +1,74 @@
 import { useState } from 'react';
+import { make, register } from 'simple-body-validator';
 
-function PaymentForm({ setValid }) {
-    const [order, setOrder] = useState({});
-    const [errors, setErrors] = useState({});
+function useValidators() {
+
+    register('telephone', function (value) {
+        if (!value) return true;
+        return /^0\d{9}$/.test(value);
+    });
+
+    const requestAddress = async (address, limit) => {
+        try {
+            const uri = `https://${process.env.FRENCH_GOV_ADDRESS_API}`;
+            const res = fetch(`${uri}/search/?q=${encodeURIComponent(address)}&limit=${limit}`);
+            let data = [];
+            for (let i = 0; i < res.features.length; i++) {
+                data[i] = res.features[i].properties;
+            }
+            return data;
+        } catch (e) {
+            console.error(`[useValidators;requestAddress] ${e.message}`);
+        }
+    };
+
+    register('address', async function (value) {
+        return requestAddress(value, 1)[0] === value;
+    });
+
+    const rules = {
+        first_name: 'required|alpha',
+        name: 'required|alpha',
+        phone: 'nullable|telephone',
+        mail: 'required|email',
+        address: 'required|address',
+        postal_code: 'required|string',
+        city: 'required|string',
+        region: 'required|string',
+        gtc: 'accepted'
+    };
+
+    const getAddressSuggestions = (value) => requestAddress(value, 5);
+
+    const isFieldValid = (field, value) => {
+        const validator = make({[field]: value}, {[field]: rules[value]});
+        if (validator.validate()) {
+            return { valid:true, error:undefined };
+        } else {
+            const err = validator.errors().first(field);
+            return { valid:false, error:err };
+        }
+    };
+
+    const isFormValid = (order) => {
+        const validator = make(order, rules);
+        return validator.validate();
+    }
+
+    return { getAddressSuggestions, isFieldValid, isFormValid };
+}
+
+function PaymentForm({ order }) {
+    const [errors, setErrors] = useState({
+        first_name: '', name: '', phone: '',
+        mail: '', region: '', address: '',
+        postal_code: '', city: '', country: '',
+        gtc: ''
+    });
+
+    const [suggestions, setSuggestions] = useState([]);
+
+    const { getAddressSuggestions, isFieldValid } = useValidators();
 
     const handleChange = () => {};
     const handleBlur = () => {};
@@ -90,12 +156,12 @@ function PaymentForm({ setValid }) {
                     type="text"
                     name="address"
                     placeholder="Adresse"
-                    value={addressInput}
-                    onChange={handleAddressChange}
+                    value={order.address}
+                    onChange={handleChange}
                     onBlur={handleBlurAsync}
                     required
                 />
-                {suggestions && suggestions.length > 0 &&
+                {(order.address.length > 5 && suggestions.length > 0) &&
                     <ul className="autocomplete-list">
                         {suggestions.map((suggestion, index) => (
                             <li key={index} className="autocomplete-item" onClick={() => handleSuggestionClick(suggestion)}>
