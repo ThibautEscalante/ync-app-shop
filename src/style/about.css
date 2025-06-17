@@ -29,50 +29,70 @@ p {
 }
 
 .faq {
-    display: flex;
+    display: block flex; /*Faq est un bloc en bas de page + Elements se suivent et responsive*/
+    position: fixed; 
+    left: 0;
+    bottom: 0;
+    /* Fixé en bas à gauche de l'écran */
+    width: 100%;
+    max-height: 75px;
 }
 
 .faq h1 {
-    left: 0;
+    margin: 0;
+    line-height: 1;
+    max-width: 200px;
+    overflow: hidden;
+    font-size: 80px;
+}
+
+.info {
+    z-index: 3;
+    width: auto;
     bottom: 0;
-    font-size: 48px;
-    font-weight: 950;
-    letter-spacing: 1px;
-    display: inline-block;
 }
 
-.faq span, .info {
+.label {
+    display: flex;
+    align-items: center;
     font-size: 12px;
-    width: 20%;
-    height: 350px;
-    padding-left: 10px;
+    height: 75px;
 }
 
-.faq h3 {
-    display: inline;
+.label img {
+    padding: 0px 10px 0px 10px;
+    height: 40%;
 }
 
-.faq.visible img {
-    transform: rotate(180deg);
-    display: inline;
+.label h3 {
+    padding: 0px 10px 0px 10px;
+}
+.faq p {
+    max-width: 100%;
+    padding: 25px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 1;
 }
 
-.faq.hidden img {
-    visibility: visible;
-    display: inline;
+.hidden {
+    content-visibility: hidden;
+    visibility: hidden;
 }
 
 .visible {
     visibility: visible;
+    position: absolute;
+    bottom: 75px;
+    width: 500px;
 }
 
-.hidden {
-    width: 0px;
-    height: 0px;
-    visibility: hidden;
+.visible img {
+    transform: rotate(180deg);
+    display: inline;
 }
 
-.faq h3 {
-    position: relative;
-    bottom: 0;
+.hidden img {
+    visibility: visible;
+    display: inline;
 }
