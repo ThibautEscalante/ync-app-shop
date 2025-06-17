@@ -14,7 +14,6 @@ function GalleryItem({ id, onItemClick }) {
 
     return (item === undefined ? <></> :
         <div key={item.id} className="gallery-thumbnail" onClick={() => onItemClick(item.id)}>
-            <div className="gallery-thumbnail">
                 <div className="image-wrapper">
                     <img className="gallery-image" src={item.images[0]} alt="Article"/>
                 </div>
@@ -23,11 +22,11 @@ function GalleryItem({ id, onItemClick }) {
                     <div className="gallery-description">{item.subtitle}</div>
                     <div className="gallery-note">{item.quote}</div>
                     <div className="gallery-price">{item.price}</div>
+                    {/* <div>etiquette</div> */}
                 </div>
-            </div>
         </div>
     );
-}
+} 
 
 
 function GalleryPage({ ids, onItemClick }, ref) {

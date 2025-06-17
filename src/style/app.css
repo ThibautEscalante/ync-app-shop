@@ -12,6 +12,8 @@
     --section-height: 10vh;
     --margin-height: calc(var(--header-height) + var(--section-height));
     --content-height: calc(100vh - var(--margin-height));
+
+    --content-paddingtop: 15vh;
   
     --header-width: 100vw;
     --section-width: 100vw;
@@ -30,6 +32,16 @@
     --primary-color: #c14bff;
     --background-color: #f8f8f8;
     --white: #ffffff;
+
+    --gallery-columns: 4;
+    --gallery-thumbnails-width: 100%;
+    --gallery-thumbnail-width: calc(100% / var(--gallery-columns));
+    --gallery-thumbnail-aspect: 1 / 1;
+    --gallery-image-width: 100%;
+    --gallery-image-height: auto;
+    --gallery-info-height: 20%;
+    --gallery-info-padding: 1vh 1.2vw;
+    --gallery-thumbnail-height: 30vh;
   }
   
   /* ================================
