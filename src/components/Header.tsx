@@ -22,8 +22,10 @@ function Header({name, basket, homeFn, aboutFn, basketFn}) {
         <div className="header-mask">
             <div className="header">
                 <button className="header-left" onClick={homeFn}>YNC SHOP</button>
-                <button className="header-right" onClick={aboutFn}>À PROPOS</button>
-                <button className="header-right" onClick={basketFn}>{display_name}</button>
+                <div className="header-right">
+                    <button className="butt-right1" onClick={aboutFn}>À PROPOS</button>
+                    <button className="butt-right" onClick={basketFn}>{display_name}</button>
+                </div>
             </div>
         </div>
     );

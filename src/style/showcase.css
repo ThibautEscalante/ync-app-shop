@@ -116,7 +116,7 @@
   }
   
   .item-description {
-    max-width: clamp(300px, 26%, 500px);
+    max-width: 100%;
     padding-left: 1%;
     font-size: var(--font-size-content);
   }
@@ -128,6 +128,7 @@
     opacity: 0;
     font-style: normal;
     animation: slideIn 0.75s ease 2s forwards;
+    margin-top: 5px;
   }
   
   /* ================================
