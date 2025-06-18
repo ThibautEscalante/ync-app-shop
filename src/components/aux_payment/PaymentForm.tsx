@@ -1,78 +1,40 @@
 import { useState } from 'react';
 import { make, register } from 'simple-body-validator';
+import useValidators from './useValidators';
 
-function useValidators() {
-
-    register('telephone', function (value) {
-        if (!value) return true;
-        return /^0\d{9}$/.test(value);
-    });
-
-    const requestAddress = async (address, limit) => {
-        try {
-            const uri = `https://${process.env.FRENCH_GOV_ADDRESS_API}`;
-            const res = fetch(`${uri}/search/?q=${encodeURIComponent(address)}&limit=${limit}`);
-            let data = [];
-            for (let i = 0; i < res.features.length; i++) {
-                data[i] = res.features[i].properties;
-            }
-            return data;
-        } catch (e) {
-            console.error(`[useValidators;requestAddress] ${e.message}`);
-        }
-    };
-
-    register('address', async function (value) {
-        return requestAddress(value, 1)[0] === value;
-    });
-
-    const rules = {
-        first_name: 'required|alpha',
-        name: 'required|alpha',
-        phone: 'nullable|telephone',
-        mail: 'required|email',
-        address: 'required|address',
-        postal_code: 'required|string',
-        city: 'required|string',
-        region: 'required|string',
-        gtc: 'accepted'
-    };
-
-    const getAddressSuggestions = (value) => requestAddress(value, 5);
-
-    const isFieldValid = (field, value) => {
-        const validator = make({[field]: value}, {[field]: rules[value]});
-        if (validator.validate()) {
-            return { valid:true, error:undefined };
-        } else {
-            const err = validator.errors().first(field);
-            return { valid:false, error:err };
-        }
-    };
-
-    const isFormValid = (order) => {
-        const validator = make(order, rules);
-        return validator.validate();
-    }
-
-    return { getAddressSuggestions, isFieldValid, isFormValid };
-}
-
-function PaymentForm({ order }) {
-    const [errors, setErrors] = useState({
-        first_name: '', name: '', phone: '',
-        mail: '', region: '', address: '',
-        postal_code: '', city: '', country: '',
-        gtc: ''
-    });
-
+function PaymentForm({ order, setOrderField, errors, setErrorsField }) {
     const [suggestions, setSuggestions] = useState([]);
 
     const { getAddressSuggestions, isFieldValid } = useValidators();
 
-    const handleChange = () => {};
-    const handleBlur = () => {};
-    const handleBlurAsync = () => {};
+    const handleChange = (e) => {
+        let { name, value } = e.target;
+
+        if (name === 'newsletter' || name === 'gtc') value = !order[name];
+
+        if (name === 'address' && value.length > 5) {
+            getAddressSuggestions(value)
+                .then(data => setSuggestions(data))
+                .catch(e => console.error(`[PaymentForm;handleChange] ${e.message}`));
+        } else if (name !== 'address') {
+            const result = isFieldValid(name, value);
+            setErrorsField(name, result.error);
+        }
+
+        setOrderField(name, value);
+    };
+
+    const autocomplete = (val) => {
+        const elements = val.split(' ');
+        setOrderField('postal_code', elements.at(-2));
+        setOrderField('city', elements.at(-1));
+
+        elements.splice(elements.length - 2, 2)
+        setOrderField('address', elements.join(' '));
+        setOrderField('country', 'France');
+
+        setSuggestions([]);
+    }
 
     return (
         <div className="form">
@@ -85,7 +47,6 @@ function PaymentForm({ order }) {
                 </div>
             </div>
 
-
             <div className="contact">
                 <h1>Contact</h1>
                 <input
@@ -95,7 +56,6 @@ function PaymentForm({ order }) {
                     placeholder="Email"
                     value={order.mail}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     required
                 />
                 {errors.mail && <p className="error-message">{errors.mail}</p>}
@@ -122,7 +82,6 @@ function PaymentForm({ order }) {
                         placeholder="Prénom"
                         value={order.first_name}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         required
                     />
                     <input
@@ -132,7 +91,6 @@ function PaymentForm({ order }) {
                         placeholder="Nom"
                         value={order.name}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         required
                     />
                 </div>
@@ -142,11 +100,10 @@ function PaymentForm({ order }) {
                 <input
                     className={errors.region ? 'error-border' : ''}
                     type="text"
-                    name="region"
+                    name="country"
                     placeholder="Pays/Région"
-                    value={order.region || ""}
+                    value={order.country}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                     required
                 />
                 {errors.region && <p className="error-message">{errors.region}</p>}
@@ -158,14 +115,13 @@ function PaymentForm({ order }) {
                     placeholder="Adresse"
                     value={order.address}
                     onChange={handleChange}
-                    onBlur={handleBlurAsync}
                     required
                 />
-                {(order.address.length > 5 && suggestions.length > 0) &&
+                {(suggestions.length > 0) &&
                     <ul className="autocomplete-list">
-                        {suggestions.map((suggestion, index) => (
-                            <li key={index} className="autocomplete-item" onClick={() => handleSuggestionClick(suggestion)}>
-                                {suggestion.properties.label}
+                        {suggestions.map((value, index) => (
+                            <li key={index} className="autocomplete-item" onClick={() => autocomplete(value)}>
+                                {value}
                             </li>
                         ))}
                     </ul>
@@ -178,9 +134,8 @@ function PaymentForm({ order }) {
                         type="text"
                         name="postal_code"
                         placeholder="Code Postal"
-                        value={order.postal_code || ""}
+                        value={order.postal_code}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         required
                     />
                     <input
@@ -188,9 +143,8 @@ function PaymentForm({ order }) {
                         type="text"
                         name="city"
                         placeholder="Ville"
-                        value={order.city || ""}
+                        value={order.city}
                         onChange={handleChange}
-                        onBlur={handleBlur}
                         required
                     />
                 </div>
@@ -201,10 +155,9 @@ function PaymentForm({ order }) {
                     className={errors.phone ? 'error-border' : ''}
                     type="tel"
                     name="phone"
-                    placeholder="Téléphone" // type="tel"
+                    placeholder="Téléphone"
                     value={order.phone}
                     onChange={handleChange}
-                    onBlur={handleBlur}
                 />
                 {errors.phone && <p className="error-message">{errors.phone}</p>}
             </div>
@@ -219,7 +172,7 @@ function PaymentForm({ order }) {
                     onChange={handleChange}
                 />
                 <label htmlFor="gtc">J'ai lu et j'accepte les conditions générales de vente.</label>
-                {errors.gtc && <p className="error-message">Vous devez accepter les CGV.</p>}
+                {errors.gtc && <p className="error-message">{errors.gtc}</p>}
             </div>
 
         </div>

@@ -149,7 +149,6 @@ function Basket({ basket, compact=true, add=undefined, rm=undefined, del=undefin
     const isEmpty = !basket || Object.entries(basket).every(([_, quantity]) => quantity <= 0);
 
     return (<>
-        <Section name="Panier" image="assets/basket_icon.svg" />
         {isEmpty
             ? (<div className="empty-basket-wrapper"> {/* NO BASKET */}
 

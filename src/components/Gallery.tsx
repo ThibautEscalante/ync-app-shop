@@ -26,26 +26,20 @@ function GalleryItem({ id, onItemClick }) {
                 </div>
         </div>
     );
-} 
-
+}
 
 function GalleryPage({ ids, onItemClick }, ref) {
     return (<>
-        <Section name="Gallerie" image="assets/home_icon.svg"/>
-        <div className="gallery" ref={ref}> {/* GALLERY */}
-
+        <div className="gallery" ref={ref}>
             <div className="gallery-container">
                 <div className="gallery-thumbnails">
                     {ids.map(id => <GalleryItem id={id} onItemClick={onItemClick} />)}
                 </div>
             </div>
-
             <div className="gallery-logo">
                 <img src="/assets/yng_metal_logo.png" alt="ync-logo" className="gallery-logo-image" />
             </div>
-
             <div className="gallery-phrase"></div>
-
             <div className="gallery-text">
                 <p>
                     Nous préparons de nouveaux articles et designs exclusifs.
@@ -59,11 +53,9 @@ function GalleryPage({ ids, onItemClick }, ref) {
                     © 2025 Young New Corporation. L’univers est en expansion – nous aussi.
                 </p>
             </div>
-
         </div>
     </>);
 }
 
 const Gallery = forwardRef(GalleryPage);
-
 export default Gallery;

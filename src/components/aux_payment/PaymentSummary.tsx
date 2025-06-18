@@ -32,7 +32,7 @@ function PaymentSummary({ basket, payment }) {
                 }
 
                 setItems({...items, [data.id]: data});
-            }).catch(e => console.error(`[BasketPrice;useEffect] ${e.message}`));
+            }).catch(e => console.error(`[PaymentSummary;useEffect] ${e.message}`));
         }
     }, []);
 
@@ -47,7 +47,7 @@ function PaymentSummary({ basket, payment }) {
                     const id = el[0];
                     return Object.entries(basket[id]).map(el => {
                         const size = el[0];
-                        return (<PaymentItem item={items[id]} size={size} quantity={basket[id][size]}/>)
+                        return (<PaymentItem key={id} item={items[id]} size={size} quantity={basket[id][size]}/>)
                     });
                 })}
                 <div className="basket-price-compact">

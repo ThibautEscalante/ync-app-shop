@@ -6,7 +6,7 @@ const ShopAPIContext = createContext();
 
 export const ShopAPIProvider = ({ children }) => {
     const api_address = `https://yn-corp.xyz/api/shop`;
-    // const api_address = `http://${process.env.REACT_APP_API_CONTACT_POINTS}:${process.env.REACT_APP_API_PORT}/api/shop`;
+    // const api_address = `https://${process.env.REACT_APP_API_CONTACT_POINTS}:${process.env.REACT_APP_API_PORT}/api/shop`;
     const config = {withCredentials: true, headers: {'Content-Type':'application/json', 'Accept':'application/json'}};
 
     const fetchBasket = async () => { // Fonction pour récupérer le panier
@@ -77,8 +77,11 @@ export const ShopAPIProvider = ({ children }) => {
         } catch (e) { console.error('[captureOrder]', e); }
     };
 
+    const postMailing = async (infos) => {
+    };
+
     return (
-        <ShopAPIContext.Provider value={{ fetchBasket, postBasket, fetchItem, fetchQuantity, fetchOrder, postOrder, captureOrder }}>
+        <ShopAPIContext.Provider value={{ fetchBasket, postBasket, fetchItem, fetchQuantity, fetchOrder, postOrder, captureOrder, postMailing }}>
             {children}
         </ShopAPIContext.Provider>
     );
