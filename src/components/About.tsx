@@ -49,14 +49,14 @@ function About() {
                         <h3>OÙ LIVREZ-VOUS ?</h3>
                         <img src="assets/arrow.svg"/>
                     </span>
-                   
+
                 </span>
 
 
                 <span className="info" onClick={toggleInfo("delay")}>
                     <div className={info.delay ? "visible" : "hidden"}>
                     <p>Nous livrons dans la France entière (Métropolitaine et Outre-mer). Pour le moment nous n'avons pas intégrer de solution automatique nous permettant d'envoyer des colis hors de France, nous travaillons dur dur dur à ce que cela soit possible. Si nos produits te donnent réellement envie et que tu te situes en dehors du territoire Français, n'hésite pas à nous contacter par mail, on pourra sûrement trouver un moyen de te livrer !</p>
-                     </div>    
+                     </div>
                     <span className="label">
                         <h3>DÉLAIS DE LIVRAISON</h3>
                         <img src="assets/arrow.svg"/>
@@ -66,7 +66,7 @@ function About() {
                 <span className="info" onClick={toggleInfo("feedback")}>
                     <div className={info.feedback ? "visible" : "hidden"}>
                     <p>Tu peux retrouver toutes les informations nécessaires dans le mail que tu as reçu lors de ta commande. Il te suffit de nous renvoyez par voie postale ton/tes articles et de nous indiquer ton numéro de commande dans le colis retourné. Si tu as le moindre doute, n'hésite pas à nous contacter par mail, nous répondrons à tes questions le plus rapidement possible (pinky promise !).</p>
-                    </div>    
+                    </div>
                     <span className="label">
                         <h3>FAIRE UN RETOUR</h3>
                         <img src="assets/arrow.svg"/>

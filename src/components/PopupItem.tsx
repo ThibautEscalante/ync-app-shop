@@ -25,8 +25,6 @@ function PopupItem({ item, quantity, onClose, add }) {
     if (!item) return null;
 
     return (<>
-        <Section name="Items" image="assets/home_icon.svg" />
-
         <div className="popup-page" onClick={onClose}>
             <div className="model" onClick={(e) => e.stopPropagation()}>
 
@@ -38,7 +36,6 @@ function PopupItem({ item, quantity, onClose, add }) {
                         if (i === imageIndex) return null;
                         return <img key={i} className="popup-mini-image" src={img} alt="YNC Tee Shirt STAIRS" onClick={() => setImageIndex(i)}/>
                     })}
-                   
                 </div>
 
                 <div className="content-section">

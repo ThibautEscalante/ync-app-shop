@@ -114,102 +114,41 @@ function useBasket() {
  * @return: the whole website content
  */
 function App() {
-    const [currentSection, setCurrentSection] = useState<"VITRINE" | "GALLERY">("VITRINE");
-    const galleryRef = useRef<HTMLDivElement | null>(null);
-
-// useEffect(() => {
-//     let lastScroll = window.scrollY;
-  
-//     const onScroll = () => {
-//       const currentScroll = window.scrollY;
-//       const goingDown = currentScroll > lastScroll + 10;
-//       const goingUp = currentScroll < lastScroll - 10;
-  
-//       if (currentSection === "VITRINE" && goingDown) {
-//         setCurrentSection("GALLERY");
-//         // Remonte la page en haut pour éviter un scroll trop bas d’entrée
-//         setTimeout(() => window.scrollTo({ top: 0, behavior: "auto" }), 0);
-//       }
-  
-//       if (currentSection === "GALLERY" && goingUp) {
-//         const galleryTop = galleryRef.current?.getBoundingClientRect().top ?? 0;
-//         if (galleryTop >= -10) {
-//           setCurrentSection("VITRINE");
-//           setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 0);
-//         }
-//       }
-  
-//       lastScroll = currentScroll;
-//     };
-  
-//     window.addEventListener("scroll", onScroll, { passive: true });
-//     return () => window.removeEventListener("scroll", onScroll);
-//   }, [currentSection]);
-
-    useEffect(() => {
-        let scrollLocked = false;
-
-        const handleWheel = (e: WheelEvent) => {
-            if (scrollLocked) return;
-
-            const delta = e.deltaY;
-
-            if (currentSection === "VITRINE" && delta > 30) {
-                scrollLocked = true;
-                setCurrentSection("GALLERY");
-
-                setTimeout(() => {
-                    scrollLocked = false;
-                    window.scrollTo({ top: 0 }); // Remet en haut proprement
-                }, 1000); // Bloque pendant 1 seconde pour éviter double scroll
-            }
-
-            if (currentSection === "GALLERY" && delta < -30) {
-                scrollLocked = true;
-                setCurrentSection("VITRINE");
-
-                setTimeout(() => {
-                    scrollLocked = false;
-                    window.scrollTo({ top: 0 });
-                }, 1000);
-            }
-        };
-
-        window.addEventListener("wheel", handleWheel, { passive: true });
-        return () => window.removeEventListener("wheel", handleWheel);
-    }, [currentSection]);
-
     const { basket, addBasket, removeBasket, removeBasketSize } = useBasket();
+    const { fetchItem, fetchQuantity } = useContext(ShopAPIContext);
 
     // Define default app state
     const [state, setState] = useState("HOME");
-
-    // Define default "Header" and "Section" state
     const [buttonDisplay, setButtonDisplay] = useState("PANIER");
     const [section, setSection] = useState({name: "Quelconque", image: "assets/home_icon.svg"});
 
     function homeState() {
         setButtonDisplay("PANIER");
+        setSection({name:"Quelconque", image:"assets/home_icon.svg"});
         setState("HOME");
     };
 
     function paymentState() {
         setButtonDisplay("RETOUR");
+        setSection({name:"Paiement", image:"assets/payment_icon.svg"});
         setState("PAYMENT");
     };
 
     function basketState() {
         setButtonDisplay("RETOUR");
+        setSection({name:"Panier", image:"assets/basket_icon.svg"});
         setState("BASKET");
     };
 
     function aboutState() {
         setButtonDisplay("RETOUR");
+        setSection({name:"À propos", image:"assets/home_icon.svg"})
         setState("ABOUT");
     };
 
     function acknowledgmentState() {
         setButtonDisplay("RETOUR");
+        setSection({name:"Nous te remercions !", image:"assets/acknowledgment/acknowledgment_icon.svg"});
         setState("ACKNOWLEDGMENT");
     };
 
@@ -224,12 +163,8 @@ function App() {
     const [popupItem, setPopupItem] = useState(null);
     const [popupQuantity, setPopupQuantity] = useState(null);
     const [popupId, setPopupId] = useState(null);
-    const [likes, setLikes] = useState(0);
-
-    const { fetchItem, fetchQuantity } = useContext(ShopAPIContext);
 
     const handleItemClick = (clickedId) => setPopupId(clickedId);
-
     const closePopup = () => {
         setPopupId(null);
         setPopupItem(null);
@@ -253,19 +188,37 @@ function App() {
         }
     }, [popupId, fetchItem]);
 
+    const [scrollPos, setScrollPos] = useState(0);
+    const galleryRef = useRef(null);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            if (galleryRef.current) {
+                const rect = galleryRef.current.getBoundingClientRect();
+                const currentScrollY = window.scrollY;
+                // Check if we've scrolled past the bottom of the element
+                if (currentScrollY > rect.top) {
+                    console.log("showcase");
+                    setSection(section => { return {name:"Gallerie", image:"assets/home_icon.svg"}; });
+                } else {
+                    console.log("gallery");
+                    setSection(section => { return {name:"Quelconque", image:"assets/home_icon.svg"}; });
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+    }, []);
+
 
     const content = (
         <div className="App">
             <Header name={buttonDisplay} basket={basket} homeFn={homeState} aboutFn={aboutState} basketFn={updateState}/>
-            {/*<Section name={section.name} image={section.image}/>*/}
+            <Section name={section.name} image={section.image}/>
 
             {state === "HOME" && (<>
-                {currentSection === "VITRINE" && (<Vitrine id="quelconque" add={addBasket} goto={basketState} />)}
-                {currentSection === "GALLERY" && (
-                    <div ref={galleryRef}>
-                        <Gallery ids={["quelconque", "stairs_white_shirt", "frog_poster"]} onItemClick={(id) => setPopupId(id)} />
-                    </div>
-                )}
+                <Vitrine id="quelconque" add={addBasket} goto={basketState} />
+                <Gallery ref={galleryRef} ids={["quelconque", "stairs_white_shirt", "frog_poster"]} onItemClick={(id) => setPopupId(id)} />
             </>)}
 
             {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} del={removeBasketSize} next={paymentState} />}

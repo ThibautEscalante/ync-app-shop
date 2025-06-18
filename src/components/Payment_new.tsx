@@ -100,7 +100,6 @@ function Payment({ basket, onFailure, onSuccess }) {
     }
 
     return (<>
-        <Section name="Payment" image="assets/payment_icon.svg" />
         <div className="payment">
             <PaymentForm order={order} setOrderField={setOrderField} errors={errors} setErrorsField={setErrorsField}/>
             <PaymentSummary basket={basket} payment={time2pay}/>

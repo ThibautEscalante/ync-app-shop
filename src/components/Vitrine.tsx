@@ -18,35 +18,25 @@ function Vitrine({ id, add, goto }) {
     };
 
     return (<>
-        <Section name="Quelconque" image="assets/home_icon.svg"/>
-        <div className="showcase"> {/* SHOWCASE */}
-
-            {/* ITEM */}
+        <div className="showcase">
             <div className="item">
-
                 <div className="zoom-box">
-
                     <div className="shadow-image">
                         <img src={item?.images[0] || "??"} alt="" />
                     </div>
-
                     <div className="item-description-border">
                         <div className="item-description">
                             <p>{item?.description || ""}</p>
                         </div>
                     </div>
-
                 </div>
-
                 <button
                     className="item-button custom-target"
                     id={id}
                     onClick={handleClick}
                     price={item?.price}
                 />
-
             </div>
-
         </div>
     </>);
 }
