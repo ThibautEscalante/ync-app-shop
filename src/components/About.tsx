@@ -44,7 +44,7 @@ function About() {
                 <span className="info" onClick={toggleInfo("delivery")}>
 
                     <div className={info.delivery ? "visible" : "hidden"}>
-                        <p>Le délai de rétraction est de XX jours, tu peux te rétracter à l'aide du lien que tu as reçu dans ton mail de confirmation de commande. Si ton colis n'a pas été expédié, nous annulerons l'envoit et tu recevras instantanément les dineros que tu nous a confié. Si ton colis a été expédié, nous attendrons que tu nous le renvois avant de te rendre la plata qui était tienne pour commencer.</p>
+                        <p className={"pp " + (info.delivery ? "visible" : "hidden")}>Le délai de rétraction est de XX jours, tu peux te rétracter à l'aide du lien que tu as reçu dans ton mail de confirmation de commande. Si ton colis n'a pas été expédié, nous annulerons l'envoit et tu recevras instantanément les dineros que tu nous a confié. Si ton colis a été expédié, nous attendrons que tu nous le renvois avant de te rendre la plata qui était tienne pour commencer.</p>
                     </div>
                     <span className='label'>
                         <h3>OÙ LIVREZ-VOUS ?</h3>
@@ -57,7 +57,7 @@ function About() {
                 <span className="info" onClick={toggleInfo("delay")}>
 
                     <div className={info.delay ? "visible" : "hidden"}>
-                    <p>Nous livrons dans la France entière (Métropolitaine et Outre-mer). Pour le moment nous n'avons pas intégrer de solution automatique nous permettant d'envoyer des colis hors de France, nous travaillons dur dur dur à ce que cela soit possible. Si nos produits te donnent réellement envie et que tu te situes en dehors du territoire Français, n'hésite pas à nous contacter par mail, on pourra sûrement trouver un moyen de te livrer !</p>
+                    <p className={"pp " + (info.delivery ? "visible" : "hidden")}>Nous livrons dans la France entière (Métropolitaine et Outre-mer). Pour le moment nous n'avons pas intégrer de solution automatique nous permettant d'envoyer des colis hors de France, nous travaillons dur dur dur à ce que cela soit possible. Si nos produits te donnent réellement envie et que tu te situes en dehors du territoire Français, n'hésite pas à nous contacter par mail, on pourra sûrement trouver un moyen de te livrer !</p>
                      </div>
                     <span className="label">
                         <h3>DÉLAIS DE LIVRAISON</h3>
@@ -69,7 +69,7 @@ function About() {
                 <span className="info" onClick={toggleInfo("feedback")}>
 
                     <div className={info.feedback ? "visible" : "hidden"}>
-                    <p>Tu peux retrouver toutes les informations nécessaires dans le mail que tu as reçu lors de ta commande. Il te suffit de nous renvoyez par voie postale ton/tes articles et de nous indiquer ton numéro de commande dans le colis retourné. Si tu as le moindre doute, n'hésite pas à nous contacter par mail, nous répondrons à tes questions le plus rapidement possible (pinky promise !).</p>
+                    <p className={"pp " + (info.delivery ? "visible" : "hidden")}>Tu peux retrouver toutes les informations nécessaires dans le mail que tu as reçu lors de ta commande. Il te suffit de nous renvoyez par voie postale ton/tes articles et de nous indiquer ton numéro de commande dans le colis retourné. Si tu as le moindre doute, n'hésite pas à nous contacter par mail, nous répondrons à tes questions le plus rapidement possible (pinky promise !).</p>
 
                     </div>
                     <span className="label">
