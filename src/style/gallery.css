@@ -15,7 +15,7 @@
   
   .gallery-container {
     /* margin: 0 var(--container-margin-x); */
-    margin-top: var(--spacing-lg);
+    /* margin-top: var(--spacing-lg); */
     width: var(--gallery-thumbnails-width);
   }
   

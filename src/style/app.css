@@ -78,11 +78,6 @@
     --font-color: #333333;
     --background-secondary: #dededec8;
     
-    /* Typographie */
-    --font-size-content: clamp(0.8rem, 1.4vw, 1.2rem);
-    --font-size-title-content: clamp(1rem, 1.6vw, 1.4rem);
-    --font-size-note: clamp(0.7rem, 1.2vw, 1rem);
-    
     /* Transitions */
     --transition-standard: 0.3s ease;
     --transition-slow: 0.8s ease;
@@ -227,7 +222,7 @@
     width: var(--section-width);
     height: var(--section-height);
     padding-left: 2%;
-    background-color: var(--background-color);
+    background-color: white;
   
     animation: fadeInUpApp 1.9s ease both;
     animation-delay: 3s;
