@@ -26,15 +26,14 @@ function useValidators() {
         }
     };
 
-    register('address', function (value) {
+    register('address', async function (value) {
         let result = false;
-        requestAddress(value, 5)
+        await requestAddress(value, 5)
             .then(data => {
                 Object.values(data).map(val => {
                     let elements = val.split(' ');
                     elements.splice(elements.length - 2, 2);
                     let adr = elements.join(' ');
-                    console.log(adr);
                     if (adr === value) result = true;
                 });
             })
@@ -68,9 +67,9 @@ function useValidators() {
         }
     };
 
-    const isFormValid = (order) => {
+    const isFormValid = async (order) => {
         const validator = make(order, rules);
-        const isValid = validator.validate();
+        const isValid = await validator.validateAsync();
         let errors = validator.errors().all();
         Object.entries(errors).map(el => {
             const field = el[0], msg = el[1][0];

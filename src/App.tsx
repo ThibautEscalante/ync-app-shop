@@ -269,7 +269,7 @@ function App() {
             </>)}
 
             {(state === "BASKET") && <Basket basket={basket} compact={false} add={addBasket} rm={removeBasket} del={removeBasketSize} next={paymentState} />}
-            {(state === "PAYMENT") && <Payment basket={basket} goto={acknowledgmentState} />}
+            {(state === "PAYMENT") && <Payment basket={basket} onSuccess={acknowledgmentState} onFailure={basketState} />}
 
             {(state === "ABOUT") && <About />}
             {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
