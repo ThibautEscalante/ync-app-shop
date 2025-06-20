@@ -5,7 +5,8 @@ import axios from 'axios';
 const ShopAPIContext = createContext();
 
 export const ShopAPIProvider = ({ children }) => {
-    const api_address = `https://yn-corp.xyz/api/shop`;
+    // const api_address = `https://yn-corp.xyz/api/shop`;
+    const api_address = `http://localhost:8080/api/shop`;
     // const api_address = `https://${process.env.REACT_APP_API_CONTACT_POINTS}:${process.env.REACT_APP_API_PORT}/api/shop`;
     const config = {withCredentials: true, headers: {'Content-Type':'application/json', 'Accept':'application/json'}};
 
@@ -73,6 +74,7 @@ export const ShopAPIProvider = ({ children }) => {
         try {
             const res = await axios.post(`${api_address}/capture`, {order}, config);
             if (res.data.length === 1) res.data = res.data[0];
+            console.log('captureOrder', res.data);
             return res.data;
         } catch (e) { console.error('[captureOrder]', e); }
     };

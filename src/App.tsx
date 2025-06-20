@@ -18,7 +18,7 @@ import PopupItem from "./components/PopupItem";
 import Basket from "./components/Basket";
 
 // import Payment from "./components/Payment";
-import Payment from "./components/Payment_new";
+import Payment from "./components/Payment";
 
 import About from "./components/About";
 import Acknowledgment from "./components/Acknowledgment";
@@ -198,10 +198,8 @@ function App() {
                 const currentScrollY = window.scrollY;
                 // Check if we've scrolled past the bottom of the element
                 if (currentScrollY > rect.top) {
-                    console.log("showcase");
-                    setSection(section => { return {name:"Gallerie", image:"assets/home_icon.svg"}; });
+                    setSection(section => { return {name:"Galerie", image:"assets/gallery_icon.svg"}; });
                 } else {
-                    console.log("gallery");
                     setSection(section => { return {name:"Quelconque", image:"assets/home_icon.svg"}; });
                 }
             }
