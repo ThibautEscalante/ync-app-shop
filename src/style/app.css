@@ -9,18 +9,18 @@
   
     /* Dimensions globales (ratio sur vh/vw) */
     --header-height: 5vh;
-    --section-height: 10vh;
+    --section-height: 11vh;
     --margin-height: calc(var(--header-height) + var(--section-height));
     --content-height: calc(100vh - var(--margin-height));
 
-    --content-paddingtop: 15vh;
+    /* --content-paddingtop: 15vh; */
   
     --header-width: 100vw;
     --section-width: 100vw;
     --content-width: 100vw;
   
     /* Fonts */
-    --font-family: "Necto Mono", monospace;
+    --font-family: "Necto Mono";
     --font-color: #0d0d0d;
     --font-size-header: clamp(14px, 1vw, 18px);
     --font-size-section: clamp(20px, 2vw, 42px);
@@ -42,6 +42,53 @@
     --gallery-info-height: 20%;
     --gallery-info-padding: 1vh 1.2vw;
     --gallery-thumbnail-height: 30vh;
+  }
+
+
+  /* ================================
+   VARIABLES CSS GLOBALES
+================================ */
+:root {
+    /* Dimensions de base */
+    --base-viewport-width: 1920px;
+    --base-zoom: 0.8;
+    
+    /* Espacements */
+    --spacing-xs: 0.5vh;
+    --spacing-sm: 1vh;
+    --spacing-md: 2vh;
+    --spacing-lg: 10vh;
+    --spacing-xl: 20vh;
+    
+    /* Marges et paddings */
+    --container-margin-x: 2vw;
+    --gallery-info-padding: 1.5vh 2vw;
+    
+    /* Dimensions galerie */
+    --gallery-thumbnails-width: 100vw;
+    --gallery-thumbnail-width: 25%;
+    --gallery-thumbnail-aspect: 1/1;
+    
+    /* Bordures */
+    --border-width: 0.1vw;
+    --border-color: #e2e2e2;
+    
+    /* Couleurs */
+    --white: #ffffff;
+    --font-color: #333333;
+    --background-secondary: #dededec8;
+    
+    /* Transitions */
+    --transition-standard: 0.3s ease;
+    --transition-slow: 0.8s ease;
+    
+    /* Opacité */
+    --opacity-muted: 0.6;
+    
+    /* Dimensions calculées */
+    /* --content-width: 100vw;
+    --content-height: calc(100vh - Nvar(--spacing-lg));
+    --margin-height: var(--spacing-lg); */
   }
   
   /* ================================
@@ -137,12 +184,26 @@
   }
   
   .header-right {
+    gap: 1%;
+  }
+
+  .butt-right {
     text-align: right;
     color: var(--primary-color);
   }
+
+  .butt-right1 {
+    text-align: right;
+    color: black;
+  }
   
-  .header-right:hover {
+  .butt-right:hover {
     border: 1px solid var(--primary-color);
+    background-color: transparent;
+    transform: scale(1.025);
+  }
+
+  .butt-right1:hover {
     background-color: transparent;
     transform: scale(1.025);
   }
@@ -161,7 +222,7 @@
     width: var(--section-width);
     height: var(--section-height);
     padding-left: 2%;
-    background-color: var(--background-color);
+    background-color: white;
   
     animation: fadeInUpApp 1.9s ease both;
     animation-delay: 3s;
