@@ -29,7 +29,6 @@ import useSmoothScroll from "../useSmoothScroll";
 /* Style imports */
 import "./style/styles.css";
 import "./style/app.css";
-// import "./style/home.css";
 import "./style/showcase.css";
 import "./style/gallery.css";
 import "./style/basket.css";
@@ -39,18 +38,35 @@ import "./style/acknowledgment.css";
 import "./style/popup_item.css";
 
 function useBasket() {
-    const { fetchBasket, postBasket } = useContext(ShopAPIContext);
+    const { fetchBasket, postBasket, fetchQuantity } = useContext(ShopAPIContext);
     const [basket, setBasket] = useState({});
+    const [gone, setGone] = useState(false);
+
+    const TIMEOUT = 5 * 1000;
+
+    async function gatherBasket() {
+        await fetchBasket()
+            .then(data => setBasket(data))
+            .catch(e => console.error(`[useBasket;gatherBasket] ${e}`));
+
+        for (const id in basket) {
+            const item_quantity = await fetchQuantity(id);
+            for (const size in basket[id]) {
+                if (basket[id][size] > item_quantity.sizes[size]) {
+                    basket[id][size] = item_quantity.sizes[size];
+                    setGone(true);
+                }
+            }
+        }
+    };
 
     useEffect(() => {
-        fetchBasket()
-            .then((data) => { console.log(data); setBasket(data); })
-            .catch(e => console.error(`[useBasket;useEffect | fetchBasket] ${e.message} (${e.status}))`));
+        gatherBasket();
+        const interval = setInterval(() => gatherBasket(), TIMEOUT);
+        return () => clearInterval(interval);
     }, []);
 
     function addBasket(item, size) {
-        console.log(basket);
-
         // Create new basket without mutating current state
         const newBasket = {...basket};
 
@@ -107,14 +123,14 @@ function useBasket() {
         }
     }
 
-    return { basket, addBasket, removeBasket, removeBasketSize };
+    return { basket, addBasket, removeBasket, removeBasketSize, gone, setGone };
 }
 
 /* @desc: the main component orchestating all different components of the website
  * @return: the whole website content
  */
 function App() {
-    const { basket, addBasket, removeBasket, removeBasketSize } = useBasket();
+    const { basket, addBasket, removeBasket, removeBasketSize, gone, setGone } = useBasket();
     const { fetchItem, fetchQuantity } = useContext(ShopAPIContext);
 
     // Define default app state
@@ -225,8 +241,6 @@ function App() {
             {(state === "ABOUT") && <About />}
             {(state === "ACKNOWLEDGMENT") && <Acknowledgment />}
 
-            {/*((state === "HOME") || (state === "ACKNOWLEDGMENT")) && <Footer onClick={aboutState} />*/}
-
             {popupItem && popupId && (
                 <PopupItem
                     item={popupItem}
@@ -236,6 +250,12 @@ function App() {
                     toggleLike={() => setLikes(likes + 1)}
                 />
             )}
+
+            {gone && <div className="info-popup">
+                <h1>Tu t'es fait volé !</h1>
+                <p>Certains articles de ton panier ont été retirés car il ne sont plus disponible.</p>
+                <button onClick={() => setGone(false)}>OK</button>
+            </div>}
 
         </div>
     );

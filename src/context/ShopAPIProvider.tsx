@@ -74,12 +74,16 @@ export const ShopAPIProvider = ({ children }) => {
         try {
             const res = await axios.post(`${api_address}/capture`, {order}, config);
             if (res.data.length === 1) res.data = res.data[0];
-            console.log('captureOrder', res.data);
             return res.data;
         } catch (e) { console.error('[captureOrder]', e); }
     };
 
     const postMailing = async (infos) => {
+        try {
+            const res = await axios.post(`${api_address}/mailing`, {infos}, config);
+            if (res.data.length === 1) res.data = res.data[0];
+            return res.data;
+        } catch (e) { console.error('[postMailing]', e); }
     };
 
     return (
